@@ -1,0 +1,16 @@
+[
+{
+  "modid": "moremystcraft",
+  "name": "More Mystcraft",
+  "description": "Misc changes and additions to Mystcraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["TheFloydman"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
