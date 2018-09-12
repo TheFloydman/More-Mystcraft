@@ -82,22 +82,32 @@ public class SubWorldGen extends WorldGenerator {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
+					BlockPos curPos = blockpos2.down();
+					boolean empty = true;
+					while (empty == true) {
+						if (world.getBlockState(curPos) == Blocks.AIR.getDefaultState() || world.getBlockState(curPos) == Blocks.WATER.getDefaultState() || world.getBlockState(curPos) == Blocks.FLOWING_WATER.getDefaultState() || world.getBlockState(curPos) == Blocks.LAVA.getDefaultState() || world.getBlockState(curPos) == Blocks.FLOWING_LAVA.getDefaultState() || world.getBlockState(curPos) == Blocks.GRASS.getDefaultState() || world.getBlockState(curPos) == Blocks.TALLGRASS.getDefaultState()) {
+							world.setBlockState(curPos, Blocks.COBBLESTONE.getDefaultState(), 3);
+							curPos = curPos.down();
+						} else {
+							empty = false;
+						}
+					}
 				}
-				
+
 				if ("floor_cobblestone_2".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
 					world.setBlockState(blockpos2.down(), Blocks.COBBLESTONE.getDefaultState(), 3);
 				}
-				
+
 				if ("piston_redstone_air".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2.up(), Blocks.STICKY_PISTON.getStateFromMeta(0), 3);
 					world.setBlockState(blockpos2, Blocks.REDSTONE_BLOCK.getDefaultState(), 3);
 					world.setBlockState(blockpos2.down(), Blocks.AIR.getDefaultState(), 3);
 				}
-				
+
 				if ("floor_piston_cobblestone".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
