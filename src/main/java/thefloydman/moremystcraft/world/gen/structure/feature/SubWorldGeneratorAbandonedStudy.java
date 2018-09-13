@@ -34,7 +34,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
 
-public class SubWorldGen extends WorldGenerator {
+public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 	Random r2 = new Random();
 
 	int r;
@@ -52,7 +52,7 @@ public class SubWorldGen extends WorldGenerator {
 			return false;
 		}
 
-		if (ModWorldGenerator.canSpawnHere(template, worldserver, position)) {
+		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position)) {
 			IBlockState iblockstate = world.getBlockState(position);
 			world.notifyBlockUpdate(position, iblockstate, iblockstate, 3);
 
@@ -82,16 +82,35 @@ public class SubWorldGen extends WorldGenerator {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					BlockPos curPos = blockpos2.down();
-					boolean empty = true;
-					while (empty == true) {
-						if (world.getBlockState(curPos) == Blocks.AIR.getDefaultState() || world.getBlockState(curPos) == Blocks.WATER.getDefaultState() || world.getBlockState(curPos) == Blocks.FLOWING_WATER.getDefaultState() || world.getBlockState(curPos) == Blocks.LAVA.getDefaultState() || world.getBlockState(curPos) == Blocks.FLOWING_LAVA.getDefaultState() || world.getBlockState(curPos) == Blocks.GRASS.getDefaultState() || world.getBlockState(curPos) == Blocks.TALLGRASS.getDefaultState()) {
-							world.setBlockState(curPos, Blocks.COBBLESTONE.getDefaultState(), 3);
-							curPos = curPos.down();
-						} else {
-							empty = false;
-						}
-					}
+					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
+				}
+				
+				if ("floor_corner".equals(entry.getValue())) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2.up(), Blocks.LOG.getDefaultState(), 3);
+					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
+					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
+				}
+				
+				if ("front_stairs".equals(entry.getValue())) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getStateFromMeta(1), 3);
+					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
+					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
+				}
+				
+				if ("front_stairs_left".equals(entry.getValue())) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getDefaultState(), 3);
+					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
+					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
+				}
+				
+				if ("front_stairs_right".equals(entry.getValue())) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getStateFromMeta(2), 3);
+					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
+					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
 				}
 
 				if ("floor_cobblestone_2".equals(entry.getValue())) {
@@ -125,6 +144,27 @@ public class SubWorldGen extends WorldGenerator {
 
 	public void addLoot(World world) {
 
+	}
+	
+	private void fillBelow (World world, BlockPos pos, IBlockState state) {
+		BlockPos curPos = pos.down();
+		boolean empty = true;
+		while (empty == true) {
+			if (world.getBlockState(curPos) == Blocks.AIR.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.WATER.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.FLOWING_WATER.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.LAVA.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.FLOWING_LAVA.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.TALLGRASS.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.DOUBLE_PLANT.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.LOG.getDefaultState()
+					|| world.getBlockState(curPos) == Blocks.LEAVES.getDefaultState()) {
+				world.setBlockState(curPos, Blocks.COBBLESTONE.getDefaultState(), 3);
+				curPos = curPos.down();
+			} else {
+				empty = false;
+			}
+		}
 	}
 
 }

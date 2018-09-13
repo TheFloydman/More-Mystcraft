@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.util.Reference;
-import thefloydman.moremystcraft.world.gen.structure.feature.ModWorldGenerator;
+import thefloydman.moremystcraft.world.gen.structure.feature.WorldGeneratorAbandonedStudy;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION)
 public class MoreMystcraft
@@ -24,7 +24,7 @@ public class MoreMystcraft
 	@EventHandler
 	public static void preInit (FMLPreInitializationEvent event)
 	{
-		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 0);  
+		GameRegistry.registerWorldGenerator(new WorldGeneratorAbandonedStudy(), 0);  
 	}
 	
 	@EventHandler

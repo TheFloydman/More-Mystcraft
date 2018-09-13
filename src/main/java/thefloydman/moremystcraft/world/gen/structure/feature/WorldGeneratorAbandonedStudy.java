@@ -23,7 +23,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-public class ModWorldGenerator extends WorldGenerator implements IWorldGenerator {
+public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWorldGenerator {
 
 	static Random rand2 = new Random();
 
@@ -49,16 +49,24 @@ public class ModWorldGenerator extends WorldGenerator implements IWorldGenerator
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		// if ((int) (Math.random() * 100) == 0)
-		// {
-		int y = getGroundFromAbove(world, blockX, blockZ);
-		BlockPos pos = new BlockPos(blockX, y, blockZ);
-		if (world.getBiome(pos).getBiomeName() == "Ocean" || world.getBiome(pos).getBiomeName() == "Deep Ocean"|| world.getBiome(pos).getBiomeName() == "River") {
-			return;
+		if ((int) (Math.random() * 100) == 0) {
+			int y = getGroundFromAbove(world, blockX, blockZ);
+			BlockPos pos = new BlockPos(blockX, y, blockZ);
+			// Don't spawn on these blocks or these biomes.
+			if (world.getBlockState(pos) == Blocks.WATER.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.FLOWING_WATER.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.FLOWING_LAVA.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LEAVES.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()
+					|| world.getBiome(pos).getBiomeName() == "Ocean"
+					|| world.getBiome(pos).getBiomeName() == "Deep Ocean"
+					|| world.getBiome(pos).getBiomeName() == "River") {
+				return;
+			}
+			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
+			structure.generate(world, rand, pos);
 		}
-		WorldGenerator structure = new SubWorldGen();
-		structure.generate(world, rand, pos);
-		// }
 	}
 
 	private void generateNether(World world, Random rand, int chunkX, int chunkZ) {
@@ -82,9 +90,14 @@ public class ModWorldGenerator extends WorldGenerator implements IWorldGenerator
 		boolean foundGround = false;
 		while (!foundGround && y-- >= 64) {
 			Block blockAt = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			foundGround = blockAt == Blocks.WATER || blockAt == Blocks.FLOWING_WATER || blockAt == Blocks.GRASS
-					|| blockAt == Blocks.SAND || blockAt == Blocks.SNOW || blockAt == Blocks.SNOW_LAYER
-					|| blockAt == Blocks.GLASS || blockAt == Blocks.MYCELIUM;
+			foundGround = blockAt == Blocks.STONE || blockAt == Blocks.DIRT || blockAt == Blocks.GRASS
+					|| blockAt == Blocks.SAND || blockAt == Blocks.SNOW || blockAt == Blocks.MYCELIUM;
+			/*
+			 * foundGround = blockAt == Blocks.WATER || blockAt == Blocks.FLOWING_WATER ||
+			 * blockAt == Blocks.GRASS || blockAt == Blocks.SAND || blockAt == Blocks.SNOW
+			 * || blockAt == Blocks.SNOW_LAYER || blockAt == Blocks.GLASS || blockAt ==
+			 * Blocks.MYCELIUM;
+			 */
 		}
 
 		return y;
