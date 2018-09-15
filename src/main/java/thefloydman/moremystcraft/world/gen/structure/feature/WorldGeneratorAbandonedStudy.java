@@ -11,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
@@ -27,6 +28,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 
 	static Random rand2 = new Random();
 
+	// Called by Minecraft.
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -43,13 +45,22 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 		case 1:
 			generateEnd(world, rand, blockX + 8, blockZ + 8);
 			break;
-
+		default:
+			// generateOverworld(world, rand, blockX + 8, blockZ + 8);
+			break;
 		}
+	}
 
+	// Called by Mystcraft.
+	public void generate(IChunkProvider chunkProvider, World world, int chunkX, int chunkZ, ChunkPrimer primer) {
+		int blockX = chunkX * 16;
+		int blockZ = chunkZ * 16;
+		Random rand = new Random();
+		generateOverworld(world, rand, blockX + 8, blockZ + 8);
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * 100) == 0) {
+		if ((int) (Math.random() * 0) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks or these biomes.
@@ -58,10 +69,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.FLOWING_LAVA.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.LEAVES.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()
-					|| world.getBiome(pos).getBiomeName() == "Ocean"
-					|| world.getBiome(pos).getBiomeName() == "Deep Ocean"
-					|| world.getBiome(pos).getBiomeName() == "River") {
+					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()) {
 				return;
 			}
 			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
