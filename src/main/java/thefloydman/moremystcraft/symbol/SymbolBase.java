@@ -52,7 +52,7 @@ public abstract class SymbolBase implements IAgeSymbol {
 	}
 
 	private String getUnlocalizedName() {
-		return "moremyst.symbol." + getRegistryName().getResourcePath();
+		return "moremystcraft.symbol." + getRegistryName().getResourcePath();
 	}
 
 	@Override

@@ -1,5 +1,9 @@
 package thefloydman.moremystcraft;
 
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.world.gen.structure.MapGenStructureIO;
+
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -21,16 +25,19 @@ public class MoreMystcraft {
 
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
 	public static CommonProxy proxy;
+	
+	public static Logger logger;
 
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
+		logger = event.getModLog();
 		GameRegistry.registerWorldGenerator(new WorldGeneratorAbandonedStudy(), Integer.MAX_VALUE);
 		ModSymbols.initialize();
 	}
 
 	@EventHandler
 	public static void init(FMLInitializationEvent event) {
-
+		proxy.init(event);
 	}
 
 	@EventHandler

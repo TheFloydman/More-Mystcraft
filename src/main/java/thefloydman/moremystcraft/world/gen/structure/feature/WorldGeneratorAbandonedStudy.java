@@ -1,5 +1,6 @@
 package thefloydman.moremystcraft.world.gen.structure.feature;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -22,13 +23,24 @@ import net.minecraft.world.gen.feature.WorldGenVines;
 import net.minecraft.world.gen.feature.WorldGenWaterlily;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.DimensionType;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraft.util.ResourceLocation;
+
 import net.minecraftforge.fml.common.IWorldGenerator;
+
+import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
+import com.xcompwiz.mystcraft.world.agedata.AgeData.AgeDataData;
+import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
+
+import thefloydman.moremystcraft.MoreMystcraft;
+import thefloydman.moremystcraft.proxy.CommonProxy;
 
 public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWorldGenerator {
 
 	static Random rand2 = new Random();
 
-	// Called by Minecraft.
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
@@ -46,30 +58,47 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 			generateEnd(world, rand, blockX + 8, blockZ + 8);
 			break;
 		default:
-			// generateOverworld(world, rand, blockX + 8, blockZ + 8);
 			break;
 		}
-	}
 
-	// Called by Mystcraft.
-	public void generate(IChunkProvider chunkProvider, World world, int chunkX, int chunkZ, ChunkPrimer primer) {
-		int blockX = chunkX * 16;
-		int blockZ = chunkZ * 16;
-		Random rand = new Random();
-		generateOverworld(world, rand, blockX + 8, blockZ + 8);
+		// If the dimension is a Mystcraft Dimension and has an Abandoned Studies Page,
+		// generate in that dimension.
+		int dimId = world.provider.getDimension();
+		try {
+			if (dimId < 0 || MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == false) {
+				return;
+			}
+			if (MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == true) {
+				AgeData data = new AgeData("currentDim").getAge(dimId, false);
+				List symbolList = data.getSymbols(false);
+				ResourceLocation studyLoc = new ResourceLocation("moremystcraft", "abandoned_study");
+				for (int i = 0; i < symbolList.size(); i++) {
+					if (symbolList.get(i).equals(studyLoc) == true) {
+						generateOverworld(world, rand, blockX + 8, blockZ + 8);
+					}
+				}
+			}
+		} catch (NullPointerException e) {
+			System.out.println("Null Pointer Exception!");
+			System.out.println(e.getStackTrace());
+		} catch (IllegalArgumentException e) {
+			System.out.println("Invalid Dimension ID: " + Integer.toString(dimId));
+		}
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
 		if ((int) (Math.random() * 0) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
-			// Don't spawn on these blocks or these biomes.
+			// Don't spawn on these blocks.
 			if (world.getBlockState(pos) == Blocks.WATER.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.FLOWING_WATER.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.FLOWING_LAVA.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.LEAVES.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()) {
+					|| world.getBlockState(pos) == Blocks.LEAVES2.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LOG2.getDefaultState()) {
 				return;
 			}
 			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
@@ -98,14 +127,9 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 		boolean foundGround = false;
 		while (!foundGround && y-- >= 64) {
 			Block blockAt = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			foundGround = blockAt == Blocks.STONE || blockAt == Blocks.DIRT || blockAt == Blocks.GRASS
-					|| blockAt == Blocks.SAND || blockAt == Blocks.SNOW || blockAt == Blocks.MYCELIUM;
-			/*
-			 * foundGround = blockAt == Blocks.WATER || blockAt == Blocks.FLOWING_WATER ||
-			 * blockAt == Blocks.GRASS || blockAt == Blocks.SAND || blockAt == Blocks.SNOW
-			 * || blockAt == Blocks.SNOW_LAYER || blockAt == Blocks.GLASS || blockAt ==
-			 * Blocks.MYCELIUM;
-			 */
+			foundGround = blockAt != Blocks.AIR && blockAt != Blocks.WATER && blockAt != Blocks.FLOWING_WATER
+					&& blockAt != Blocks.LAVA && blockAt != Blocks.FLOWING_LAVA && blockAt != Blocks.LOG
+					&& blockAt != Blocks.LOG2 && blockAt != Blocks.LEAVES && blockAt != Blocks.LEAVES2;
 		}
 
 		return y;
@@ -236,7 +260,6 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
