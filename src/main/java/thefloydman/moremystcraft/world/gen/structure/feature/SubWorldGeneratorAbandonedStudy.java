@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
@@ -41,6 +42,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 import com.xcompwiz.mystcraft.block.BlockLectern;
+import com.xcompwiz.mystcraft.item.ItemAgebook;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
@@ -63,15 +65,15 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 			return false;
 		}
 
-		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position.add(0, 5, 0))) {
-			IBlockState iblockstate = world.getBlockState(position.add(0, 5, 0));
-			world.notifyBlockUpdate(position.add(0, 5, 0), iblockstate, iblockstate, 3);
+		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position.add(0, 4, 0))) {
+			IBlockState iblockstate = world.getBlockState(position.add(0, 4, 0));
+			world.notifyBlockUpdate(position.add(0, 4, 0), iblockstate, iblockstate, 3);
 
 			PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
 					.setRotation(Rotation.NONE).setIgnoreEntities(false).setChunk((ChunkPos) null)
 					.setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			template.getDataBlocks(position.add(0, 5, 0), placementsettings);
+			template.getDataBlocks(position.add(0, 4, 0), placementsettings);
 			template.addBlocksToWorld(world, position, placementsettings);
 
 			Map<BlockPos, String> map = template.getDataBlocks(position, placementsettings);
@@ -94,28 +96,92 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
 					fillBelow(world, blockpos2.down(), Blocks.COBBLESTONE.getDefaultState());
 				}
-				
+
+				// Add a blank Descriptive Book and a Linking Book back to the study.
 				if ("link_point".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
+
+					// Add Descriptive Book.
+					TileEntity entityLecternLeft = world.getTileEntity(blockpos2.add(-4, 1, 1));
+					IItemHandler handlerLecternLeft = entityLecternLeft
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					ItemStack stackDesBook = new ItemStack(Item.getByNameOrId("mystcraft:agebook"));
+
+					NBTTagCompound compoundDesBook = new NBTTagCompound();
+					compoundDesBook.setFloat("MaxHealth", 10);
+					compoundDesBook.setString("DisplayName", "???");
+
+					NBTTagCompound compoundDesBookAuthorsSub = new NBTTagCompound();
+					compoundDesBookAuthorsSub.setString("", "Unknown Author");
+					NBTTagList compoundDesBookAuthorsMain = new NBTTagList();
+					compoundDesBookAuthorsMain.appendTag(compoundDesBookAuthorsSub);
+
+					// Add link panel.
+					NBTTagCompound compoundDesBookPagesSub0 = new NBTTagCompound();
+					compoundDesBookPagesSub0.setString("id", "mystcraft:page");
+					compoundDesBookPagesSub0.setInteger("Count", 1);
+					NBTTagCompound compoundDesBookPagesSub0Sub0Sub0 = new NBTTagCompound();
+					NBTTagCompound compoundDesBookPagesSub0Sub0 = new NBTTagCompound();
+					compoundDesBookPagesSub0Sub0.setTag("linkpanel", compoundDesBookPagesSub0Sub0Sub0);
+					compoundDesBookPagesSub0.setTag("tag", compoundDesBookPagesSub0Sub0);
+					NBTTagList compoundDesBookPagesMain = new NBTTagList();
+					compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub0);
+
+					// Add Star Fissure page.
+					NBTTagCompound compoundDesBookPagesSub2 = new NBTTagCompound();
+					compoundDesBookPagesSub2.setString("id", "mystcraft:page");
+					compoundDesBookPagesSub2.setInteger("Count", 1);
+					NBTTagCompound compoundDesBookPagesSub2Sub0 = new NBTTagCompound();
+					compoundDesBookPagesSub2Sub0.setString("symbol", "mystcraft:starfissure");
+					compoundDesBookPagesSub2.setTag("tag", compoundDesBookPagesSub2Sub0);
+					compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub2);
+
+					// Add blank pages.
+					NBTTagCompound compoundDesBookPagesSub1 = new NBTTagCompound();
+					compoundDesBookPagesSub1.setString("id", "mystcraft:page");
+					compoundDesBookPagesSub1.setInteger("Count", 1);
+					int rando = (int) (Math.random() * 100);
+					System.out.print("rando: " + rando);
+					if (rando <= 50) {
+						for (int i = (int) (Math.random() * 10); i > 0; i--) {
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+						}
+					} else if (rando >= 51 && rando <= 80) {
+						for (int i = (int) ((Math.random() * 20) + 10); i > 0; i--) {
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+						}
+					} else if (rando >= 81 && rando <= 95) {
+						for (int i = (int) ((Math.random() * 40) + 30); i > 0; i--) {
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+						}
+					} else if (rando >= 96 && rando <= 100) {
+						for (int i = (int) ((Math.random() * 30) + 70); i > 0; i--) {
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+						}
+					}
+
+					compoundDesBook.setTag("Authors", compoundDesBookAuthorsMain);
+					compoundDesBook.setTag("Pages", compoundDesBookPagesMain);
+					stackDesBook.setTagCompound(compoundDesBook);
+					handlerLecternLeft.insertItem(0, stackDesBook, false);
+
+					// Add Linking Book.
 					TileEntity entityLectern = world.getTileEntity(blockpos2.add(-4, 1, -1));
-					IItemHandler handlerLectern = entityLectern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					IItemHandler handlerLectern = entityLectern
+							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					ItemStack stackBook = new ItemStack(Item.getByNameOrId("mystcraft:linkbook"));
 					NBTTagCompound compoundBook = new NBTTagCompound();
-					/*NBTTagCompound compoundY = new NBTTagCompound();
-					NBTTagCompound compoundZ = new NBTTagCompound();
-					NBTTagCompound compoundYaw = new NBTTagCompound();
-					NBTTagCompound dimension = new NBTTagCompound();*/
 					compoundBook.setInteger("SpawnX", blockpos2.getX());
 					compoundBook.setInteger("SpawnY", blockpos2.getY());
 					compoundBook.setInteger("SpawnZ", blockpos2.getZ());
-					compoundBook.setInteger("SpawnYaw", 90);
-					compoundBook.setInteger("Dimension", 0);
+					compoundBook.setFloat("SpawnYaw", 90);
+					compoundBook.setInteger("Dimension", world.provider.getDimension());
+					compoundBook.setString("DisplayName", "Abandoned Study");
+					compoundBook.setFloat("MaxHealth", 10);
+					compoundBook.setFloat("damage", 0);
+					compoundBook.setString("TargetUUID", "00000000-0000-0000-0000-000000000000");
 					stackBook.setTagCompound(compoundBook);
-					/*stackBook.setTagCompound(compoundY);
-					stackBook.setTagCompound(compoundZ);
-					stackBook.setTagCompound(compoundYaw);
-					stackBook.setTagCompound(dimension);*/
 					handlerLectern.insertItem(0, stackBook, false);
 				}
 
@@ -135,6 +201,7 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 		boolean empty = true;
 		while (empty == true) {
 			if (world.getBlockState(pos) == Blocks.AIR.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.STRUCTURE_VOID.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.WATER.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.FLOWING_WATER.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()

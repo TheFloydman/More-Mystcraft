@@ -26,34 +26,8 @@ public class SymbolAbandonedStudy extends SymbolBase {
 	}
 
 	public void registerLogic(AgeDirector controller, long seed) {
-		/*WorldGeneratorAbandonedStudy generator = new WorldGeneratorAbandonedStudy();
-		controller.registerInterface(new Populator(generator));*/
+		
 	}
-
-	/*private class Populator implements IPopulate {
-		private WorldGeneratorAbandonedStudy generator;
-
-		public Populator(WorldGeneratorAbandonedStudy gen) {
-			this.generator = gen;
-		}
-
-		public boolean populate(World world, Random rand, int chunkX, int chunkZ, boolean flag) {
-			this.generator.generateMyst(rand, chunkX, chunkZ, world);
-			return false;
-		}
-	}
-
-	private class TerrainAlteration implements ITerrainAlteration {
-		private WorldGeneratorAbandonedStudy generator;
-
-		public TerrainAlteration(WorldGeneratorAbandonedStudy gen) {
-			this.generator = gen;
-		}
-
-		public void alterTerrain(World world, int chunkX, int chunkZ, ChunkPrimer primer) {
-			this.generator.generate(world.getChunkProvider(), world, chunkX, chunkZ, primer);
-		}
-	}*/
 
 	public int instabilityModifier(int count) {
 		if (count > 1) {

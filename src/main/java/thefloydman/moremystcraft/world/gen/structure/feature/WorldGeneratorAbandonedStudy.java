@@ -87,7 +87,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * 0) == 0) {
+		if ((int) (Math.random() * 1000) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks.
@@ -102,7 +102,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 				return;
 			}
 			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
-			structure.generate(world, rand, pos.add(0, -5, 0));
+			structure.generate(world, rand, pos.add(0, -4, 0));
 		}
 	}
 
