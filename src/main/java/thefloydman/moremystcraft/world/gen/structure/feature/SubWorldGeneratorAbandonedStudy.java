@@ -2,6 +2,9 @@ package thefloydman.moremystcraft.world.gen.structure.feature;
 
 import java.util.Map;
 import java.util.Random;
+
+import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
+
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -9,13 +12,19 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -28,8 +37,10 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
-import com.xcompwiz.mystcraft.tileentity.TileEntityInkMixer;
+import com.xcompwiz.mystcraft.block.BlockLectern;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
@@ -52,16 +63,16 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 			return false;
 		}
 
-		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position)) {
-			IBlockState iblockstate = world.getBlockState(position);
-			world.notifyBlockUpdate(position, iblockstate, iblockstate, 3);
+		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position.add(0, 5, 0))) {
+			IBlockState iblockstate = world.getBlockState(position.add(0, 5, 0));
+			world.notifyBlockUpdate(position.add(0, 5, 0), iblockstate, iblockstate, 3);
 
 			PlacementSettings placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
 					.setRotation(Rotation.NONE).setIgnoreEntities(false).setChunk((ChunkPos) null)
 					.setReplacedBlock((Block) null).setIgnoreStructureBlock(false);
 
-			template.getDataBlocks(position, placementsettings);
-			template.addBlocksToWorld(world, position.add(0, 1, 0), placementsettings);
+			template.getDataBlocks(position.add(0, 5, 0), placementsettings);
+			template.addBlocksToWorld(world, position, placementsettings);
 
 			Map<BlockPos, String> map = template.getDataBlocks(position, placementsettings);
 
@@ -69,8 +80,8 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 
 				if ("chest".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.AIR.getDefaultState(), 3);
-					TileEntity tileentity = world.getTileEntity(blockpos2);
+					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
+					TileEntity tileentity = world.getTileEntity(blockpos2.down());
 
 					if (tileentity instanceof TileEntityChest) {
 						((TileEntityChest) tileentity)
@@ -78,60 +89,34 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 					}
 				}
 
-				if ("floor".equals(entry.getValue())) {
+				if ("cobblestone_down".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
+					fillBelow(world, blockpos2.down(), Blocks.COBBLESTONE.getDefaultState());
 				}
 				
-				if ("floor_corner".equals(entry.getValue())) {
+				if ("link_point".equals(entry.getValue())) {
 					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.LOG.getDefaultState(), 3);
-					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
-				}
-				
-				if ("front_stairs".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getStateFromMeta(1), 3);
-					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
-				}
-				
-				if ("front_stairs_left".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getDefaultState(), 3);
-					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
-				}
-				
-				if ("front_stairs_right".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.OAK_STAIRS.getStateFromMeta(2), 3);
-					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					fillBelow(world, blockpos2, Blocks.COBBLESTONE.getDefaultState());
-				}
-
-				if ("floor_cobblestone_2".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
-					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
-					world.setBlockState(blockpos2.down(), Blocks.COBBLESTONE.getDefaultState(), 3);
-				}
-
-				if ("piston_redstone_air".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.STICKY_PISTON.getStateFromMeta(0), 3);
-					world.setBlockState(blockpos2, Blocks.REDSTONE_BLOCK.getDefaultState(), 3);
-					world.setBlockState(blockpos2.down(), Blocks.AIR.getDefaultState(), 3);
-				}
-
-				if ("floor_piston_cobblestone".equals(entry.getValue())) {
-					BlockPos blockpos2 = entry.getKey();
-					world.setBlockState(blockpos2.up(), Blocks.PLANKS.getDefaultState(), 3);
-					world.setBlockState(blockpos2, Blocks.STICKY_PISTON.getStateFromMeta(1), 3);
-					world.setBlockState(blockpos2.down(), Blocks.COBBLESTONE.getDefaultState(), 3);
+					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
+					TileEntity entityLectern = world.getTileEntity(blockpos2.add(-4, 1, -1));
+					IItemHandler handlerLectern = entityLectern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+					ItemStack stackBook = new ItemStack(Item.getByNameOrId("mystcraft:linkbook"));
+					NBTTagCompound compoundBook = new NBTTagCompound();
+					/*NBTTagCompound compoundY = new NBTTagCompound();
+					NBTTagCompound compoundZ = new NBTTagCompound();
+					NBTTagCompound compoundYaw = new NBTTagCompound();
+					NBTTagCompound dimension = new NBTTagCompound();*/
+					compoundBook.setInteger("SpawnX", blockpos2.getX());
+					compoundBook.setInteger("SpawnY", blockpos2.getY());
+					compoundBook.setInteger("SpawnZ", blockpos2.getZ());
+					compoundBook.setInteger("SpawnYaw", 90);
+					compoundBook.setInteger("Dimension", 0);
+					stackBook.setTagCompound(compoundBook);
+					/*stackBook.setTagCompound(compoundY);
+					stackBook.setTagCompound(compoundZ);
+					stackBook.setTagCompound(compoundYaw);
+					stackBook.setTagCompound(dimension);*/
+					handlerLectern.insertItem(0, stackBook, false);
 				}
 
 			}
@@ -145,22 +130,21 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 	public void addLoot(World world) {
 
 	}
-	
-	private void fillBelow (World world, BlockPos pos, IBlockState state) {
-		BlockPos curPos = pos.down();
+
+	private void fillBelow(World world, BlockPos pos, IBlockState state) {
 		boolean empty = true;
 		while (empty == true) {
-			if (world.getBlockState(curPos) == Blocks.AIR.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.WATER.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.FLOWING_WATER.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.LAVA.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.FLOWING_LAVA.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.TALLGRASS.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.DOUBLE_PLANT.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.LOG.getDefaultState()
-					|| world.getBlockState(curPos) == Blocks.LEAVES.getDefaultState()) {
-				world.setBlockState(curPos, Blocks.COBBLESTONE.getDefaultState(), 3);
-				curPos = curPos.down();
+			if (world.getBlockState(pos) == Blocks.AIR.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.WATER.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.FLOWING_WATER.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.FLOWING_LAVA.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.TALLGRASS.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.DOUBLE_PLANT.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()
+					|| world.getBlockState(pos) == Blocks.LEAVES.getDefaultState()) {
+				world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState(), 3);
+				pos = pos.down();
 			} else {
 				empty = false;
 			}

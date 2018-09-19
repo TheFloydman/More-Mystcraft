@@ -102,7 +102,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 				return;
 			}
 			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
-			structure.generate(world, rand, pos);
+			structure.generate(world, rand, pos.add(0, -5, 0));
 		}
 	}
 
