@@ -142,7 +142,6 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 					compoundDesBookPagesSub1.setString("id", "mystcraft:page");
 					compoundDesBookPagesSub1.setInteger("Count", 1);
 					int rando = (int) (Math.random() * 100);
-					System.out.print("rando: " + rando);
 					if (rando <= 50) {
 						for (int i = (int) (Math.random() * 10); i > 0; i--) {
 							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);

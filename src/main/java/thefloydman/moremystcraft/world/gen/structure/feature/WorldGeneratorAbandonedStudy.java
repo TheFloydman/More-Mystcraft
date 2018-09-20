@@ -36,6 +36,7 @@ import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.proxy.CommonProxy;
+import thefloydman.moremystcraft.config.ModConfig;
 
 public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWorldGenerator {
 
@@ -65,10 +66,9 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 		// generate in that dimension.
 		int dimId = world.provider.getDimension();
 		try {
-			if (dimId < 0 || MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == false) {
+			if (dimId < 0) {
 				return;
-			}
-			if (MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == true) {
+			} else if (MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == true) {
 				AgeData data = new AgeData("currentDim").getAge(dimId, false);
 				List symbolList = data.getSymbols(false);
 				ResourceLocation studyLoc = new ResourceLocation("moremystcraft", "abandoned_study");
@@ -79,26 +79,20 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 				}
 			}
 		} catch (NullPointerException e) {
-			System.out.println("Null Pointer Exception!");
-			System.out.println(e.getStackTrace());
+			return;
 		} catch (IllegalArgumentException e) {
 			System.out.println("Invalid Dimension ID: " + Integer.toString(dimId));
 		}
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * 1000) == 0) {
+		if ((int) (Math.random() * ModConfig.studyFrequency) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks.
-			if (world.getBlockState(pos) == Blocks.WATER.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.FLOWING_WATER.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LAVA.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.FLOWING_LAVA.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LEAVES.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LEAVES2.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LOG.getDefaultState()
-					|| world.getBlockState(pos) == Blocks.LOG2.getDefaultState()) {
+			if (world.getBlockState(pos).getMaterial().isLiquid() == true
+					|| world.getBlockState(pos).getMaterial() == Material.LEAVES
+					|| world.getBlockState(pos).getMaterial() == Material.WOOD) {
 				return;
 			}
 			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
@@ -126,10 +120,8 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 		int y = 255;
 		boolean foundGround = false;
 		while (!foundGround && y-- >= 64) {
-			Block blockAt = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			foundGround = blockAt != Blocks.AIR && blockAt != Blocks.WATER && blockAt != Blocks.FLOWING_WATER
-					&& blockAt != Blocks.LAVA && blockAt != Blocks.FLOWING_LAVA && blockAt != Blocks.LOG
-					&& blockAt != Blocks.LOG2 && blockAt != Blocks.LEAVES && blockAt != Blocks.LEAVES2;
+			IBlockState blockAt = world.getBlockState(new BlockPos(x, y, z));
+			foundGround = blockAt.getMaterial().isSolid() == true;
 		}
 
 		return y;

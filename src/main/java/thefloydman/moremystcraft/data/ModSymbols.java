@@ -19,7 +19,7 @@ public class ModSymbols {
 	}
 
 	public static void initialize() {
-		registerSymbol(new SymbolAbandonedStudy(forMoreMyst("abandoned_study")), 0,
+		registerSymbol(new SymbolAbandonedStudy(forMoreMyst("abandoned_study")), 3,
 				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
 	}
 

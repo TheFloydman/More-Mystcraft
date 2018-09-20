@@ -1,17 +1,27 @@
 package thefloydman.moremystcraft.proxy;
 
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.exception.APIUndefined;
 import com.xcompwiz.mystcraft.api.exception.APIVersionRemoved;
 import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import thefloydman.moremystcraft.MoreMystcraft;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
+
+	public void preInit(FMLPreInitializationEvent event) {
+
+	}
 
 	public DimensionAPI dimensionApi;
 
@@ -27,5 +37,9 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
+	}
+
+	public void postInit(FMLPostInitializationEvent event) {
+
 	}
 }
