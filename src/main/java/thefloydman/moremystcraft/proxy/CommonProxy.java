@@ -1,6 +1,9 @@
 package thefloydman.moremystcraft.proxy;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -15,6 +18,7 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
 
 import thefloydman.moremystcraft.MoreMystcraft;
+import thefloydman.moremystcraft.proxy.ClientProxy;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {

@@ -129,34 +129,34 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 					compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub0);
 
 					// Add Star Fissure page.
-					NBTTagCompound compoundDesBookPagesSub2 = new NBTTagCompound();
-					compoundDesBookPagesSub2.setString("id", "mystcraft:page");
-					compoundDesBookPagesSub2.setInteger("Count", 1);
-					NBTTagCompound compoundDesBookPagesSub2Sub0 = new NBTTagCompound();
-					compoundDesBookPagesSub2Sub0.setString("symbol", "mystcraft:starfissure");
-					compoundDesBookPagesSub2.setTag("tag", compoundDesBookPagesSub2Sub0);
-					compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub2);
+					NBTTagCompound compoundDesBookPagesFissure = new NBTTagCompound();
+					compoundDesBookPagesFissure.setString("id", "mystcraft:page");
+					compoundDesBookPagesFissure.setInteger("Count", 1);
+					NBTTagCompound compoundDesBookPagesFissureSub = new NBTTagCompound();
+					compoundDesBookPagesFissureSub.setString("symbol", "mystcraft:starfissure");
+					compoundDesBookPagesFissure.setTag("tag", compoundDesBookPagesFissureSub);
+					compoundDesBookPagesMain.appendTag(compoundDesBookPagesFissure);
 
 					// Add blank pages.
-					NBTTagCompound compoundDesBookPagesSub1 = new NBTTagCompound();
-					compoundDesBookPagesSub1.setString("id", "mystcraft:page");
-					compoundDesBookPagesSub1.setInteger("Count", 1);
+					NBTTagCompound compoundDesBookPagesBlank = new NBTTagCompound();
+					compoundDesBookPagesBlank.setString("id", "mystcraft:page");
+					compoundDesBookPagesBlank.setInteger("Count", 1);
 					int rando = (int) (Math.random() * 100);
 					if (rando <= 50) {
 						for (int i = (int) (Math.random() * 10); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
 						}
 					} else if (rando >= 51 && rando <= 80) {
 						for (int i = (int) ((Math.random() * 20) + 10); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
 						}
 					} else if (rando >= 81 && rando <= 95) {
 						for (int i = (int) ((Math.random() * 40) + 30); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
 						}
 					} else if (rando >= 96 && rando <= 100) {
 						for (int i = (int) ((Math.random() * 30) + 70); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub1);
+							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
 						}
 					}
 

@@ -21,6 +21,15 @@ public class ModConfig {
 
 	@Config.Comment("The frequency at which Abandoned Studies will spawn. The lower the number, the more frequent the spawns. 0 will spawn them in every possible location. (Default: 1000)")
 	public static int studyFrequency = 1000;
+	
+	@Config.Comment("Enable or disable the Locked Lectern. REQUIRES RESTART (Default: true)")
+	public static boolean lockedLecternEnabled = true;
+	
+	@Config.Comment("Enable or disable the Locked Bookstand. REQUIRES RESTART (Default: true)")
+	public static boolean lockedBookstandEnabled = true;
+	
+	@Config.Comment("Enable or disable the recipe for the Book Binder. REQUIRES RESTART (Default: true)")
+	public static boolean bookBinderRecipeEnabled = true;
 
 	@Mod.EventBusSubscriber
 	private static class EventHandler {
