@@ -47,7 +47,7 @@ import com.xcompwiz.mystcraft.item.ItemAgebook;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
 
-public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
+public class SubWorldGenStudy extends WorldGenerator {
 	Random r2 = new Random();
 
 	int r;
@@ -65,7 +65,7 @@ public class SubWorldGeneratorAbandonedStudy extends WorldGenerator {
 			return false;
 		}
 
-		if (WorldGeneratorAbandonedStudy.canSpawnHere(template, worldserver, position.add(0, 4, 0))) {
+		if (WorldGenStudy.canSpawnHere(template, worldserver, position.add(0, 4, 0))) {
 			IBlockState iblockstate = world.getBlockState(position.add(0, 4, 0));
 			world.notifyBlockUpdate(position.add(0, 4, 0), iblockstate, iblockstate, 3);
 

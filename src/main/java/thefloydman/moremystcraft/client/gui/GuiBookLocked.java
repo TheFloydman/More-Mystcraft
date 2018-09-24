@@ -1,6 +1,7 @@
 /*
  * Much of this code is copied directly from Mystcraft.
  * Do not copy it without explicit permission from XCompWiz.
+ * All Rights Reserved unless otherwise explicitly stated.
  */
 
 package thefloydman.moremystcraft.client.gui;

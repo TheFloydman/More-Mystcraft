@@ -2,12 +2,21 @@ package thefloydman.moremystcraft.data;
 
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.mystcraft.world.AgeController;
 
 import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.SymbolBase;
 import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
+import thefloydman.moremystcraft.symbol.symbols.SymbolPyramids;
 
 public class ModSymbols {
+
+	public static void initialize() {
+		registerSymbol(new SymbolAbandonedStudy(forMoreMystcraft("abandoned_study")), 3,
+				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
+		registerSymbol(new SymbolPyramids(forMoreMystcraft("pyramids")), 2,
+				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
+	}
 
 	public static void registerSymbol(SymbolBase symbol, Integer cardrank, String... poem) {
 		if (poem.length != 4)
@@ -18,12 +27,7 @@ public class ModSymbols {
 		SymbolManager.tryAddSymbol(symbol);
 	}
 
-	public static void initialize() {
-		registerSymbol(new SymbolAbandonedStudy(forMoreMyst("abandoned_study")), 3,
-				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
-	}
-
-	private static ResourceLocation forMoreMyst(String name) {
+	private static ResourceLocation forMoreMystcraft(String name) {
 		return new ResourceLocation("moremystcraft", name);
 	}
 

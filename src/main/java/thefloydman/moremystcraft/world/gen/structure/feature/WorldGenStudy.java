@@ -38,7 +38,7 @@ import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.config.ModConfig;
 
-public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWorldGenerator {
+public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 
 	static Random rand2 = new Random();
 
@@ -95,7 +95,7 @@ public class WorldGeneratorAbandonedStudy extends WorldGenerator implements IWor
 					|| world.getBlockState(pos).getMaterial() == Material.WOOD) {
 				return;
 			}
-			WorldGenerator structure = new SubWorldGeneratorAbandonedStudy();
+			WorldGenerator structure = new SubWorldGenStudy();
 			structure.generate(world, rand, pos.add(0, -4, 0));
 		}
 	}

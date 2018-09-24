@@ -18,8 +18,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.util.Reference;
-import thefloydman.moremystcraft.world.gen.structure.feature.WorldGeneratorAbandonedStudy;
+import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
 import thefloydman.moremystcraft.data.ModSymbols;
+import thefloydman.moremystcraft.data.SymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.init.ModBlocks;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
@@ -37,8 +38,9 @@ public class MoreMystcraft {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
-		GameRegistry.registerWorldGenerator(new WorldGeneratorAbandonedStudy(), Integer.MAX_VALUE);
+		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
 		ModSymbols.initialize();
+		SymbolRules.initialize();
 		ModBlocks.init();
 	}
 
