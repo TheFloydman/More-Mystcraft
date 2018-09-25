@@ -28,8 +28,10 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 		if (base.getY() == 0
 				|| world.getBlockState(new BlockPos(base.getX(), base.getY() - 1, base.getZ())).getMaterial()
 						.equals(Material.WOOD)
-				|| world.getBlockState(new BlockPos(base.getX(), base.getY() - 1, base.getZ())).getMaterial().equals(Material.LEAVES)
-				|| world.getBlockState(new BlockPos(base.getX(), base.getY() - 1, base.getZ())).getMaterial().isLiquid()) {
+				|| world.getBlockState(new BlockPos(base.getX(), base.getY() - 1, base.getZ())).getMaterial()
+						.equals(Material.LEAVES)
+				|| world.getBlockState(new BlockPos(base.getX(), base.getY() - 1, base.getZ())).getMaterial()
+						.isLiquid()) {
 			return false;
 		}
 		int height = ((int) (Math.random() * 7)) + 2;
@@ -45,9 +47,9 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 	private void fillRecLayer(BlockPos center, int widthX, int widthZ, World world) {
 		for (int curX = center.getX() - widthX; curX <= center.getX() + widthX; curX++) {
 			for (int curZ = center.getZ() - widthZ; curZ <= center.getZ() + widthZ; curZ++) {
-				if (!world.getBlockState(new BlockPos(curX, center.getY(), curZ)).getMaterial().isSolid()) {
+				//if (!world.getBlockState(new BlockPos(curX, center.getY(), curZ)).getMaterial().isSolid()) {
 					this.placeBlock(world, new BlockPos(curX, center.getY(), curZ), this.state, 2);
-				}
+				//}
 			}
 		}
 	}
@@ -61,11 +63,29 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 			for (int curZ = center.getZ() - widthZ; curZ <= center.getZ() + widthZ; curZ++) {
 				if (!world.getBlockState(new BlockPos(curX, center.getY() - 1, curZ)).getMaterial().isSolid()) {
 					this.placeBlock(world, new BlockPos(curX, center.getY(), curZ), Blocks.AIR.getDefaultState(), 2);
-					if (!world.getBlockState(new BlockPos(curX, center.getY() - 1, curZ)).getMaterial()
-							.equals(Material.AIR)) {
+					if ((int) (Math.random() * 2) == 0) {
+						int groundY = findGround(world, curX, center.getY(), curZ);
+						if (groundY > 0) {
+							this.placeBlock(world, new BlockPos(curX, groundY + 1, curZ), this.state, 2);
+						}
+
 					}
 				}
 			}
 		}
+	}
+
+	private int findGround(World world, int x, int y, int z) {
+		int oldY = y;
+		for (; y >= 0; y--) {
+			if (world.getBlockState(new BlockPos(x, y, z)).getMaterial().isSolid()) {
+				if (world.getBlockState(new BlockPos(x, y, z)).getMaterial().equals(Material.LEAVES)
+						|| world.getBlockState(new BlockPos(x, y, z)).getMaterial().equals(Material.WOOD)) {
+					return 0;
+				}
+				return y;
+			}
+		}
+		return y;
 	}
 }
