@@ -2,8 +2,17 @@ package thefloydman.moremystcraft;
 
 import org.apache.logging.log4j.Logger;
 
+import com.mojang.realmsclient.client.Request.Post;
+import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
+import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
+
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,6 +26,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import thefloydman.moremystcraft.proxy.CommonProxy;
+import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
 import thefloydman.moremystcraft.data.ModSymbols;
@@ -38,7 +48,9 @@ public class MoreMystcraft {
 	@EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
+		proxy.preInit(event);
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
+		//GameRegistry.registerTileEntity(TileEntityNexusController.class, new ResourceLocation(Reference.MOD_ID, "nexus_controller")); 
 		ModSymbols.initialize();
 		SymbolRules.initialize();
 		ModBlocks.init();
@@ -47,8 +59,8 @@ public class MoreMystcraft {
 	@EventHandler
 	public static void init(FMLInitializationEvent event) {
 		proxy.init(event);
-		NetworkRegistry.INSTANCE.registerGuiHandler((Object)MoreMystcraft.instance, (IGuiHandler)new GuiHandler());
 		CraftingHandler.removeRecipes();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 
 	@EventHandler

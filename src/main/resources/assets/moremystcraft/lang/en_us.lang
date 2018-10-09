@@ -1,4 +1,9 @@
+// Symbol names
 moremystcraft.symbol.abandoned_study.name=Abandoned Studies
 moremystcraft.symbol.pyramids.name=Pyramids
+
+// Block names
 tile.moremystcraft.locked_lectern.name=Locked Lectern
 tile.moremystcraft.locked_bookstand.name=Locked Bookstand
+tile.moremystcraft.nexus_controller.name=Nexus Controller
+tile.moremystcraft.traffic_cone.name=Safety Cone

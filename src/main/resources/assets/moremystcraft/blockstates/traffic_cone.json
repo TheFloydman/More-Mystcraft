@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "rotation=0": {
+            "model": "moremystcraft:traffic_cone"
+        },
+        "rotation=1": {
+            "model": "moremystcraft:traffic_cone_rotation_1"
+        },
+        "rotation=2": {
+            "model": "moremystcraft:traffic_cone_rotation_2"
+        },
+        "rotation=3": {
+            "model": "moremystcraft:traffic_cone_rotation_3"
+        },
+        "inventory": {
+            "model": "moremystcraft:traffic_cone"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "result": {
+        "item": "moremystcraft:traffic_cone",
+        "count": 5
+    },
+    "pattern": [
+        " d ",
+        " c ",
+        "ccc"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "d": {
+            "type": "forge:ore_dict",
+            "ore": "dyeOrange",
+            "data": 0
+        },
+        "c": {
+            "item": "minecraft:clay_ball",
+            "data": 0
+        }
+    }
+}

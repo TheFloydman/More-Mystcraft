@@ -1,0 +1,13 @@
+{
+    "variants": {
+        "normal": [
+            {
+                "textures": {
+                    "side": "moremystcraft:blocks/nexus_controller",
+                    "end": "moremystcraft:blocks/nexus_controller"
+                },
+                "model": "moremystcraft:nexus_controller"
+            }
+        ]
+    }
+}

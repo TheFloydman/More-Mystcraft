@@ -2,5 +2,6 @@ package thefloydman.moremystcraft.gui;
 
 public enum ModGUIs
 {
-    BOOK_DISPLAY_LOCKED
+    BOOK_DISPLAY_LOCKED,
+    NEXUS_CONTROLLER;
 }

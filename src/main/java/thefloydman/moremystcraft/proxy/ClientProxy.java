@@ -13,14 +13,10 @@ import thefloydman.moremystcraft.config.ModConfig;
 import thefloydman.moremystcraft.init.ModBlocks;
 import thefloydman.moremystcraft.util.Reference;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class ClientProxy extends CommonProxy {
 
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public static void registerRenders(ModelRegistryEvent event) {
-		ModBlocks.registerModels();
-
+		ModBlocks.registerMystcraftModels();
 	}
 
 }

@@ -35,10 +35,8 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 			return false;
 		}
 		int height = ((int) (Math.random() * 7)) + 2;
-		for (int curY = base.getY() + height, width = 0; curY >= base.getY(); curY--, width++) {
-			fillSquareLayer(new BlockPos(base.getX(), curY, base.getZ()), width, world);
-		}
 		for (int curY = base.getY(), width = height; curY <= base.getY() + height; curY++, width--) {
+			fillSquareLayer(new BlockPos(base.getX(), curY, base.getZ()), width, world);
 			cleanupPyramidLayer(new BlockPos(base.getX(), curY, base.getZ()), width, width, world);
 		}
 		return true;
@@ -47,9 +45,7 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 	private void fillRecLayer(BlockPos center, int widthX, int widthZ, World world) {
 		for (int curX = center.getX() - widthX; curX <= center.getX() + widthX; curX++) {
 			for (int curZ = center.getZ() - widthZ; curZ <= center.getZ() + widthZ; curZ++) {
-				//if (!world.getBlockState(new BlockPos(curX, center.getY(), curZ)).getMaterial().isSolid()) {
 					this.placeBlock(world, new BlockPos(curX, center.getY(), curZ), this.state, 2);
-				//}
 			}
 		}
 	}

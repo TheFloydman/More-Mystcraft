@@ -53,7 +53,9 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 			generateNether(world, rand, blockX + 8, blockZ + 8);
 			break;
 		case 0:
-			generateOverworld(world, rand, blockX + 8, blockZ + 8);
+			if (ModConfig.abandonedStudiesOverworldEnabled == true) {
+				generateOverworld(world, rand, blockX + 8, blockZ + 8);
+			}
 			break;
 		case 1:
 			generateEnd(world, rand, blockX + 8, blockZ + 8);

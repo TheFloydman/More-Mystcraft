@@ -32,7 +32,7 @@ public class SymbolPyramids extends SymbolBase
             generator = new WorldGenPyramids(block.blockstate);
         }
         else {
-            generator = new WorldGenPyramids(Blocks.STONE);
+            generator = new WorldGenPyramids(Blocks.SANDSTONE);
         }
         controller.registerInterface(new Populator(generator));
     }
