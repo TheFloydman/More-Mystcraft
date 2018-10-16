@@ -1,6 +1,8 @@
 // Symbol names
 moremystcraft.symbol.abandoned_study.name=Abandoned Studies
 moremystcraft.symbol.pyramids.name=Pyramids
+moremystcraft.symbol.biocon_rings.name=Rings Biome Distribution
+
 
 // Block names
 tile.moremystcraft.locked_lectern.name=Locked Lectern

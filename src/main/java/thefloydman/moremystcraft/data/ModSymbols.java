@@ -7,6 +7,7 @@ import com.xcompwiz.mystcraft.world.AgeController;
 import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.SymbolBase;
 import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerRings;
 import thefloydman.moremystcraft.symbol.symbols.SymbolPyramids;
 
 public class ModSymbols {
@@ -15,7 +16,9 @@ public class ModSymbols {
 		registerSymbol(new SymbolAbandonedStudy(forMoreMystcraft("abandoned_study")), 3,
 				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
 		registerSymbol(new SymbolPyramids(forMoreMystcraft("pyramids")), 2,
-				new String[] { "Civilization", "Possibility", "Power", "Wisdom" });
+				new String[] { "Civilization", "Constraint", "Creativity", "Elevate" });
+		registerSymbol(new SymbolBiomeControllerRings(forMoreMystcraft("biocon_rings")), 3,
+				new String[] { "Constraint", "Nature", "Cycle", "Circle" });
 	}
 
 	public static void registerSymbol(SymbolBase symbol, Integer cardrank, String... poem) {

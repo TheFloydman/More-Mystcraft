@@ -1,22 +1,24 @@
 package thefloydman.moremystcraft.data;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import net.minecraft.util.*;
+import net.minecraft.util.ResourceLocation;
 
-import com.xcompwiz.mystcraft.grammar.*;
-import com.xcompwiz.mystcraft.logging.*;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.api.symbol.*;
-import com.xcompwiz.util.*;
-import com.xcompwiz.mystcraft.api.grammar.*;
+import com.xcompwiz.util.CollectionUtils;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.api.grammar.GrammarData;
+import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
 public class SymbolRules {
 	public static void initialize() {
-		addRuleInternal("Pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE,
-				forMoreMystcraft("pyramids")));
+		addRuleInternal("Pyramids",
+				buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, forMoreMystcraft("pyramids")));
+		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, GrammarData.BIOME, forMoreMystcraft("biocon_rings")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {
