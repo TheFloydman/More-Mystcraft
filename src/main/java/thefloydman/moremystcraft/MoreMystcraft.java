@@ -29,6 +29,7 @@ import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
+import thefloydman.moremystcraft.data.ModGrammarRules;
 import thefloydman.moremystcraft.data.ModSymbols;
 import thefloydman.moremystcraft.data.SymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
@@ -49,8 +50,9 @@ public class MoreMystcraft {
 	public static void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.preInit(event);
+		ModGrammarRules.initialize();
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
-		//GameRegistry.registerTileEntity(TileEntityNexusController.class, new ResourceLocation(Reference.MOD_ID, "nexus_controller")); 
+		//GameRegistry.registerTileEntity(TileEntityNexusController.class, new ResourceLocation(Reference.MOD_ID, "nexus_controller"));
 		ModSymbols.initialize();
 		SymbolRules.initialize();
 		ModBlocks.init();

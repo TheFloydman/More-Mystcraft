@@ -11,6 +11,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
 
+import thefloydman.moremystcraft.grammar.ModGrammarData;
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
 public class SymbolRules {
@@ -18,7 +19,14 @@ public class SymbolRules {
 		addRuleInternal("Pyramids",
 				buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
-				GrammarData.BIOME, GrammarData.BIOME, forMoreMystcraft("biocon_rings")));
+				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_SEQ, forMoreMystcraft("biocon_rings")));
+		addRuleInternal("biocon_natural", buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_natural")));
+		addRuleInternal("size_tiny", buildRule(2, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_tiny")));
+		addRuleInternal("size_small", buildRule(1, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_small")));
+		addRuleInternal("size_medium", buildRule(0, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_medium")));
+		addRuleInternal("size_large", buildRule(3, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_large")));
+		addRuleInternal("size_huge", buildRule(4, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_huge")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

@@ -6,7 +6,9 @@ import com.xcompwiz.mystcraft.world.AgeController;
 
 import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.modifiers.SymbolSize;
 import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerNatural;
 import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerRings;
 import thefloydman.moremystcraft.symbol.symbols.SymbolPyramids;
 
@@ -19,6 +21,19 @@ public class ModSymbols {
 				new String[] { "Civilization", "Constraint", "Creativity", "Elevate" });
 		registerSymbol(new SymbolBiomeControllerRings(forMoreMystcraft("biocon_rings")), 3,
 				new String[] { "Constraint", "Nature", "Cycle", "Circle" });
+		registerSymbol(new SymbolBiomeControllerNatural(forMoreMystcraft("biocon_natural")), 2,
+				new String[] { "Constraint", "Nature", "Weave", "Tradition" });
+		// Register size modifiers.
+		registerSymbol(new SymbolSize(forMoreMystcraft("size_tiny"), 0.25, "Tiny"), 2, "Control", "Growth", "Form",
+				"Tiny");
+		registerSymbol(new SymbolSize(forMoreMystcraft("size_small"), 0.5, "Small"), 1, "Control", "Growth", "Form",
+				"Small");
+		registerSymbol(new SymbolSize(forMoreMystcraft("size_medium"), 1, "Medium"), 0, "Control", "Growth", "Form",
+				"Medium");
+		registerSymbol(new SymbolSize(forMoreMystcraft("size_large"), 2, "Large"), 1, "Control", "Growth", "Form",
+				"Large");
+		registerSymbol(new SymbolSize(forMoreMystcraft("size_huge"), 3, "Huge"), 2, "Control", "Growth", "Form",
+				"Huge");
 	}
 
 	public static void registerSymbol(SymbolBase symbol, Integer cardrank, String... poem) {

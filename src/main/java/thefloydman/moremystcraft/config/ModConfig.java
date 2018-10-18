@@ -36,6 +36,9 @@ public class ModConfig {
 	
 	@Config.Comment("Enable or disable the traffic cone. REQUIRES RESTART (Default: true)")
 	public static boolean trafficConeEnabled = true;
+	
+	@Config.Comment("Enable or disable Mystcraft's original sized biome distribution Pages (for example: \"Large Biome Distribution\"). REQUIRES RESTART (Default: true)")
+	public static boolean originalBioConsEnabled = true;
 
 	@Mod.EventBusSubscriber
 	private static class EventHandler {

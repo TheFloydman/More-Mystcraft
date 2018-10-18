@@ -15,29 +15,24 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
 public class SymbolBiomeControllerRings extends SymbolBase {
-	
-	List<Integer> thicknesses = new ArrayList<Integer>();
-	final int MINIMUM_THICKNESS = 8;
-	final int ADDITIONAL_THICKNESS = 248;
-	
+
 	public SymbolBiomeControllerRings(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(final AgeDirector controller, final long seed) {
+		final Number size = controller.popModifier("size").asNumber();
 		final List<Biome> biomes = new ArrayList<Biome>();
 		for (Biome biome = ModifierUtils.popBiome(controller); biome != null; biome = ModifierUtils
 				.popBiome(controller)) {
 			biomes.add(biome);
-			thicknesses.add((int) (Math.random() * ADDITIONAL_THICKNESS) + MINIMUM_THICKNESS);
 		}
 		final Random rand = new Random(controller.getSeed());
 		while (biomes.size() < 2) {
 			biomes.add(SymbolBiome.getRandomBiome(rand));
-			thicknesses.add((int) (Math.random() * ADDITIONAL_THICKNESS) + MINIMUM_THICKNESS);
 		}
-		controller.registerInterface(new BiomeController(biomes));
+		controller.registerInterface(new BiomeController(biomes, size));
 	}
 
 	@Override
@@ -47,9 +42,15 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 
 	private class BiomeController implements IBiomeController {
 		private List<Biome> biomes;
+		private double size;
 
-		public BiomeController(final List<Biome> biomes) {
+		public BiomeController(final List<Biome> biomes, Number size) {
 			this.biomes = biomes;
+			if (size != null) {
+				this.size = size.doubleValue() * 500;
+			} else {
+				this.size = 10;
+			}
 		}
 
 		@Override
@@ -59,16 +60,9 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 
 		@Override
 		public Biome getBiomeAtCoords(final int i, final int j) {
-			Double distance = distanceToCoords(i, j);
-			int ringNumber = 0;
-			for (int a = 0; distance >= 0; a++, ringNumber++) {
-				if (a >= thicknesses.size()) {
-					a -= thicknesses.size();
-				}
-				distance -= thicknesses.get(a);
-			}
-			ringNumber -= 1;
-			while (ringNumber > this.biomes.size() - 1) {
+			double distance = distanceToCoords(i, j);
+			int ringNumber = (int) (distance / this.size);
+			while (ringNumber >= this.biomes.size()) {
 				ringNumber -= this.biomes.size();
 			}
 			return this.biomes.get(ringNumber);
@@ -114,7 +108,7 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 		@Override
 		public void cleanupCache() {
 		}
-		
+
 		private Double distanceToCoords(int x, int z) {
 			return Math.abs(Math.sqrt((x * x) + (z * z)));
 		}
