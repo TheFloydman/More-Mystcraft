@@ -25,9 +25,9 @@ import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
-public class SymbolBiomeControllerNatural extends SymbolBase {
+public class SymbolBiomeControllerNormal extends SymbolBase {
 
-	public SymbolBiomeControllerNatural(final ResourceLocation identifier) {
+	public SymbolBiomeControllerNormal(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -50,7 +50,7 @@ public class SymbolBiomeControllerNatural extends SymbolBase {
 			} else if (size.doubleValue() > 1.5 && size.doubleValue() <= 2.5) {
 				controller.registerInterface(new BiomeController(controller, 3, biomes));
 			} else if (size.doubleValue() > 2.5) {
-				controller.registerInterface(new BiomeController(controller, 1, biomes));
+				controller.registerInterface(new BiomeController(controller, 4, biomes));
 			}
 		} else {
 			controller.registerInterface(new BiomeController(controller, 2, biomes));
@@ -62,6 +62,11 @@ public class SymbolBiomeControllerNatural extends SymbolBase {
 		return true;
 	}
 
+	/*
+	 * This subclass is copied directly from Mystcraft. Do not copy it without
+	 * explicit permission from XCompWiz. All Rights Reserved unless otherwise
+	 * explicitly stated.
+	 */
 	static class BiomeController implements IBiomeController {
 		private Biome[] allowedBiomes;
 		private List<Biome> biomesToSpawnIn;

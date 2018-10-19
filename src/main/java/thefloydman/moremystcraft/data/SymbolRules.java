@@ -20,8 +20,8 @@ public class SymbolRules {
 				buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE, forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_SEQ, forMoreMystcraft("biocon_rings")));
-		addRuleInternal("biocon_natural", buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
-				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_natural")));
+		addRuleInternal("biocon_normal", buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_normal")));
 		addRuleInternal("size_tiny", buildRule(2, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_tiny")));
 		addRuleInternal("size_small", buildRule(1, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_small")));
 		addRuleInternal("size_medium", buildRule(0, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_medium")));

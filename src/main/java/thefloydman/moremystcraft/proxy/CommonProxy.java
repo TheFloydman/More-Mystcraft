@@ -5,6 +5,10 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -54,22 +58,26 @@ public class CommonProxy {
 		// Remap and blacklist original sized Biome Distribution Pages.
 		if (ModConfig.originalBioConsEnabled == false) {
 			SymbolRemappings.addSymbolRemapping(forMystcraft("biocontiny"), forMoreMystcraft("size_tiny"),
-					forMoreMystcraft("biocon_natural"));
+					forMoreMystcraft("biocon_normal"));
 			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconsmall"), forMoreMystcraft("size_small"),
-					forMoreMystcraft("biocon_natural"));
+					forMoreMystcraft("biocon_normal"));
 			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconmedium"), forMoreMystcraft("size_medium"),
-					forMoreMystcraft("biocon_natural"));
+					forMoreMystcraft("biocon_normal"));
 			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconlarge"), forMoreMystcraft("size_large"),
-					forMoreMystcraft("biocon_natural"));
+					forMoreMystcraft("biocon_normal"));
 			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconhuge"), forMoreMystcraft("size_huge"),
-					forMoreMystcraft("biocon_natural"));
-			
+					forMoreMystcraft("biocon_normal"));
+
 			SymbolManager.blackListSymbol(forMystcraft("biocontiny"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconsmall"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconmedium"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconlarge"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconhuge"));
 		}
+
+		//MinecraftForge.EVENT_BUS.register(new GenericJumpEvent());
+		//MinecraftForge.EVENT_BUS.register(new GenericUpdateEvent());
+		//MinecraftForge.EVENT_BUS.register(new GenericFallEvent());
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -89,4 +97,41 @@ public class CommonProxy {
 	private ResourceLocation forMoreMystcraft(String name) {
 		return new ResourceLocation("moremystcraft", name);
 	}
+/*
+	static class GenericJumpEvent {
+
+		@SubscribeEvent
+		public void onLivingJumpEvent(LivingJumpEvent event) {
+			double addY = 2D; // change to the entity's Y motion.
+			event.getEntity().motionY *= addY;
+			event.getEntity().velocityChanged = true;
+			// event.entity.motionY *= addY;
+			// event.entity.velocityChanged = true;
+		}
+	}
+	
+	static class GenericUpdateEvent {
+
+		@SubscribeEvent
+		public void onLivingUpdateEvent(LivingUpdateEvent event) {
+			double addY = 2D; // change to the entity's Y motion.
+			if (event.getEntity().fallDistance > 0) {
+				event.getEntity().motionY /= addY;
+			}
+			//double addY = 2D; // change to the entity's Y motion.
+			//event.getEntity().motionY *= addY;
+			//event.getEntity().velocityChanged = true;
+			// event.entity.motionY *= addY;
+			// event.entity.velocityChanged = true;
+		}
+	}
+
+	static class GenericFallEvent {
+		@SubscribeEvent
+		public void onLivingFallEvent(LivingFallEvent event) {
+			float addY = 2.0F; // change to the entity's Y motion.
+			event.setDistance(event.getDistance() / addY);
+			event.setDamageMultiplier(event.getDamageMultiplier() / addY);
+		}
+	}*/
 }
