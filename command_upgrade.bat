@@ -1,0 +1,1 @@
+gradlew setupDecompWorkspace cleanEclipse eclipse

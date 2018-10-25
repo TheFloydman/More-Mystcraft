@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
@@ -14,9 +17,9 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
-public class SymbolBiomeControllerRings extends SymbolBase {
+public class SymbolBiomeControllerMaze extends SymbolBase {
 
-	public SymbolBiomeControllerRings(final ResourceLocation identifier) {
+	public SymbolBiomeControllerMaze(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -43,13 +46,14 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 	private class BiomeController implements IBiomeController {
 		private List<Biome> biomes;
 		private double size;
+		private int pathWidth = 1;
 
 		public BiomeController(final List<Biome> biomes, Number size) {
 			this.biomes = biomes;
 			if (size != null) {
-				this.size = size.doubleValue() * 200;
+				this.size = size.doubleValue() * 500;
 			} else {
-				this.size = 50;
+				this.size = 10;
 			}
 		}
 
@@ -60,12 +64,21 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 
 		@Override
 		public Biome getBiomeAtCoords(final int i, final int j) {
+			final int chunkX = i % 16;
+			final int chunkZ = j % 16;
+			Biome[] biomeList = new Biome[9];
+			for (int x = -1, p = 0; x < 2; x++, p++) {
+				for (int z = -1; z < 2; z++, p++) {
+					biomeList[p] = Minecraft.getMinecraft().world.getBiome(new BlockPos(i + x, 0, j + z));
+				}
+			}
 			double distance = distanceToCoords(i, j);
 			int ringNumber = (int) (distance / this.size);
 			while (ringNumber >= this.biomes.size()) {
 				ringNumber -= this.biomes.size();
 			}
 			return this.biomes.get(ringNumber);
+			
 		}
 
 		@Override

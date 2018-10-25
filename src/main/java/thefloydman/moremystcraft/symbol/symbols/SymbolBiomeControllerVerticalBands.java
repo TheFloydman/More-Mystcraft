@@ -14,9 +14,9 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
 import thefloydman.moremystcraft.symbol.SymbolBase;
 
-public class SymbolBiomeControllerRings extends SymbolBase {
+public class SymbolBiomeControllerVerticalBands extends SymbolBase {
 
-	public SymbolBiomeControllerRings(final ResourceLocation identifier) {
+	public SymbolBiomeControllerVerticalBands(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -60,12 +60,12 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 
 		@Override
 		public Biome getBiomeAtCoords(final int i, final int j) {
-			double distance = distanceToCoords(i, j);
-			int ringNumber = (int) (distance / this.size);
-			while (ringNumber >= this.biomes.size()) {
-				ringNumber -= this.biomes.size();
+			double horizontalDistance = Math.abs(i);
+			int bandNumber = (int) (horizontalDistance / this.size);
+			while (bandNumber >= this.biomes.size()) {
+				bandNumber -= this.biomes.size();
 			}
-			return this.biomes.get(ringNumber);
+			return this.biomes.get(bandNumber);
 		}
 
 		@Override
@@ -107,10 +107,6 @@ public class SymbolBiomeControllerRings extends SymbolBase {
 
 		@Override
 		public void cleanupCache() {
-		}
-
-		private Double distanceToCoords(int x, int z) {
-			return Math.abs(Math.sqrt((x * x) + (z * z)));
 		}
 	}
 }

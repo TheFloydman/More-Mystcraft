@@ -8,8 +8,12 @@ import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.SymbolBase;
 import thefloydman.moremystcraft.symbol.modifiers.SymbolSize;
 import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerBoxes;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerHorizontalBands;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerIsland;
 import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerNormal;
 import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerRings;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerVerticalBands;
 import thefloydman.moremystcraft.symbol.symbols.SymbolPyramids;
 
 public class ModSymbols {
@@ -21,8 +25,16 @@ public class ModSymbols {
 				new String[] { "Civilization", "Constraint", "Creativity", "Elevate" });
 		registerSymbol(new SymbolBiomeControllerRings(forMoreMystcraft("biocon_rings")), 3,
 				new String[] { "Constraint", "Nature", "Cycle", "Circle" });
+		registerSymbol(new SymbolBiomeControllerHorizontalBands(forMoreMystcraft("biocon_bands_hor")), 3,
+				new String[] { "Constraint", "Nature", "Cycle", "Horizontal" });
+		registerSymbol(new SymbolBiomeControllerVerticalBands(forMoreMystcraft("biocon_bands_ver")), 3,
+				new String[] { "Constraint", "Nature", "Cycle", "Vertical" });
+		registerSymbol(new SymbolBiomeControllerBoxes(forMoreMystcraft("biocon_boxes")), 3,
+				new String[] { "Constraint", "Nature", "Cycle", "Square" });
 		registerSymbol(new SymbolBiomeControllerNormal(forMoreMystcraft("biocon_normal")), 2,
 				new String[] { "Constraint", "Nature", "Weave", "Tradition" });
+		registerSymbol(new SymbolBiomeControllerIsland(forMoreMystcraft("biocon_island")), 2,
+				new String[] { "Constraint", "Nature", "Weave", "Island" });
 		// Register size modifiers.
 		registerSymbol(new SymbolSize(forMoreMystcraft("size_tiny"), 0.25, "Tiny"), 2, "Control", "Growth", "Form",
 				"Tiny");

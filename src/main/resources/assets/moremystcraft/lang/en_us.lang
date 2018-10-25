@@ -3,7 +3,10 @@ moremystcraft.symbol.abandoned_study.name=Abandoned Studies
 moremystcraft.symbol.pyramids.name=Pyramids
 moremystcraft.symbol.biocon_rings.name=Rings Biome Distribution
 moremystcraft.symbol.biocon_normal.name=Normal Biome Distribution
-
+moremystcraft.symbol.biocon_bands_hor.name=East-West Bands Biome Distribution
+moremystcraft.symbol.biocon_bands_ver.name=North-South Bands Biome Distribution
+moremystcraft.symbol.biocon_boxes.name=Boxes Biome Distribution
+moremystcraft.symbol.biocon_island.name=Island Biome Distribution
 
 // Block names
 tile.moremystcraft.locked_lectern.name=Locked Lectern
