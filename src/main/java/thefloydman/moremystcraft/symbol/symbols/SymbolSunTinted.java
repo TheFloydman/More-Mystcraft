@@ -139,16 +139,14 @@ public class SymbolSunTinted extends SymbolBase {
 
 		@Override
 		public Long getTimeToDawn(final long time) {
-			/*if (this.period == 0L) {
-				return null;
-			}
-			final long current = time % this.period;
-			long next = (long) (this.period * Math.abs(0.75f - this.offset));
-			if (current > next) {
-				next += this.period;
-			}
-			return next - current;
-		}*/
+			/*
+			 * if (this.period == 0L) { return null; } final long current = time %
+			 * this.period; long next = (long) (this.period * Math.abs(0.75f -
+			 * this.offset)); if (current > next) { next += this.period; } return next -
+			 * current;
+			 */
+
 			return 1000L;
+		}
 	}
 }

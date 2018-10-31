@@ -1,3 +1,20 @@
+/*
+ * Use this class to generate a maze using the Recursive Backtracker method.
+ * Instantiate the class to to generate the maze, and call the getMaze method
+ * to retrieve a two-dimensional int array (int[][]) that represents the maze.
+ * Walls and walkways have the same width. Use an odd number for width and height
+ * if you want a wall around the entire maze; otherwise, there will only be
+ * walls at the top and left side. Odd numbers are good for finite mazes, and
+ * even numbers are good for generating tiles for infinite mazes. You will still
+ * need to add your own entrance and exit once you retrieve the generated maze.
+ * 
+ * 0 = unvisited
+ * 1 = wall
+ * 2 = walkway
+ * 
+ * Example: int[][] maze = new MazeGeneratorRecursiveBacktracker(17, 17).getMaze();
+ */
+
 package thefloydman.moremystcraft.world.gen;
 
 import java.util.ArrayList;
@@ -5,10 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MazeGeneratorRecursiveBacktracker {
-
-	/*
-	 * 0 = unvisited 1 = wall 2 = floor
-	 */
 
 	private int[][] maze;
 	private int width;
