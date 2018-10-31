@@ -24,6 +24,9 @@ public class ModConfig {
 
 	@Config.Comment("The frequency at which Abandoned Studies will spawn. The lower the number, the more frequent the spawns. 0 will spawn them in every possible location. (Default: 1000)")
 	public static int studyFrequency = 1000;
+	
+	@Config.Comment("The lowest height at which thr Abandoned Study will spawn. Decrease if you have dimensions with a low ground level; increase to incrrease performance. (Default: 64)")
+	public static int studyMinimumY = 64;
 
 	@Config.Comment("Enable or disable the Locked Lectern. REQUIRES RESTART (Default: true)")
 	public static boolean lockedLecternEnabled = true;

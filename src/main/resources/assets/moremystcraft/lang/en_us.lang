@@ -7,6 +7,9 @@ moremystcraft.symbol.biocon_bands_hor.name=East-West Bands Biome Distribution
 moremystcraft.symbol.biocon_bands_ver.name=North-South Bands Biome Distribution
 moremystcraft.symbol.biocon_boxes.name=Boxes Biome Distribution
 moremystcraft.symbol.biocon_island.name=Island Biome Distribution
+moremystcraft.symbol.biocon_maze.name=Maze Biome Distribution
+moremystcraft.symbol.sun_tinted.name=Tinted Sun
+
 
 // Block names
 tile.moremystcraft.locked_lectern.name=Locked Lectern

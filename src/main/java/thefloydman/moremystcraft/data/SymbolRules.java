@@ -28,8 +28,14 @@ public class SymbolRules {
 				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_SEQ, forMoreMystcraft("biocon_bands_ver")));
 		addRuleInternal("biocon_normal", buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, GrammarData.BIOME, ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_normal")));
-		addRuleInternal("biocon_island", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
-				GrammarData.BIOME, ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_island")));
+		addRuleInternal("biocon_island", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME,
+				ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_island")));
+		addRuleInternal("biocon_maze", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME, GrammarData.BIOME,
+				ModGrammarData.SIZE_BASIC, forMoreMystcraft("biocon_maze")));
+		addRuleInternal("sun_tinted",
+				buildRule(1, GrammarData.SUN, GrammarData.SUNSET, GrammarData.COLOR_SEQ, ModGrammarData.SIZE_BASIC,
+						GrammarData.PERIOD_SEQ, GrammarData.ANGLE_SEQ, GrammarData.PHASE_SEQ,
+						forMoreMystcraft("sun_tinted")));
 		addRuleInternal("size_tiny", buildRule(2, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_tiny")));
 		addRuleInternal("size_small", buildRule(1, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_small")));
 		addRuleInternal("size_medium", buildRule(0, ModGrammarData.SIZE_BASIC, forMoreMystcraft("size_medium")));

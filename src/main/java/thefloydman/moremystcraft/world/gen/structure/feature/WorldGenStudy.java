@@ -121,7 +121,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	public static int getGroundFromAbove(World world, int x, int z) {
 		int y = 255;
 		boolean foundGround = false;
-		while (!foundGround && y-- >= 64) {
+		while (!foundGround && y-- >= ModConfig.studyMinimumY) {
 			IBlockState blockAt = world.getBlockState(new BlockPos(x, y, z));
 			foundGround = blockAt.getMaterial().isSolid() == true;
 		}
