@@ -1,10 +1,10 @@
 /*
  * Use this class to generate a maze using the Recursive Backtracker method.
- * Instantiate the class to to generate the maze, and call the getMaze method
+ * Instantiate the class to generate the maze, and call the getMaze method
  * to retrieve a two-dimensional int array (int[][]) that represents the maze.
- * Walls and walkways have the same width. Use an odd number for width and height
- * if you want a wall around the entire maze; otherwise, there will only be
- * walls at the top and left side. Odd numbers are good for finite mazes, and
+ * Walls and walkways have the same width. Use an odd number for width and
+ * height if you want a wall around the entire maze; otherwise, there will only
+ * be walls at the top and left side. Odd numbers are good for finite mazes, and
  * even numbers are good for generating tiles for infinite mazes. You will still
  * need to add your own entrance and exit once you retrieve the generated maze.
  * 
@@ -112,6 +112,7 @@ public class MazeGeneratorRecursiveBacktracker {
 
 	private List<int[]> getNeighbors(int[] mainCell) {
 		List<int[]> neighborCells = new ArrayList<int[]>();
+		// Check top neighbor.
 		int[] up = new int[] { mainCell[0], mainCell[1] - 2 };
 		if (mainCell[1] - 2 >= 0) {
 			for (int i = 0; i < unvisitedCells.size(); i++) {
@@ -121,6 +122,7 @@ public class MazeGeneratorRecursiveBacktracker {
 				}
 			}
 		}
+		// Check left neighbor.
 		int[] left = new int[] { mainCell[0] - 2, mainCell[1] };
 		if (mainCell[0] - 2 >= 0) {
 			for (int i = 0; i < unvisitedCells.size(); i++) {
@@ -131,6 +133,7 @@ public class MazeGeneratorRecursiveBacktracker {
 			}
 
 		}
+		// Check right neighbor.
 		int[] right = new int[] { mainCell[0] + 2, mainCell[1] };
 		if (mainCell[0] + 2 < this.width) {
 			for (int i = 0; i < unvisitedCells.size(); i++) {
@@ -141,6 +144,7 @@ public class MazeGeneratorRecursiveBacktracker {
 			}
 
 		}
+		// Check bottom neighbor.
 		int[] down = new int[] { mainCell[0], mainCell[1] + 2 };
 		if (mainCell[1] + 2 < this.height) {
 			for (int i = 0; i < unvisitedCells.size(); i++) {

@@ -7,6 +7,10 @@
 package thefloydman.moremystcraft.config;
 
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RangeInt;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,33 +19,66 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
 
-@Config(modid = Reference.MOD_ID)
+@Config(modid = Reference.MOD_ID, name = "moremystcraft/core")
 @Config.LangKey("moremystcraft.config.title")
 public class ModConfig {
 
-	@Config.Comment("Enable or disable the generation of Abandoned Studies in the Overworld. (Default: true)")
-	public static boolean abandonedStudiesOverworldEnabled = true;
+	//public static CategoryBlocks blocks = new CategoryBlocks();
+	//public static CategoryStudies abandonedStudies = new CategoryStudies();
+	//public static CategoryRecipes recipes = new CategoryRecipes();
 
-	@Config.Comment("The frequency at which Abandoned Studies will spawn. The lower the number, the more frequent the spawns. 0 will spawn them in every possible location. (Default: 1000)")
-	public static int studyFrequency = 1000;
-	
-	@Config.Comment("The lowest height at which thr Abandoned Study will spawn. Decrease if you have dimensions with a low ground level; increase to incrrease performance. (Default: 64)")
-	public static int studyMinimumY = 64;
+	//private static class CategoryBlocks {
 
-	@Config.Comment("Enable or disable the Locked Lectern. REQUIRES RESTART (Default: true)")
-	public static boolean lockedLecternEnabled = true;
+		@Name("Locked lectern enabled")
+		@RequiresMcRestart
+		public static boolean lockedLecternEnabled = true;
 
-	@Config.Comment("Enable or disable the Locked Bookstand. REQUIRES RESTART (Default: true)")
-	public static boolean lockedBookstandEnabled = true;
+		@Name("Locked bookstand enabled")
+		@RequiresMcRestart
+		public static boolean lockedBookstandEnabled = true;
 
-	@Config.Comment("Enable or disable the recipe for the Book Binder. REQUIRES RESTART (Default: true)")
-	public static boolean bookBinderRecipeEnabled = true;
-	
-	@Config.Comment("Enable or disable the traffic cone. REQUIRES RESTART (Default: true)")
-	public static boolean trafficConeEnabled = true;
-	
-	@Config.Comment("Enable or disable Mystcraft's original sized biome distribution Pages (for example: \"Large Biome Distribution\"). REQUIRES RESTART (Default: true)")
-	public static boolean originalBioConsEnabled = true;
+		@Name("Traffic cone enabled")
+		@RequiresMcRestart
+		public static boolean trafficConeEnabled = true;
+
+	//}
+
+	//private static class CategoryStudies {
+
+		@Name("Generate abandoned studies in overworld")
+		public static boolean abandonedStudiesOverworldEnabled = true;
+
+		@Name("Abandoned study generation frequency")
+		@Comment("The frequency at which Abandoned Studies will spawn. The lower the number, the more frequent the spawns. 0 will spawn them in every valid location.")
+		@RangeInt(min = 0)
+		public static int studyFrequency = 1000;
+
+		@Name("Abandoned study minimum y")
+		@Comment("The lowest height at which thr Abandoned Study will spawn. Decrease if you have dimensions with a low ground level; increase to incrrease performance.")
+		@RangeInt(min = 0, max = 255)
+		public static int studyMinimumY = 64;
+
+	//}
+
+	//private static class CategoryRecipes {
+
+		@Name("Mystcraft's book binder recipe enabled")
+		@RequiresMcRestart
+		public static boolean bookBinderRecipeEnabled = true;
+
+		@Name("Locked lectern recipe enabled")
+		@RequiresMcRestart
+		public static boolean lockedLecternRecipeEnabled = true;
+
+		@Name("Locked bookstand recipe enabled")
+		@RequiresMcRestart
+		public static boolean lockedBookstandRecipeEnabled = true;
+
+		@Name("Traffic cone recipe enabled")
+		@RequiresMcRestart
+		public static boolean trafficConeRecipeEnabled = true;
+
+	//}
 
 	@Mod.EventBusSubscriber
 	private static class EventHandler {

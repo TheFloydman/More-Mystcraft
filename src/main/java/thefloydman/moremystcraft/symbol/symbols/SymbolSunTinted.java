@@ -114,6 +114,7 @@ public class SymbolSunTinted extends SymbolBase {
 			vb.pos((double) size, 100.0, (double) size).tex(1.0, 1.0).endVertex();
 			vb.pos((double) (-size), 100.0, (double) size).tex(0.0, 1.0).endVertex();
 			tes.draw();
+			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 			GlStateManager.popMatrix();
 			this.renderHorizon(eng, world, celestial_period, this.angle, partial, 1.0f);
 		}
@@ -139,14 +140,17 @@ public class SymbolSunTinted extends SymbolBase {
 
 		@Override
 		public Long getTimeToDawn(final long time) {
-			/*
-			 * if (this.period == 0L) { return null; } final long current = time %
-			 * this.period; long next = (long) (this.period * Math.abs(0.75f -
-			 * this.offset)); if (current > next) { next += this.period; } return next -
-			 * current;
-			 */
 
-			return 1000L;
+			if (this.period == 0L) {
+				return null;
+			}
+			final long current = time % this.period;
+			long next = (long) (this.period * Math.abs(0.75f - this.offset));
+			if (current > next) {
+				next += this.period;
+			}
+			return next - current;
+
 		}
 	}
 }

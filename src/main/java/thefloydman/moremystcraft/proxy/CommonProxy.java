@@ -54,7 +54,7 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
-
+		/*
 		// Remap and blacklist original sized Biome Distribution Pages.
 		if (ModConfig.originalBioConsEnabled == false) {
 			SymbolRemappings.addSymbolRemapping(forMystcraft("biocontiny"), forMoreMystcraft("size_tiny"),
@@ -73,7 +73,7 @@ public class CommonProxy {
 			SymbolManager.blackListSymbol(forMystcraft("bioconmedium"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconlarge"));
 			SymbolManager.blackListSymbol(forMystcraft("bioconhuge"));
-		}
+		}*/
 
 		//MinecraftForge.EVENT_BUS.register(new GenericJumpEvent());
 		//MinecraftForge.EVENT_BUS.register(new GenericUpdateEvent());
