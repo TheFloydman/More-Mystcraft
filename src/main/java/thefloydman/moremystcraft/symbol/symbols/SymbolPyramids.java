@@ -15,10 +15,10 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenPyramids;
 
-public class SymbolPyramids extends SymbolBase
+public class SymbolPyramids extends MoreMystcraftSymbolBase
 {
     public SymbolPyramids(final ResourceLocation identifier) {
         super(identifier);

@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import thefloydman.moremystcraft.config.ModConfig;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 

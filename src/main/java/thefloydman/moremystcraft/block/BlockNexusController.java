@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.client.gui.GuiNexusController;
 import thefloydman.moremystcraft.gui.GuiHandler;
-import thefloydman.moremystcraft.gui.ModGUIs;
+import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
@@ -46,7 +46,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		if (world.isRemote) {
 			return true;
 		}
-		player.openGui((Object) MoreMystcraft.instance, ModGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),
+		player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),
 				pos.getY(), pos.getZ());
 		return true;
 	}

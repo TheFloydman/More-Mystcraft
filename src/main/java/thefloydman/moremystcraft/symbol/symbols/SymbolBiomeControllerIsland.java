@@ -17,10 +17,10 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.world.gen.NoiseGeneratorCellularAutomata;
 
-public class SymbolBiomeControllerIsland extends SymbolBase {
+public class SymbolBiomeControllerIsland extends MoreMystcraftSymbolBase {
 
 	public SymbolBiomeControllerIsland(final ResourceLocation identifier) {
 		super(identifier);

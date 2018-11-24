@@ -31,7 +31,7 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.gui.ModGUIs;
+import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 
 public class BlockLockedLectern extends BlockLectern {
 
@@ -77,7 +77,7 @@ public class BlockLockedLectern extends BlockLectern {
 						pos.getZ());
 				return true;
 			}
-			playerIn.openGui((Object) MoreMystcraft.instance, ModGUIs.BOOK_DISPLAY_LOCKED.ordinal(), worldIn,
+			playerIn.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.BOOK_DISPLAY_LOCKED.ordinal(), worldIn,
 					pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}

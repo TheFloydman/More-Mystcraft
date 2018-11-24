@@ -19,11 +19,11 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.world.gen.MazeGeneratorRecursiveBacktracker;
 import thefloydman.moremystcraft.world.gen.NoiseGeneratorCellularAutomata;
 
-public class SymbolBiomeControllerMaze extends SymbolBase {
+public class SymbolBiomeControllerMaze extends MoreMystcraftSymbolBase {
 
 	public SymbolBiomeControllerMaze(final ResourceLocation identifier) {
 		super(identifier);

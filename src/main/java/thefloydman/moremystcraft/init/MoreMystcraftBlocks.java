@@ -10,7 +10,7 @@ import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
-import thefloydman.moremystcraft.config.ModConfig;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -29,7 +29,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import thefloydman.moremystcraft.util.Reference;
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-public class ModBlocks {
+public class MoreMystcraftBlocks {
 	public static final Block LOCKED_LECTERN = (Block) new BlockLockedLectern();
 	public static final Block LOCKED_BOOKSTAND = (Block) new BlockLockedBookstand();
 	public static final Block TRAFFIC_CONE = (Block) new BlockTrafficCone();
@@ -37,13 +37,13 @@ public class ModBlocks {
 	// BlockNexusController();
 
 	public static void init() {
-		if (ModConfig.lockedLecternEnabled == true) {
-			LOCKED_LECTERN.setRegistryName(new ResourceLocation("moremystcraft", "locked_lectern"));
+		if (MoreMystcraftConfig.blocks.lockedLecternEnabled == true) {
+			LOCKED_LECTERN.setRegistryName(Reference.forMoreMystcraft("locked_lectern"));
 			ModRegistryPrimer.queueForRegistration((IForgeRegistryEntry<?>) LOCKED_LECTERN);
 			registerMystcraftItemBlock(LOCKED_LECTERN);
 		}
-		if (ModConfig.lockedBookstandEnabled == true) {
-			LOCKED_BOOKSTAND.setRegistryName(new ResourceLocation("moremystcraft", "locked_bookstand"));
+		if (MoreMystcraftConfig.blocks.lockedBookstandEnabled == true) {
+			LOCKED_BOOKSTAND.setRegistryName(Reference.forMoreMystcraft("locked_bookstand"));
 			ModRegistryPrimer.queueForRegistration((IForgeRegistryEntry<?>) LOCKED_BOOKSTAND);
 			registerMystcraftItemBlock(LOCKED_BOOKSTAND);
 		}
@@ -52,7 +52,7 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void registerBlock(RegistryEvent.Register<Block> event) {
 		// event.getRegistry().registerAll(NEXUS_CONTROLLER);
-		if (ModConfig.trafficConeEnabled == true) {
+		if (MoreMystcraftConfig.blocks.trafficConeEnabled == true) {
 			event.getRegistry().registerAll(TRAFFIC_CONE);
 		}
 	}
@@ -61,7 +61,7 @@ public class ModBlocks {
 	public static void registerItemBlock(RegistryEvent.Register<Item> event) {
 		// event.getRegistry().registerAll(new
 		// ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
-		if (ModConfig.trafficConeEnabled == true) {
+		if (MoreMystcraftConfig.blocks.trafficConeEnabled == true) {
 			event.getRegistry()
 					.registerAll(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
@@ -70,7 +70,7 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		// registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
-		if (ModConfig.trafficConeEnabled == true) {
+		if (MoreMystcraftConfig.blocks.trafficConeEnabled == true) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
 		}
 	}
@@ -87,11 +87,11 @@ public class ModBlocks {
 	}
 
 	public static void registerMystcraftModels() {
-		if (ModConfig.lockedLecternEnabled == true) {
+		if (MoreMystcraftConfig.blocks.lockedLecternEnabled == true) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LOCKED_LECTERN), 0,
 					mrlItemBlockModel("blocklectern"));
 		}
-		if (ModConfig.lockedBookstandEnabled == true) {
+		if (MoreMystcraftConfig.blocks.lockedBookstandEnabled == true) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LOCKED_BOOKSTAND), 0,
 					mrlItemBlockModel("blockbookstand"));
 		}

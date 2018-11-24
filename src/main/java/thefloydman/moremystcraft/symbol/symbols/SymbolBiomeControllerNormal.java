@@ -23,9 +23,9 @@ import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerBiomeMyst;
 import com.xcompwiz.mystcraft.world.gen.layer.GenLayerZoomMyst;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 
-public class SymbolBiomeControllerNormal extends SymbolBase {
+public class SymbolBiomeControllerNormal extends MoreMystcraftSymbolBase {
 
 	public SymbolBiomeControllerNormal(final ResourceLocation identifier) {
 		super(identifier);

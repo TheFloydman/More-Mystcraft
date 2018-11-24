@@ -36,7 +36,7 @@ import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.proxy.CommonProxy;
-import thefloydman.moremystcraft.config.ModConfig;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 
@@ -53,7 +53,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 			generateNether(world, rand, blockX + 8, blockZ + 8);
 			break;
 		case 0:
-			if (ModConfig.abandonedStudiesOverworldEnabled == true) {
+			if (MoreMystcraftConfig.abandonedStudies.abandonedStudiesOverworldEnabled == true) {
 				generateOverworld(world, rand, blockX + 8, blockZ + 8);
 			}
 			break;
@@ -88,7 +88,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * ModConfig.studyFrequency) == 0) {
+		if ((int) (Math.random() * MoreMystcraftConfig.abandonedStudies.studyFrequency) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks.
@@ -121,7 +121,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	public static int getGroundFromAbove(World world, int x, int z) {
 		int y = 255;
 		boolean foundGround = false;
-		while (!foundGround && y-- >= ModConfig.studyMinimumY) {
+		while (!foundGround && y-- >= MoreMystcraftConfig.abandonedStudies.studyMinimumY) {
 			IBlockState blockAt = world.getBlockState(new BlockPos(x, y, z));
 			foundGround = blockAt.getMaterial().isSolid() == true;
 		}

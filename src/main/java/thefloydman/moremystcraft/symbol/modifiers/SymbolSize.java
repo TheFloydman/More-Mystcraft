@@ -5,9 +5,9 @@ import net.minecraft.util.ResourceLocation;
 import com.xcompwiz.mystcraft.api.symbol.ModifierUtils;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 
-public class SymbolSize extends SymbolBase
+public class SymbolSize extends MoreMystcraftSymbolBase
 {
     private final double VALUE;
     private final String DISPLAY;

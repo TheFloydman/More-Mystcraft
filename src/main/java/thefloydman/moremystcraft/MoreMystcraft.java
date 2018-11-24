@@ -29,11 +29,11 @@ import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
-import thefloydman.moremystcraft.data.ModGrammarRules;
-import thefloydman.moremystcraft.data.ModSymbols;
-import thefloydman.moremystcraft.data.SymbolRules;
+import thefloydman.moremystcraft.data.MoreMystcraftGrammarRules;
+import thefloydman.moremystcraft.data.MoreMystcraftSymbols;
+import thefloydman.moremystcraft.data.MoreMystcraftSymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
-import thefloydman.moremystcraft.init.ModBlocks;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = Reference.DEPENDENCIES)
@@ -50,12 +50,12 @@ public class MoreMystcraft {
 	public static void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.preInit(event);
-		ModGrammarRules.initialize();
+		MoreMystcraftGrammarRules.initialize();
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
 		//GameRegistry.registerTileEntity(TileEntityNexusController.class, new ResourceLocation(Reference.MOD_ID, "nexus_controller"));
-		ModSymbols.initialize();
-		SymbolRules.initialize();
-		ModBlocks.init();
+		MoreMystcraftSymbols.initialize();
+		MoreMystcraftSymbolRules.initialize();
+		MoreMystcraftBlocks.init();
 	}
 
 	@EventHandler

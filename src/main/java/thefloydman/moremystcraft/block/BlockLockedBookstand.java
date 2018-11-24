@@ -13,7 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.gui.ModGUIs;
+import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 
 public class BlockLockedBookstand extends BlockBookstand {
 	
@@ -59,7 +59,7 @@ public class BlockLockedBookstand extends BlockBookstand {
 						pos.getZ());
 				return true;
 			}
-			playerIn.openGui((Object) MoreMystcraft.instance, ModGUIs.BOOK_DISPLAY_LOCKED.ordinal(), worldIn,
+			playerIn.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.BOOK_DISPLAY_LOCKED.ordinal(), worldIn,
 					pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}

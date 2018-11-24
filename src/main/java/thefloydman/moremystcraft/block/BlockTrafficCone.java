@@ -21,8 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.gui.ModGUIs;
-import thefloydman.moremystcraft.init.ModBlocks;
+import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 
 public class BlockTrafficCone extends Block {
 

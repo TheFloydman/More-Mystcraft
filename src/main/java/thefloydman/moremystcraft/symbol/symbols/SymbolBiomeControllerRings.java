@@ -12,9 +12,9 @@ import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IBiomeController;
 import com.xcompwiz.mystcraft.symbol.modifiers.SymbolBiome;
 
-import thefloydman.moremystcraft.symbol.SymbolBase;
+import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 
-public class SymbolBiomeControllerRings extends SymbolBase {
+public class SymbolBiomeControllerRings extends MoreMystcraftSymbolBase {
 
 	public SymbolBiomeControllerRings(final ResourceLocation identifier) {
 		super(identifier);

@@ -29,8 +29,8 @@ import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.config.ModConfig;
-import thefloydman.moremystcraft.init.ModBlocks;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
 
@@ -90,13 +90,10 @@ public class CommonProxy {
 		ClientProxy.registerRenders(event);
 	}
 
-	private ResourceLocation forMystcraft(String name) {
+	/*private ResourceLocation forMystcraft(String name) {
 		return new ResourceLocation("mystcraft", name);
-	}
-
-	private ResourceLocation forMoreMystcraft(String name) {
-		return new ResourceLocation("moremystcraft", name);
-	}
+	}*/
+	
 /*
 	static class GenericJumpEvent {
 
