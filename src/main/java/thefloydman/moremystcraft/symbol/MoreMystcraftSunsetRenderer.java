@@ -35,22 +35,10 @@ public class MoreMystcraftSunsetRenderer {
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected float[] getSunriseSunsetColors(final float celestial_angle, final float partialtick, final double size) {
-		final float f2;
-		final float f4;
-		if (size == 10) {
-			f2 = 0.15f;
-		} else if (size == 20) {
-			f2 = 0.25f;
-		} else if (size == 75) {
-			f2 = 0.6f;
-		} else if (size == 120) {
-			f2 = 0.8f;
-		} else {
-			f2 = 0.4f;
-		}
-		f4 = -0.0f;
+	protected float[] getSunriseSunsetColors(final float celestial_angle, final float partialtick) {
+		final float f2 = 0.1f;
 		final float f3 = (float) Math.cos(celestial_angle * Math.PI * 2.0f);
+		final float f4 = -0.0f;
 		if (f3 >= f4 - f2 && f3 <= f4 + f2) {
 			final float f5 = (f3 - f4) / f2 * 0.5f + 0.5f;
 			float f6 = (float) (1 - (1 - Math.sin(f5 * Math.PI)) * 0.99);
@@ -80,12 +68,12 @@ public class MoreMystcraftSunsetRenderer {
 
 	@SideOnly(Side.CLIENT)
 	protected void renderHorizon(final TextureManager eng, final World worldObj, final float celestial_period,
-			final float angle, final float partial, final float alpha, final double size) {
+			final float angle, final float partial, final float alpha) {
 		final float celestial_radians = celestial_period * 3.1415927f * 2.0f;
 		final Tessellator tes = Tessellator.getInstance();
 		final BufferBuilder vb = tes.getBuffer();
 		RenderHelper.disableStandardItemLighting();
-		final float[] horizoncolors = this.getSunriseSunsetColors(celestial_period, partial, size);
+		final float[] horizoncolors = this.getSunriseSunsetColors(celestial_period, partial);
 		if (horizoncolors != null) {
 			float horizonRed = horizoncolors[0];
 			float horizonGreen = horizoncolors[1];
@@ -105,7 +93,6 @@ public class MoreMystcraftSunsetRenderer {
 			GlStateManager.shadeModel(7425);
 			GlStateManager.pushMatrix();
 			GlStateManager.rotate(90.0f, 1.0f, 0.0f, 0.0f);
-			GlStateManager.rotate((Math.sin(celestial_radians) < 0.0f) ? 180.0f : 0.0f, 0.0f, 0.0f, 1.0f);
 			GlStateManager.rotate(-angle, 0.0f, 0.0f, 1.0f);
 			vb.begin(6, DefaultVertexFormats.POSITION_COLOR);
 			vb.pos(0.0, 100.0, 0.0).color(horizonRed, horizonGreen, horizonBlue, horizoncolors[3]).endVertex();
