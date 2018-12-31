@@ -42,7 +42,8 @@ public class MoreMystcraftSymbolRules {
 		addRuleInternal("sun_tinted",
 				buildRule(1, GrammarData.SUN, GrammarData.SUNSET, GrammarData.COLOR_SEQ,
 						MoreMystcraftGrammarRules.SIZE_SUN, GrammarData.PERIOD_SEQ, GrammarData.ANGLE_SEQ,
-						GrammarData.PHASE_SEQ, MoreMystcraftGrammarRules.TILT_SUN_SEQ, Reference.forMoreMystcraft("sun_tinted")));
+						GrammarData.PHASE_SEQ, MoreMystcraftGrammarRules.TILT_SUN_SEQ,
+						Reference.forMoreMystcraft("sun_tinted")));
 		addRuleInternal("size_tiny",
 				buildRule(0, MoreMystcraftGrammarData.SIZE_RARE, Reference.forMoreMystcraft("size_tiny")));
 		addRuleInternal("size_small",
@@ -59,6 +60,8 @@ public class MoreMystcraftSymbolRules {
 				buildRule(0, MoreMystcraftGrammarData.TILT_UNCOMMON, Reference.forMoreMystcraft("tilt_half")));
 		addRuleInternal("tilt_full",
 				buildRule(0, MoreMystcraftGrammarData.TILT_RARE, Reference.forMoreMystcraft("tilt_full")));
+		addRuleInternal("ocean_monument",
+				buildRule(2, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("ocean_monument")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

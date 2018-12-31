@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntityUnstableBookReceptacle;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
 import thefloydman.moremystcraft.data.MoreMystcraftGrammarRules;
@@ -34,6 +35,7 @@ import thefloydman.moremystcraft.data.MoreMystcraftSymbols;
 import thefloydman.moremystcraft.data.MoreMystcraftSymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
+import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = Reference.DEPENDENCIES)
@@ -43,7 +45,7 @@ public class MoreMystcraft {
 
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
 	public static CommonProxy proxy;
-	
+
 	public static Logger logger;
 
 	@EventHandler
@@ -52,10 +54,12 @@ public class MoreMystcraft {
 		proxy.preInit(event);
 		MoreMystcraftGrammarRules.initialize();
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
-		//GameRegistry.registerTileEntity(TileEntityNexusController.class, new ResourceLocation(Reference.MOD_ID, "nexus_controller"));
+		GameRegistry.registerTileEntity(TileEntityUnstableBookReceptacle.class,
+				new ResourceLocation(Reference.MOD_ID, "unstable_receptacle"));
 		MoreMystcraftSymbols.initialize();
 		MoreMystcraftSymbolRules.initialize();
 		MoreMystcraftBlocks.init();
+		MoreMystcraftItems.init();
 	}
 
 	@EventHandler

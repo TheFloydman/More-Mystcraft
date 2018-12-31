@@ -53,7 +53,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 			generateNether(world, rand, blockX + 8, blockZ + 8);
 			break;
 		case 0:
-			if (MoreMystcraftConfig.abandonedStudies.abandonedStudiesOverworldEnabled == true) {
+			if (new MoreMystcraftConfig().getStudiesEnabled() == true) {
 				generateOverworld(world, rand, blockX + 8, blockZ + 8);
 			}
 			break;
@@ -88,7 +88,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * MoreMystcraftConfig.abandonedStudies.studyFrequency) == 0) {
+		if ((int) (Math.random() * new MoreMystcraftConfig().getStudyFrequency()) == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks.
@@ -121,7 +121,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	public static int getGroundFromAbove(World world, int x, int z) {
 		int y = 255;
 		boolean foundGround = false;
-		while (!foundGround && y-- >= MoreMystcraftConfig.abandonedStudies.studyMinimumY) {
+		while (!foundGround && y-- >= new MoreMystcraftConfig().getStudyMinimumY()) {
 			IBlockState blockAt = world.getBlockState(new BlockPos(x, y, z));
 			foundGround = blockAt.getMaterial().isSolid() == true;
 		}

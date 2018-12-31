@@ -66,13 +66,12 @@ public class SymbolBiomeControllerIsland extends MoreMystcraftSymbolBase {
 				} else if (size.doubleValue() == 2) {
 					this.size = 96;
 				} else if (size.doubleValue() == 1) {
-					this.size = 80;
+					this.size = 64;
 				} else if (size.doubleValue() == 0.5) {
-					this.size = 48;
+					this.size = 16;
 				} else if (size.doubleValue() == 0.25) {
-					this.size = 32;
+					this.size = 8;
 				}
-				// this.size = size.doubleValue() * 64 * 3;
 			} else {
 				this.size = 64;
 			}
@@ -91,7 +90,9 @@ public class SymbolBiomeControllerIsland extends MoreMystcraftSymbolBase {
 		}
 
 		@Override
-		public Biome getBiomeAtCoords(final int i, final int j) {
+		public Biome getBiomeAtCoords(int i, int j) {
+			i = (int) Math.floor(i / 4);
+			j = (int) Math.floor(j / 4);
 			if (Math.abs(i) > this.oceanSize || Math.abs(j) > this.oceanSize) {
 				return Biomes.OCEAN;
 			}

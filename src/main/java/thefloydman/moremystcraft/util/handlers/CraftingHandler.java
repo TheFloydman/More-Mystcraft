@@ -27,26 +27,32 @@ public class CraftingHandler {
 
 		for (IRecipe r : recipes) {
 			ItemStack output = r.getRecipeOutput();
-			if (MoreMystcraftConfig.recipes.bookBinderRecipeEnabled != true) {
+			if (new MoreMystcraftConfig().getBookBinderRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(com.xcompwiz.mystcraft.data.ModBlocks.bookbinder)) {
 					recipeRegistry.remove(r.getRegistryName());
 					recipeRegistry.register(DummyRecipe.from(r));
 				}
 			}
-			if (MoreMystcraftConfig.recipes.lockedBookstandRecipeEnabled != true) {
+			if (new MoreMystcraftConfig().getLockedBookstandRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.LOCKED_BOOKSTAND)) {
 					recipeRegistry.remove(r.getRegistryName());
 					recipeRegistry.register(DummyRecipe.from(r));
 				}
 			}
-			if (MoreMystcraftConfig.recipes.lockedLecternRecipeEnabled != true) {
+			if (new MoreMystcraftConfig().getLockedLecternRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.LOCKED_LECTERN)) {
 					recipeRegistry.remove(r.getRegistryName());
 					recipeRegistry.register(DummyRecipe.from(r));
 				}
 			}
-			if (MoreMystcraftConfig.recipes.trafficConeRecipeEnabled != true) {
+			if (new MoreMystcraftConfig().getTrafficConeRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.TRAFFIC_CONE)) {
+					recipeRegistry.remove(r.getRegistryName());
+					recipeRegistry.register(DummyRecipe.from(r));
+				}
+			}
+			if (new MoreMystcraftConfig().getUnstableReceptacleRecipeEnabled() != true) {
+				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.UNSTABLE_RECEPTACLE)) {
 					recipeRegistry.remove(r.getRegistryName());
 					recipeRegistry.register(DummyRecipe.from(r));
 				}

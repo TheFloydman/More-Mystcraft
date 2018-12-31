@@ -6,8 +6,7 @@ import com.xcompwiz.mystcraft.world.AgeController;
 
 import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
-import thefloydman.moremystcraft.symbol.modifiers.SymbolSize;
-import thefloydman.moremystcraft.symbol.modifiers.SymbolTilt;
+import thefloydman.moremystcraft.symbol.modifiers.*;
 import thefloydman.moremystcraft.symbol.symbols.*;
 import thefloydman.moremystcraft.util.Reference;
 
@@ -52,6 +51,17 @@ public class MoreMystcraftSymbols {
 				"Tilt", "Half");
 		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_full"), 90.0f, "Full"), 4, "Transform", "Motion",
 				"Tilt", "Full");
+		registerSymbol(new SymbolOceanMonument(Reference.forMoreMystcraft("ocean_monument")), 3, "Civilization",
+				"Machine", "Power", "Entropy");
+		// Register cloud height modifiers.
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4, "Transform", "Motion",
+				"Tilt", "Zero");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 63.0f, "Half"), 4, "Transform", "Motion",
+				"Tilt", "Half");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_full"), 127.0f, "Full"), 4, "Transform", "Motion",
+				"Tilt", "Full");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("double"), 255.0f, "Double"), 4, "Transform", "Motion",
+				"Tilt", "Double");
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

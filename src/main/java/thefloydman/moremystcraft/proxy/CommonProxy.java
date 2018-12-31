@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,6 +32,7 @@ import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
@@ -54,81 +57,25 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
-		/*
-		// Remap and blacklist original sized Biome Distribution Pages.
-		if (ModConfig.originalBioConsEnabled == false) {
-			SymbolRemappings.addSymbolRemapping(forMystcraft("biocontiny"), forMoreMystcraft("size_tiny"),
-					forMoreMystcraft("biocon_normal"));
-			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconsmall"), forMoreMystcraft("size_small"),
-					forMoreMystcraft("biocon_normal"));
-			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconmedium"), forMoreMystcraft("size_medium"),
-					forMoreMystcraft("biocon_normal"));
-			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconlarge"), forMoreMystcraft("size_large"),
-					forMoreMystcraft("biocon_normal"));
-			SymbolRemappings.addSymbolRemapping(forMystcraft("bioconhuge"), forMoreMystcraft("size_huge"),
-					forMoreMystcraft("biocon_normal"));
 
-			SymbolManager.blackListSymbol(forMystcraft("biocontiny"));
-			SymbolManager.blackListSymbol(forMystcraft("bioconsmall"));
-			SymbolManager.blackListSymbol(forMystcraft("bioconmedium"));
-			SymbolManager.blackListSymbol(forMystcraft("bioconlarge"));
-			SymbolManager.blackListSymbol(forMystcraft("bioconhuge"));
-		}*/
-
-		//MinecraftForge.EVENT_BUS.register(new GenericJumpEvent());
-		//MinecraftForge.EVENT_BUS.register(new GenericUpdateEvent());
-		//MinecraftForge.EVENT_BUS.register(new GenericFallEvent());
+		/*EntityRegistry.registerModEntity(Reference.forMoreMystcraft("entity_maintainer_suit"),
+				EntityMaintainerSuit.class, "Maintainer Suit", 180, this, 40, 1, true);*/
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
 
 	}
 
-	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		ClientProxy.registerRenders(event);
 	}
-
-	/*private ResourceLocation forMystcraft(String name) {
-		return new ResourceLocation("mystcraft", name);
-	}*/
 	
-/*
-	static class GenericJumpEvent {
-
-		@SubscribeEvent
-		public void onLivingJumpEvent(LivingJumpEvent event) {
-			double addY = 2D; // change to the entity's Y motion.
-			event.getEntity().motionY *= addY;
-			event.getEntity().velocityChanged = true;
-			// event.entity.motionY *= addY;
-			// event.entity.velocityChanged = true;
-		}
-	}
-	
-	static class GenericUpdateEvent {
-
-		@SubscribeEvent
-		public void onLivingUpdateEvent(LivingUpdateEvent event) {
-			double addY = 2D; // change to the entity's Y motion.
-			if (event.getEntity().fallDistance > 0) {
-				event.getEntity().motionY /= addY;
-			}
-			//double addY = 2D; // change to the entity's Y motion.
-			//event.getEntity().motionY *= addY;
-			//event.getEntity().velocityChanged = true;
-			// event.entity.motionY *= addY;
-			// event.entity.velocityChanged = true;
-		}
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public static void registerColors(ColorHandlerEvent event) {
+		ClientProxy.registerColors(event);
 	}
 
-	static class GenericFallEvent {
-		@SubscribeEvent
-		public void onLivingFallEvent(LivingFallEvent event) {
-			float addY = 2.0F; // change to the entity's Y motion.
-			event.setDistance(event.getDistance() / addY);
-			event.setDamageMultiplier(event.getDamageMultiplier() / addY);
-		}
-	}*/
 }

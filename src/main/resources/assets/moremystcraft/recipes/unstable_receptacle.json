@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "moremystcraft:unstable_receptacle",
+        "count": 1
+    },
+    "pattern": [
+        "rcr",
+        "c c",
+        "rcr"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "r": {
+            "item": "minecraft:redstone_block",
+            "data": 0
+        },
+        "c": {
+            "item": "mystcraft:crystal",
+            "data": 0
+        }
+    }
+}

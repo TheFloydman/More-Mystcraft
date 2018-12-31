@@ -9,6 +9,7 @@ moremystcraft.symbol.biocon_boxes.name=Boxes Biome Distribution
 moremystcraft.symbol.biocon_island.name=Island Biome Distribution
 moremystcraft.symbol.biocon_maze.name=Maze Biome Distribution
 moremystcraft.symbol.sun_tinted.name=Tinted Sun
+moremystcraft.symbol.ocean_monument.name=Ocean Monuments
 
 
 // Block names
@@ -16,3 +17,8 @@ tile.moremystcraft.locked_lectern.name=Locked Lectern
 tile.moremystcraft.locked_bookstand.name=Locked Bookstand
 tile.moremystcraft.nexus_controller.name=Nexus Controller
 tile.moremystcraft.traffic_cone.name=Safety Cone
+tile.moremystcraft.unstable_receptacle.name=Unstable Book Receptacle
+tile.moremystcraft.unstable_portal.name=Unstable Portal
+
+// Item names
+tile.moremystcraft.maintainer_suit.name=Maintainer Suit
