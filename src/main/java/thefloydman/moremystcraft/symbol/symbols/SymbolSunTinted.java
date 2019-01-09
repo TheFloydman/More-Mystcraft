@@ -10,13 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.util.vector.Matrix;
-import org.lwjgl.util.vector.Matrix3f;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Quaternion;
-import org.lwjgl.util.vector.ReadableVector4f;
-import org.lwjgl.util.vector.Vector;
-import org.lwjgl.util.vector.Vector3f;
+import thefloydman.moremystcraft.lwjgl.Matrix3f;
+import thefloydman.moremystcraft.lwjgl.Vector3f;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
