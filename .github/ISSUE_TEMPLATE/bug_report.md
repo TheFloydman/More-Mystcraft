@@ -19,6 +19,9 @@ assignees: TheFloydman
 **What version of *Minecraft* are you using?**
 1.12.2
 
+**What modpack and modpack version are you using, if any?**
+Myst25 1.4.3
+
 **Does the bug occur server-side, client-side, or both?**
 Server-side
 
