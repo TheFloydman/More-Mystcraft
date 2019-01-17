@@ -6,7 +6,9 @@ import com.mojang.realmsclient.client.Request.Post;
 import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
 import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
@@ -59,7 +61,6 @@ public class MoreMystcraft {
 		MoreMystcraftSymbols.initialize();
 		MoreMystcraftSymbolRules.initialize();
 		MoreMystcraftBlocks.init();
-		MoreMystcraftItems.init();
 	}
 
 	@EventHandler

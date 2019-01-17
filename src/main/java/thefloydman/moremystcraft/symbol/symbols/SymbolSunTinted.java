@@ -88,6 +88,9 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 				}
 			}
 			this.phase = phase.floatValue() - 0.5f;
+			if (color == null) {
+				color = new Color(255f, 245f, 119f);
+			}
 			this.color = color;
 			if (size != null) {
 				this.size = size.doubleValue();

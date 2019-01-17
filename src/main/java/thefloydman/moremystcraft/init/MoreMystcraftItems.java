@@ -8,10 +8,10 @@ import thefloydman.moremystcraft.entity.EntityMaintainerSuit.Type;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.util.Reference;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+//@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class MoreMystcraftItems {
 
-	static Item itemMaintainerSuit;
+	/*static Item itemMaintainerSuit;
 
 	public static void init() {
 		itemMaintainerSuit = new ItemMaintainerSuit(Type.OAK);
@@ -20,5 +20,5 @@ public class MoreMystcraftItems {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(itemMaintainerSuit);
-	}
+	}*/
 }

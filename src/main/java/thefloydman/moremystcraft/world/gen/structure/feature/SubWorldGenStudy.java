@@ -45,6 +45,7 @@ import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 
 import thefloydman.moremystcraft.MoreMystcraft;
+import thefloydman.moremystcraft.util.BookSpawner;
 import thefloydman.moremystcraft.util.Reference;
 
 public class SubWorldGenStudy extends WorldGenerator {
@@ -80,7 +81,7 @@ public class SubWorldGenStudy extends WorldGenerator {
 
 			for (Entry<BlockPos, String> entry : map.entrySet()) {
 
-				if ("chest".equals(entry.getValue())) {
+				if (entry.getValue().equals("chest")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
 					TileEntity tileentity = world.getTileEntity(blockpos2.down());
@@ -91,14 +92,14 @@ public class SubWorldGenStudy extends WorldGenerator {
 					}
 				}
 
-				if ("cobblestone_down".equals(entry.getValue())) {
+				if (entry.getValue().equals("cobblestone_down")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
 					fillBelow(world, blockpos2.down(), Blocks.COBBLESTONE.getDefaultState());
 				}
 
 				// Add a blank Descriptive Book and a Linking Book back to the study.
-				if ("link_point".equals(entry.getValue())) {
+				if (entry.getValue().equals("link_point")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
 
@@ -106,63 +107,7 @@ public class SubWorldGenStudy extends WorldGenerator {
 					TileEntity entityLecternLeft = world.getTileEntity(blockpos2.add(-4, 1, 1));
 					IItemHandler handlerLecternLeft = entityLecternLeft
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					ItemStack stackDesBook = new ItemStack(Item.getByNameOrId("mystcraft:agebook"));
-
-					NBTTagCompound compoundDesBook = new NBTTagCompound();
-					compoundDesBook.setFloat("MaxHealth", 10);
-					compoundDesBook.setString("DisplayName", "???");
-
-					NBTTagCompound compoundDesBookAuthorsSub = new NBTTagCompound();
-					compoundDesBookAuthorsSub.setString("", "Unknown Author");
-					NBTTagList compoundDesBookAuthorsMain = new NBTTagList();
-					compoundDesBookAuthorsMain.appendTag(compoundDesBookAuthorsSub);
-
-					// Add link panel.
-					NBTTagCompound compoundDesBookPagesSub0 = new NBTTagCompound();
-					compoundDesBookPagesSub0.setString("id", "mystcraft:page");
-					compoundDesBookPagesSub0.setInteger("Count", 1);
-					NBTTagCompound compoundDesBookPagesSub0Sub0Sub0 = new NBTTagCompound();
-					NBTTagCompound compoundDesBookPagesSub0Sub0 = new NBTTagCompound();
-					compoundDesBookPagesSub0Sub0.setTag("linkpanel", compoundDesBookPagesSub0Sub0Sub0);
-					compoundDesBookPagesSub0.setTag("tag", compoundDesBookPagesSub0Sub0);
-					NBTTagList compoundDesBookPagesMain = new NBTTagList();
-					compoundDesBookPagesMain.appendTag(compoundDesBookPagesSub0);
-
-					// Add Star Fissure page.
-					NBTTagCompound compoundDesBookPagesFissure = new NBTTagCompound();
-					compoundDesBookPagesFissure.setString("id", "mystcraft:page");
-					compoundDesBookPagesFissure.setInteger("Count", 1);
-					NBTTagCompound compoundDesBookPagesFissureSub = new NBTTagCompound();
-					compoundDesBookPagesFissureSub.setString("symbol", "mystcraft:starfissure");
-					compoundDesBookPagesFissure.setTag("tag", compoundDesBookPagesFissureSub);
-					compoundDesBookPagesMain.appendTag(compoundDesBookPagesFissure);
-
-					// Add blank pages.
-					NBTTagCompound compoundDesBookPagesBlank = new NBTTagCompound();
-					compoundDesBookPagesBlank.setString("id", "mystcraft:page");
-					compoundDesBookPagesBlank.setInteger("Count", 1);
-					int rando = (int) (Math.random() * 100);
-					if (rando <= 50) {
-						for (int i = (int) (Math.random() * 10); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
-						}
-					} else if (rando >= 51 && rando <= 80) {
-						for (int i = (int) ((Math.random() * 20) + 10); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
-						}
-					} else if (rando >= 81 && rando <= 95) {
-						for (int i = (int) ((Math.random() * 40) + 30); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
-						}
-					} else if (rando >= 96 && rando <= 100) {
-						for (int i = (int) ((Math.random() * 30) + 70); i > 0; i--) {
-							compoundDesBookPagesMain.appendTag(compoundDesBookPagesBlank);
-						}
-					}
-
-					compoundDesBook.setTag("Authors", compoundDesBookAuthorsMain);
-					compoundDesBook.setTag("Pages", compoundDesBookPagesMain);
-					stackDesBook.setTagCompound(compoundDesBook);
+					ItemStack stackDesBook = BookSpawner.generateDescriptiveBook();
 					handlerLecternLeft.insertItem(0, stackDesBook, false);
 
 					// Add Linking Book.

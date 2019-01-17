@@ -1,17 +1,21 @@
 package thefloydman.moremystcraft.symbol.symbols;
 
+import java.util.List;
 import java.util.Random;
 
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.structure.StructureOceanMonument;
 
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
+import com.xcompwiz.mystcraft.api.world.logic.ISpawnModifier;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainFeatureLocator;
 import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
@@ -29,6 +33,7 @@ public class SymbolOceanMonument extends MoreMystcraftSymbolBase {
 		controller.registerInterface(new TerrainAlteration(generator));
 		controller.registerInterface(new Populator(generator));
 		controller.registerInterface(new FeatureLocator(generator));
+		controller.registerInterface(new SpawnModifier(generator));
 	}
 
 	@Override
@@ -90,5 +95,24 @@ public class SymbolOceanMonument extends MoreMystcraftSymbolBase {
 			return "Monument".equals(identifier) && this.generator != null
 					&& this.generator.isPositionInStructure(world, pos);
 		}
+	}
+	
+	private class SpawnModifier implements ISpawnModifier {
+		private StructureOceanMonument generator;
+		
+		public SpawnModifier(final StructureOceanMonument gen) {
+			this.generator = gen;
+		}
+		
+		public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+	        //Biome biome = this.world.getBiome(pos);
+
+	            //if (creatureType == EnumCreatureType.MONSTER && this.generator.isPositionInStructure(world, pos))
+	            //{
+	                return this.generator.getMonsters();
+	            //}
+
+	        //return biome.getSpawnableList(creatureType);
+	    }
 	}
 }

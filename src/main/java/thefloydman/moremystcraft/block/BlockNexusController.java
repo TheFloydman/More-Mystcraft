@@ -34,10 +34,10 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
 		this.setLightLevel(0.1f);
 	}
-	
+
 	public boolean hasTileEntity(final IBlockState state) {
-        return true;
-    }
+		return true;
+	}
 
 	@Override
 	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state,

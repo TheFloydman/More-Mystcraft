@@ -62,6 +62,8 @@ public class MoreMystcraftSymbols {
 				"Tilt", "Full");
 		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("double"), 255.0f, "Double"), 4, "Transform", "Motion",
 				"Tilt", "Double");
+		registerSymbol(new SymbolTerrainGenMaze(Reference.forMoreMystcraft("terrain_maze")), 4,
+				new String[] { "Terrain", "Form", "Infinite", "Maze" });
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

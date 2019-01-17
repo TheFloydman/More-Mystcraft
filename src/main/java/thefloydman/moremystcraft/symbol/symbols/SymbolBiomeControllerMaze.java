@@ -54,8 +54,6 @@ public class SymbolBiomeControllerMaze extends MoreMystcraftSymbolBase {
 		private double size;
 		private int resolution;
 		private Biome[] biomeArray;
-		// private List<Integer> unverifiedCells;
-		int[][] noiseArray;
 		Map<String, int[][]> mazeMap = new HashMap<>();
 
 		public BiomeController(final List<Biome> biomes, Number size) {

@@ -62,6 +62,8 @@ public class MoreMystcraftSymbolRules {
 				buildRule(0, MoreMystcraftGrammarData.TILT_RARE, Reference.forMoreMystcraft("tilt_full")));
 		addRuleInternal("ocean_monument",
 				buildRule(2, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("ocean_monument")));
+		addRuleInternal("terrain_maze", buildRule(4, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN,
+				GrammarData.BLOCK_TERRAIN, Reference.forMoreMystcraft("terrain_maze")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

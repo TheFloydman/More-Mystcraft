@@ -19,6 +19,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -125,11 +126,7 @@ public class MoreMystcraftBlocks {
 	@SideOnly(Side.CLIENT)
 	public static void registerModelColors() {
 		final BlockColors colors = Minecraft.getMinecraft().getBlockColors();
-		colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> {
-			if (worldIn == null || pos == null) {
-				return new Color(255, 0, 0).getRGB();
-			}
-			return BlockUnstablePortal.colorMultiplier(worldIn, pos);
-		}, new Block[] { MoreMystcraftBlocks.UNSTABLE_PORTAL });
+		colors.registerBlockColorHandler((state, worldIn, pos, tintIndex) -> new Color(255, 0, 0).getRGB(),
+				MoreMystcraftBlocks.UNSTABLE_PORTAL);
 	}
 }
