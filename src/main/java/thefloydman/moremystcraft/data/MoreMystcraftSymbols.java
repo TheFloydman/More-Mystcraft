@@ -54,16 +54,18 @@ public class MoreMystcraftSymbols {
 		registerSymbol(new SymbolOceanMonument(Reference.forMoreMystcraft("ocean_monument")), 3, "Civilization",
 				"Machine", "Power", "Entropy");
 		// Register cloud height modifiers.
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4, "Transform", "Motion",
-				"Tilt", "Zero");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 63.0f, "Half"), 4, "Transform", "Motion",
-				"Tilt", "Half");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_full"), 127.0f, "Full"), 4, "Transform", "Motion",
-				"Tilt", "Full");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("double"), 255.0f, "Double"), 4, "Transform", "Motion",
-				"Tilt", "Double");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4,
+				"Transform", "Motion", "Tilt", "Zero");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 63.0f, "Half"), 4,
+				"Transform", "Motion", "Tilt", "Half");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_full"), 127.0f, "Full"), 4,
+				"Transform", "Motion", "Tilt", "Full");
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("double"), 255.0f, "Double"), 4, "Transform",
+				"Motion", "Tilt", "Double");
 		registerSymbol(new SymbolTerrainGenMaze(Reference.forMoreMystcraft("terrain_maze")), 4,
 				new String[] { "Terrain", "Form", "Infinite", "Maze" });
+		registerSymbol(new SymbolGiganticTrees(Reference.forMoreMystcraft("gigantic_trees")), 2,
+				new String[] { "Nature", "Stimulate", "Spur", "Elevate" });
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

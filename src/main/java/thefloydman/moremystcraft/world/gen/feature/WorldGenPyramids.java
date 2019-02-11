@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.world.gen.structure.feature;
+package thefloydman.moremystcraft.world.gen.feature;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 						.isLiquid()) {
 			return false;
 		}
-		int height = ((int) (Math.random() * 7)) + 2;
+		int height = rand.nextInt(7) + 2;
 		for (int curY = base.getY(), width = height; curY <= base.getY() + height; curY++, width--) {
 			fillSquareLayer(new BlockPos(base.getX(), curY, base.getZ()), width, world);
 			cleanupPyramidLayer(new BlockPos(base.getX(), curY, base.getZ()), width, width, world);
@@ -72,8 +72,7 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 	}
 
 	private int findGround(World world, int x, int y, int z) {
-		int oldY = y;
-		for (; y >= 0; y--) {
+		for (; y > 0; y--) {
 			if (world.getBlockState(new BlockPos(x, y, z)).getMaterial().isSolid()) {
 				if (world.getBlockState(new BlockPos(x, y, z)).getMaterial().equals(Material.LEAVES)
 						|| world.getBlockState(new BlockPos(x, y, z)).getMaterial().equals(Material.WOOD)) {

@@ -12,8 +12,8 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.api.world.logic.ITerrainAlteration;
 
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
-import thefloydman.moremystcraft.world.gen.structure.feature.SubWorldGenStudy;
-import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
+import thefloydman.moremystcraft.world.gen.feature.SubWorldGenStudy;
+import thefloydman.moremystcraft.world.gen.feature.WorldGenStudy;
 
 public class SymbolAbandonedStudy extends MoreMystcraftSymbolBase {
 

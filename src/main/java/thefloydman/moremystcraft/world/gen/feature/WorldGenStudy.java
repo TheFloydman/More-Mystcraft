@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.world.gen.structure.feature;
+package thefloydman.moremystcraft.world.gen.feature;
 
 import java.util.List;
 import java.util.Random;
@@ -106,16 +106,6 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateEnd(World world, Random rand, int chunkX, int chunkZ) {
-	}
-
-	private void addOreSpawn(IBlockState block, World world, Random random, int blockXPos, int blockZPos, int maxX,
-			int maxZ, int maxVeinSize, int chanceToSpawn, int minY, int maxY) {
-		for (int i = 0; i < chanceToSpawn; i++) {
-			int posX = blockXPos + random.nextInt(maxX);
-			int posY = minY + random.nextInt(maxY - minY);
-			int posZ = blockZPos + random.nextInt(maxZ);
-			new WorldGenMinable(block, maxVeinSize).generate(world, random, new BlockPos(posX, posY, posZ));
-		}
 	}
 
 	public static int getGroundFromAbove(World world, int x, int z) {

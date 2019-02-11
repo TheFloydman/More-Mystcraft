@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.world.gen.structure.feature;
+package thefloydman.moremystcraft.world.gen.feature;
 
 import java.util.Map;
 import java.util.Random;

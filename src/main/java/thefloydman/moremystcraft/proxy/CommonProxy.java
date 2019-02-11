@@ -10,6 +10,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +31,7 @@ import com.xcompwiz.mystcraft.api.exception.APIVersionUndefined;
 import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 import com.xcompwiz.mystcraft.symbol.SymbolRemappings;
+import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -36,6 +39,7 @@ import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
+import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class CommonProxy {

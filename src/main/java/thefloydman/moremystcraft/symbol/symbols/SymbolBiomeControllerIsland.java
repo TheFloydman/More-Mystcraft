@@ -56,7 +56,7 @@ public class SymbolBiomeControllerIsland extends MoreMystcraftSymbolBase {
 		private double beachSize;
 		private double oceanSize;
 		// private List<Integer> unverifiedCells;
-		int[][] noiseArray;
+		byte[][] noiseArray;
 
 		public BiomeController(final List<Biome> biomes, Number size) {
 			this.biomes = biomes;
@@ -166,7 +166,7 @@ public class SymbolBiomeControllerIsland extends MoreMystcraftSymbolBase {
 			// noiseArray = addBeaches(noiseArray, ellipseCenter, ellipseRadii);
 		}
 
-		private int[][] shaveToEllipse(int[][] input, double[] ellipseCenter, double[] ellipseRadii) {
+		private byte[][] shaveToEllipse(byte[][] input, double[] ellipseCenter, double[] ellipseRadii) {
 			for (int i = 0; i < input.length; i++) {
 				for (int j = 0; j < input[0].length; j++) {
 					if (Math.abs(j - ellipseCenter[1]) > ellipseRadii[1]) {

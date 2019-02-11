@@ -45,6 +45,9 @@ public class MoreMystcraftConfig {
 
 	@Name("abandoned_studies")
 	public static CategoryStudies catStudies = new CategoryStudies();
+	
+	@Name("libraries")
+	public static CategoryLibraries catLibraries = new CategoryLibraries();
 
 	@Name("other")
 	public static CategoryOther catOther = new CategoryOther();
@@ -112,6 +115,16 @@ public class MoreMystcraftConfig {
 		@Comment("The lowest height at which the Abandoned Study will spawn. Decrease if you have dimensions with a low ground level; increase to incrrease performance.")
 		@RangeInt(min = 0, max = 255)
 		public int studyMinimumY = 64;
+
+	}
+	
+	private static class CategoryLibraries {
+
+		@Name("Generate Mystcraft libraries")
+		public boolean librariesEnabled = true;
+		
+		@Name("Upgrade Mystcraft libraries")
+		public boolean librariesUpgraded = true;
 
 	}
 
@@ -185,6 +198,14 @@ public class MoreMystcraftConfig {
 
 	public boolean getLockedBookstandRecipeEnabled() {
 		return catLockedBlocks.lockedBookstandRecipeEnabled;
+	}
+	
+	public boolean getLibrariesEnabled() {
+		return catLibraries.librariesEnabled;
+	}
+	
+	public boolean getLibrariesUpgraded() {
+		return catLibraries.librariesUpgraded;
 	}
 
 	@Mod.EventBusSubscriber

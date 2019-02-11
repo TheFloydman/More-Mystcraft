@@ -5,9 +5,15 @@ import java.util.List;
 
 import net.minecraft.init.Biomes;
 
+/**
+ * Generates a two-dimensional byte array that represents rule B5678/S45678.
+ * 
+ * @author Floydman
+ *
+ */
 public class NoiseGeneratorCellularAutomata {
 
-	private int[][] noiseArray;
+	private byte[][] noiseArray;
 	private List<int[]> unverifiedCells;
 	private final int width;
 	private final int height;
@@ -19,7 +25,7 @@ public class NoiseGeneratorCellularAutomata {
 		this.height = mapHeight;
 
 		// Initialize array.
-		this.noiseArray = new int[this.height][this.width];
+		this.noiseArray = new byte[this.height][this.width];
 		// Generate initial noise.
 		for (int i = 0; i < this.noiseArray.length; i++) {
 			for (int j = 0; j < this.noiseArray[i].length; j++) {
@@ -27,14 +33,12 @@ public class NoiseGeneratorCellularAutomata {
 				int centerY = this.height / 2;
 				double distanceFromCenter = Math
 						.sqrt(((j - centerX) * (j - centerX)) + ((i - centerY) * (i - centerY)));
-				//double percentFromCenter = (distanceFromCenter / (this.width / 2)) * 100;
-				//if (Math.random() * 100 > percentFromCenter) {
-					if (distanceFromCenter < ((this.height + this.width) / 2) / 6 || Math.random() * 100 < alivePercentage) {
-						this.noiseArray[i][j] = 1;
-					} else {
-						this.noiseArray[i][j] = 0;
-					}
-				//}
+				if (distanceFromCenter < ((this.height + this.width) / 2) / 6
+						|| Math.random() * 100 < alivePercentage) {
+					this.noiseArray[i][j] = 1;
+				} else {
+					this.noiseArray[i][j] = 0;
+				}
 			}
 		}
 		// Run iterations of rule B5678/S45678.
@@ -73,11 +77,7 @@ public class NoiseGeneratorCellularAutomata {
 							this.noiseArray[blobCells.get(j)[0]][blobCells.get(j)[1]] = 0;
 						}
 					}
-				} /*else {
-					for (int j = 0; j < blobCells.size(); j++) {
-						this.noiseArray[blobCells.get(j)[0]][blobCells.get(j)[1]] = 0;
-					}
-				}*/
+				}
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public class NoiseGeneratorCellularAutomata {
 		return (largestX - smallestX) + 1;
 	}
 
-	public int[][] getnoiseArray() {
+	public byte[][] getnoiseArray() {
 		return this.noiseArray;
 	}
 }

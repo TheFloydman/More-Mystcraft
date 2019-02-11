@@ -1,5 +1,7 @@
 package thefloydman.moremystcraft;
 
+import java.util.Random;
+
 import org.apache.logging.log4j.Logger;
 
 import com.mojang.realmsclient.client.Request.Post;
@@ -9,6 +11,7 @@ import com.xcompwiz.mystcraft.world.gen.structure.MapGenScatteredFeatureMyst;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
@@ -31,7 +34,7 @@ import thefloydman.moremystcraft.proxy.CommonProxy;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityUnstableBookReceptacle;
 import thefloydman.moremystcraft.util.Reference;
-import thefloydman.moremystcraft.world.gen.structure.feature.WorldGenStudy;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.data.MoreMystcraftGrammarRules;
 import thefloydman.moremystcraft.data.MoreMystcraftSymbols;
 import thefloydman.moremystcraft.data.MoreMystcraftSymbolRules;
@@ -39,6 +42,8 @@ import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
+import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
+import thefloydman.moremystcraft.world.gen.feature.WorldGenStudy;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.NAME, version = Reference.VERSION, dependencies = Reference.DEPENDENCIES)
 public class MoreMystcraft {
@@ -56,6 +61,11 @@ public class MoreMystcraft {
 		proxy.preInit(event);
 		MoreMystcraftGrammarRules.initialize();
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
+		
+		if (!new MoreMystcraftConfig().getLibrariesEnabled() || new MoreMystcraftConfig().getLibrariesUpgraded()) {
+			GameRegistry.registerWorldGenerator(new WorldGenLibraryReplacement(), Integer.MAX_VALUE);
+		}		
+		
 		GameRegistry.registerTileEntity(TileEntityUnstableBookReceptacle.class,
 				new ResourceLocation(Reference.MOD_ID, "unstable_receptacle"));
 		MoreMystcraftSymbols.initialize();
