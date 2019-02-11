@@ -120,9 +120,11 @@ public class MoreMystcraftConfig {
 	
 	private static class CategoryLibraries {
 
+		@RequiresMcRestart
 		@Name("Generate Mystcraft libraries")
 		public boolean librariesEnabled = true;
 		
+		@RequiresMcRestart
 		@Name("Upgrade Mystcraft libraries")
 		public boolean librariesUpgraded = true;
 
