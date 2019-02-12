@@ -59,10 +59,10 @@ public class SubWorldGenStudy extends WorldGenerator {
 		MinecraftServer minecraftserver = world.getMinecraftServer();
 		TemplateManager templatemanager = worldserver.getStructureTemplateManager();
 		Template template = templatemanager.getTemplate(minecraftserver,
-				new ResourceLocation(Reference.MOD_ID + ":abandoned_study"));
+				new ResourceLocation(Reference.MOD_ID, "abandoned_study"));
 
 		if (template == null) {
-			System.out.println("NO STRUCTURE");
+			System.out.println("Structure not found: abandoned_study");
 			return false;
 		}
 

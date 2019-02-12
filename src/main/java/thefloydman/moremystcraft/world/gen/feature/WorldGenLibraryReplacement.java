@@ -9,11 +9,17 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import com.google.common.collect.ImmutableMap;
 import com.xcompwiz.mystcraft.Mystcraft;
+import com.xcompwiz.mystcraft.block.BlockLectern;
+import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
+import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
+import com.xcompwiz.mystcraft.treasure.LootTableHandler;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import io.netty.buffer.ByteBuf;
@@ -31,22 +37,35 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import scala.actors.threadpool.Arrays;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.util.Reference;
 
 public class WorldGenLibraryReplacement implements IWorldGenerator {
 
@@ -143,8 +162,16 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 
 		if (!new MoreMystcraftConfig().getLibrariesEnabled()) {
 			this.removeLibrary(world, pos.down(2), facing);
+			this.removePedestal(world, pos.down(2), facing);
 		} else if (new MoreMystcraftConfig().getLibrariesUpgraded()) {
-			this.generateUpgradedLibrary(world, pos.down(2), facing);
+			if (new Random().nextInt(10) == 0) {
+				this.removeLibrary(world, pos.down(2), facing);
+				if (facing.equals(EnumFacing.WEST))
+					pos = pos.south(15);
+				this.generateGreatLibrary(world, pos.down(), facing);
+			} else {
+				this.generateUpgradedLibrary(world, pos.down(2), facing);
+			}
 		}
 
 	}
@@ -245,6 +272,121 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 		}
 	}
 
+	protected void generateGreatLibrary(final World world, final BlockPos pos, EnumFacing facing) {
+		WorldServer worldserver = (WorldServer) world;
+		MinecraftServer minecraftserver = world.getMinecraftServer();
+		TemplateManager templatemanager = worldserver.getStructureTemplateManager();
+		Template template = templatemanager.getTemplate(minecraftserver,
+				new ResourceLocation(Reference.MOD_ID, "great_library"));
+
+		PlacementSettings placementsettings;
+
+		if (facing.equals(EnumFacing.NORTH)) {
+			placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE).setRotation(Rotation.NONE)
+					.setIgnoreEntities(true).setChunk(null).setReplacedBlock(null).setIgnoreStructureBlock(false);
+		} else {
+			placementsettings = (new PlacementSettings()).setMirror(Mirror.NONE)
+					.setRotation(Rotation.COUNTERCLOCKWISE_90).setIgnoreEntities(true).setChunk(null)
+					.setReplacedBlock(null).setIgnoreStructureBlock(false);
+		}
+
+		template.addBlocksToWorld(world, pos, placementsettings);
+		Map<BlockPos, String> map = template.getDataBlocks(pos, placementsettings);
+
+		for (Entry<BlockPos, String> entry : map.entrySet()) {
+
+			if (entry.getValue().equals("lectern_right")) {
+				BlockPos dataPos = entry.getKey();
+				if (facing.equals(EnumFacing.NORTH))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.WEST));
+				if (facing.equals(EnumFacing.WEST))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.SOUTH));
+				TileEntityLectern tileEntityLectern = (TileEntityLectern) world.getTileEntity(dataPos);
+				if (tileEntityLectern != null) {
+					final ItemStack item = LootTableHandler.generateLecternItem(tileEntityLectern, new Random(),
+							world.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE),
+							new LootContext.Builder((WorldServer) world).build());
+					if (item != null) {
+						tileEntityLectern.setBook(item);
+					}
+				}
+			} else if (entry.getValue().equals("lectern_front")) {
+				BlockPos dataPos = entry.getKey();
+				if (facing.equals(EnumFacing.NORTH))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.NORTH));
+				if (facing.equals(EnumFacing.WEST))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.WEST));
+				TileEntityLectern tileEntityLectern = (TileEntityLectern) world.getTileEntity(dataPos);
+				if (tileEntityLectern != null) {
+					final ItemStack item = LootTableHandler.generateLecternItem(tileEntityLectern, new Random(),
+							world.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE),
+							new LootContext.Builder((WorldServer) world).build());
+					if (item != null) {
+						tileEntityLectern.setBook(item);
+					}
+				}
+			} else if (entry.getValue().equals("lectern_left")) {
+				BlockPos dataPos = entry.getKey();
+				if (facing.equals(EnumFacing.NORTH))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.EAST));
+				if (facing.equals(EnumFacing.WEST))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.NORTH));
+				TileEntityLectern tileEntityLectern = (TileEntityLectern) world.getTileEntity(dataPos);
+				if (tileEntityLectern != null) {
+					final ItemStack item = LootTableHandler.generateLecternItem(tileEntityLectern, new Random(),
+							world.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE),
+							new LootContext.Builder((WorldServer) world).build());
+					if (item != null) {
+						tileEntityLectern.setBook(item);
+					}
+				}
+			} else if (entry.getValue().equals("lectern_back")) {
+				BlockPos dataPos = entry.getKey();
+				if (facing.equals(EnumFacing.NORTH))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.SOUTH));
+				if (facing.equals(EnumFacing.WEST))
+					world.setBlockState(dataPos,
+							ModBlocks.lectern.getDefaultState().withProperty(BlockLectern.ROTATION, EnumFacing.EAST));
+				TileEntityLectern tileEntityLectern = (TileEntityLectern) world.getTileEntity(dataPos);
+				if (tileEntityLectern != null) {
+					final ItemStack item = LootTableHandler.generateLecternItem(tileEntityLectern, new Random(),
+							world.getLootTableManager().getLootTableFromLocation(LootTableHandler.MYST_TREASURE),
+							new LootContext.Builder((WorldServer) world).build());
+					if (item != null) {
+						tileEntityLectern.setBook(item);
+					}
+				}
+			} else if (entry.getValue().equals("chest")) {
+				BlockPos dataPos = entry.getKey();
+				world.setBlockToAir(dataPos);
+				TileEntityChest tileentity = (TileEntityChest) world.getTileEntity(dataPos.down());
+				tileentity.setLootTable(new ResourceLocation("mystcraft", "mystcraft_treasure"),
+						new Random().nextLong());
+			}
+		}
+
+		for (int x = 0; x < 16; x++) {
+			for (int z = 0; z < 16; z++) {
+				BlockPos currentPos = pos;
+				if (facing.equals(EnumFacing.WEST))
+					currentPos = currentPos.north(15);
+				while (currentPos.getY() > 0) {
+					if (world.getBlockState(currentPos.east(x).south(z).down()).getMaterial().isSolid())
+						break;
+					world.setBlockState(currentPos.east(x).south(z).down(), Blocks.COBBLESTONE.getDefaultState());
+					currentPos = currentPos.down();
+				}
+			}
+		}
+	}
+
 	protected void removeLibrary(final World world, final BlockPos pos, EnumFacing facing) {
 
 		for (int y = pos.getY() + 1; y < pos.getY() + 12; y++) {
@@ -255,6 +397,9 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 				}
 			}
 		}
+	}
+
+	protected void removePedestal(final World world, final BlockPos pos, EnumFacing facing) {
 
 		int y = pos.getY();
 		int x = pos.getX() - 1;
