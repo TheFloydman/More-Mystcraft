@@ -18,6 +18,15 @@ public class NoiseGeneratorCellularAutomata {
 	private final int width;
 	private final int height;
 
+	/**
+	 * 
+	 * @param mapWidth The width of the map in pixels.
+	 * @param mapHeight The height of the map in pixels.
+	 * @param alivePercentage The initial number of random pixels that will be alive.
+	 * @param passes How many times to pass over the random map after it has been generated.
+	 * @param deadToAlive The minimum number of living neighbors a pixel must have to become alive.
+	 * @param aliveToDead The maximum number of living neighbors a pixel may have to become dead.
+	 */
 	public NoiseGeneratorCellularAutomata(final int mapWidth, final int mapHeight, final int alivePercentage,
 			final int passes, final int deadToAlive, final int aliveToDead) {
 

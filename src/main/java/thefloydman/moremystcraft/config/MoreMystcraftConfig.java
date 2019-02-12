@@ -127,6 +127,11 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Upgrade Mystcraft libraries")
 		public boolean librariesUpgraded = true;
+		
+		@RequiresMcRestart
+		@Name("Great Library generation percentage")
+		@RangeInt(min = 0, max = 100)
+		public int greatLibrariesPercentage = 10;
 
 	}
 
@@ -208,6 +213,10 @@ public class MoreMystcraftConfig {
 	
 	public boolean getLibrariesUpgraded() {
 		return catLibraries.librariesUpgraded;
+	}
+	
+	public int getGreatLibraryPercentage() {
+		return catLibraries.greatLibrariesPercentage;
 	}
 
 	@Mod.EventBusSubscriber

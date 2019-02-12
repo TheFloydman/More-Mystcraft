@@ -164,7 +164,7 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 			this.removeLibrary(world, pos.down(2), facing);
 			this.removePedestal(world, pos.down(2), facing);
 		} else if (new MoreMystcraftConfig().getLibrariesUpgraded()) {
-			if (new Random().nextInt(10) == 0) {
+			if (new Random().nextInt(100) < new MoreMystcraftConfig().getGreatLibraryPercentage()) {
 				this.removeLibrary(world, pos.down(2), facing);
 				if (facing.equals(EnumFacing.WEST))
 					pos = pos.south(15);

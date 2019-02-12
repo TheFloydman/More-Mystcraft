@@ -40,7 +40,6 @@ import thefloydman.moremystcraft.data.MoreMystcraftSymbols;
 import thefloydman.moremystcraft.data.MoreMystcraftSymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
-import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
 import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
 import thefloydman.moremystcraft.world.gen.feature.WorldGenStudy;

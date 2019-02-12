@@ -35,7 +35,6 @@ import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
-import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
@@ -61,9 +60,6 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
-
-		/*EntityRegistry.registerModEntity(Reference.forMoreMystcraft("entity_maintainer_suit"),
-				EntityMaintainerSuit.class, "Maintainer Suit", 180, this, 40, 1, true);*/
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

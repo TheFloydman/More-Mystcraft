@@ -16,10 +16,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import thefloydman.moremystcraft.client.render.RenderMaintainerSuitFactory;
 import thefloydman.moremystcraft.client.render.RenderUnstableBookReceptacle;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
-import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityUnstableBookReceptacle;
 import thefloydman.moremystcraft.util.Reference;
@@ -29,8 +27,6 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		/*RenderingRegistry.registerEntityRenderingHandler(EntityMaintainerSuit.class,
-				RenderMaintainerSuitFactory.INSTANCE);*/
 	}
 
 	@Override
