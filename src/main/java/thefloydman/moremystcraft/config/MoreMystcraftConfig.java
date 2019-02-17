@@ -128,7 +128,6 @@ public class MoreMystcraftConfig {
 		@Name("Upgrade Mystcraft libraries")
 		public boolean librariesUpgraded = true;
 		
-		@RequiresMcRestart
 		@Name("Great Library generation percentage")
 		@RangeInt(min = 0, max = 100)
 		public int greatLibrariesPercentage = 10;

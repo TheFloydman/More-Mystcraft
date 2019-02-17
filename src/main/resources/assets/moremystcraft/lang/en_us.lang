@@ -23,5 +23,10 @@ tile.moremystcraft.traffic_cone.name=Safety Cone
 tile.moremystcraft.unstable_receptacle.name=Unstable Book Receptacle
 tile.moremystcraft.unstable_portal.name=Unstable Portal
 
-// Item names
-tile.moremystcraft.maintainer_suit.name=Maintainer Suit
+//Grammar names (for compatibility with mystcraft-info)
+grammar.moremystcraft.size_common.name=Size
+grammar.moremystcraft.size_uncommon.name=Size
+grammar.moremystcraft.size_rare.name=Size
+grammar.moremystcraft.tilt_common.name=Tilt
+grammar.moremystcraft.tilt_uncommon.name=Tilt
+grammar.moremystcraft.tilt_rare.name=Tilt

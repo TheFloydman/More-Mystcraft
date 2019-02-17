@@ -20,7 +20,7 @@ repositories {
     }
 }
 
-version = "0.5.2"
+version = "0.5.3"
 group = "thefloydman.moremystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "moremystcraft-1.12.2"
 

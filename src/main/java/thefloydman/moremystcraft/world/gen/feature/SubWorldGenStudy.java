@@ -107,7 +107,7 @@ public class SubWorldGenStudy extends WorldGenerator {
 					TileEntity entityLecternLeft = world.getTileEntity(blockpos2.add(-4, 1, 1));
 					IItemHandler handlerLecternLeft = entityLecternLeft
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					ItemStack stackDesBook = BookSpawner.generateDescriptiveBook();
+					ItemStack stackDesBook = BookSpawner.generateDescriptiveBook(rand);
 					handlerLecternLeft.insertItem(0, stackDesBook, false);
 
 					// Add Linking Book.

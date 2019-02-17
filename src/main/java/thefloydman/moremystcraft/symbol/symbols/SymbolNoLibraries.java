@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
 import com.xcompwiz.mystcraft.api.symbol.BlockCategory;
@@ -16,30 +17,18 @@ import com.xcompwiz.mystcraft.api.world.logic.IPopulate;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
+import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
 import thefloydman.moremystcraft.world.gen.feature.WorldGenPyramids;
 
-public class SymbolPyramids extends MoreMystcraftSymbolBase {
-	public SymbolPyramids(final ResourceLocation identifier) {
+public class SymbolNoLibraries extends MoreMystcraftSymbolBase {
+	public SymbolNoLibraries(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
 	@Override
 	public void registerLogic(final AgeDirector controller, final long seed) {
-		final BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
-		WorldGeneratorAdv generator;
-		if (block != null) {
-			generator = new WorldGenPyramids(block.blockstate);
-		} else {
-			generator = new WorldGenPyramids(Blocks.SANDSTONE);
-		}
+		WorldGenLibraryReplacement generator = new WorldGenLibraryReplacement(1);
 		controller.registerInterface(new Populator(generator));
-	}
-	
-	public int instabilityModifier(int count) {
-		if (count > 2) {
-			return 500;
-		}
-		return 0;
 	}
 
 	@Override
@@ -48,23 +37,17 @@ public class SymbolPyramids extends MoreMystcraftSymbolBase {
 	}
 
 	private static class Populator implements IPopulate {
-		private WorldGeneratorAdv generator;
+		private WorldGenLibraryReplacement generator;
 
-		public Populator(final WorldGeneratorAdv generator) {
+		public Populator(final WorldGenLibraryReplacement generator) {
 			this.generator = generator;
 		}
 
 		@Override
-		public boolean populate(final World worldObj, final Random rand, final int k, final int l, final boolean flag) {
-			if (!flag && rand.nextInt(18) == 0) {
-				final int x = k + rand.nextInt(16);
-				final int z = l + rand.nextInt(16);
-				final int y = worldObj.getHeight(x, z);
-				this.generator.generate(worldObj, rand, new BlockPos(x, y, z));
-			} else {
-				this.generator.noGen();
-			}
-			return false;
+		public boolean populate(final World world, final Random rand, final int k, final int l, final boolean flag) {
+			this.generator.generate(rand, new ChunkPos(new BlockPos(k, 0, l)).x, new ChunkPos(new BlockPos(k, 0, l)).z,
+					world, null, null);
+			return true;
 		}
 	}
 }

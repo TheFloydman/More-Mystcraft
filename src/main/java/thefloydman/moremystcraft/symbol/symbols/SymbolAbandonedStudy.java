@@ -28,7 +28,8 @@ public class SymbolAbandonedStudy extends MoreMystcraftSymbolBase {
 	public void registerLogic(AgeDirector controller, long seed) {
 		
 	}
-
+	
+	@Override
 	public int instabilityModifier(int count) {
 		if (count > 1) {
 			return 500;

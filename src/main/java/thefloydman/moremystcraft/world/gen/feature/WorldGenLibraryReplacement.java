@@ -72,6 +72,24 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 	List<String> changedLibraries = new ArrayList<String>();
 	List<String> unchangedLibraries = new ArrayList<String>();
 	boolean processing = false;
+	int generationSetting;
+	
+	public WorldGenLibraryReplacement() {
+		MoreMystcraftConfig config = new MoreMystcraftConfig();
+		if (config.getLibrariesEnabled()) {
+			if (config.getLibrariesUpgraded()) {
+				this.generationSetting = generationSettings.UPGRADED_LIBRARIES.ordinal();
+			} else {
+				this.generationSetting = generationSettings.DEFAULT.ordinal();
+			}
+		} else {
+			this.generationSetting = generationSettings.NO_LIBRARIES.ordinal();
+		}
+	}
+	
+	public WorldGenLibraryReplacement(final int genSet) {
+		this.generationSetting = genSet;
+	}
 
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -160,10 +178,10 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 			pos = pos.up();
 		}
 
-		if (!new MoreMystcraftConfig().getLibrariesEnabled()) {
+		if (this.generationSetting == generationSettings.NO_LIBRARIES.ordinal()) {
 			this.removeLibrary(world, pos.down(2), facing);
 			this.removePedestal(world, pos.down(2), facing);
-		} else if (new MoreMystcraftConfig().getLibrariesUpgraded()) {
+		} else if (this.generationSetting == generationSettings.UPGRADED_LIBRARIES.ordinal()) {
 			if (new Random().nextInt(100) < new MoreMystcraftConfig().getGreatLibraryPercentage()) {
 				this.removeLibrary(world, pos.down(2), facing);
 				if (facing.equals(EnumFacing.WEST))
@@ -444,6 +462,12 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 
 		return libraries;
 
+	}
+	
+	static enum generationSettings {
+		DEFAULT,
+		NO_LIBRARIES,
+		UPGRADED_LIBRARIES;
 	}
 
 }

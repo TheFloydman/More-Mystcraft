@@ -24,12 +24,18 @@ public class MoreMystcraftGrammarRules {
 		registerRule(buildRule(0, MoreMystcraftGrammarData.SIZE_BASIC, MoreMystcraftGrammarData.SIZE_COMMON));
 		registerRule(buildRule(1, MoreMystcraftGrammarData.SIZE_BASIC, MoreMystcraftGrammarData.SIZE_UNCOMMON));
 		registerRule(buildRule(2, MoreMystcraftGrammarData.SIZE_BASIC, MoreMystcraftGrammarData.SIZE_RARE));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_COMMON));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_UNCOMMON));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_COMMON));
 		registerRule(buildRule(2, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_UNCOMMON));
 		registerRule(buildRule(4, MoreMystcraftGrammarRules.SIZE_SUN, MoreMystcraftGrammarData.SIZE_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarRules.SIZE_ISLAND_BIOCON, MoreMystcraftGrammarData.SIZE_COMMON));
 		registerRule(buildRule(1, MoreMystcraftGrammarRules.SIZE_ISLAND_BIOCON, MoreMystcraftGrammarData.SIZE_UNCOMMON));
 		registerRule(buildRule(2, MoreMystcraftGrammarRules.SIZE_ISLAND_BIOCON, MoreMystcraftGrammarData.SIZE_RARE));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_COMMON));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON));
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_COMMON_SEQ));
 		registerRule(buildRule(2, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON_SEQ));
 		registerRule(buildRule(4, MoreMystcraftGrammarRules.TILT_SUN_SEQ, MoreMystcraftGrammarData.TILT_RARE_SEQ));

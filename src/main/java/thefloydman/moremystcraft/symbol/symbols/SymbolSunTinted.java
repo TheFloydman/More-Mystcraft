@@ -123,9 +123,12 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 			final float f16 = 1F - world.getRainStrength(partial);
 			GlStateManager.color(this.color.r, this.color.g, this.color.b, f16);
 
-			GlStateManager.rotate(this.angle, 0f, 1f, 0f);
+			GlStateManager.rotate(this.angle + 90f, 0f, 1f, 0f);
 			GlStateManager.rotate(this.tilt, 1f, 0f, 0f);
-			float rotZ = (float) (((360 * (world.getWorldTime() / (double) this.period)) + (this.phase * 360)) % 360);
+			float rotZ = (this.phase * 360) % 360;
+			if (this.period != 0) {
+				rotZ = (float) (((360 * (world.getWorldTime() / (double) this.period)) + (this.phase * 360)) % 360);
+			}
 			GlStateManager.rotate(rotZ, 0f, 0f, 1f);
 
 			double size;
@@ -189,7 +192,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 			} else {
 				angCurrent += angAdj;
 			}
-			
+
 			angCurrent %= 1;
 
 			return (float) angCurrent;
@@ -299,7 +302,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 			if (angCheck < Math.PI / 2) {
 				angCurrent *= -1;
 			}
-			return (float) Math.toDegrees(angCurrent);
+			return (float) Math.toDegrees(angCurrent) + 90f;
 
 		}
 
