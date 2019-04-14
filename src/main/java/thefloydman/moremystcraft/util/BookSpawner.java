@@ -15,7 +15,7 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public abstract class BookSpawner {
 	
-	public static ItemStack generateDescriptiveBook(final Random rand) {
+	public static ItemStack generateBlankDescriptiveBook(final Random rand) {
 		
 		ItemStack itemStackBook = new ItemStack(Item.getByNameOrId("mystcraft:agebook"));
 		itemStackBook.setItemDamage(0);

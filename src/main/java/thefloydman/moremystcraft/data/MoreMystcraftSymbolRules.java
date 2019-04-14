@@ -22,18 +22,14 @@ public class MoreMystcraftSymbolRules {
 				buildRule(2, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
 		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE,
 				Reference.forMoreMystcraft("pyramids")));
-		addRuleInternal("biocon_rings",
-				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
-						MoreMystcraftGrammarData.SIZE_SEQ, Reference.forMoreMystcraft("biocon_rings")));
-		addRuleInternal("biocon_boxes",
-				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
-						MoreMystcraftGrammarData.SIZE_SEQ, Reference.forMoreMystcraft("biocon_boxes")));
-		addRuleInternal("biocon_bands_hor",
-				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
-						MoreMystcraftGrammarData.SIZE_SEQ, Reference.forMoreMystcraft("biocon_bands_hor")));
-		addRuleInternal("biocon_bands_ver",
-				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
-						MoreMystcraftGrammarData.SIZE_SEQ, Reference.forMoreMystcraft("biocon_bands_ver")));
+		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_rings")));
+		addRuleInternal("biocon_boxes", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_boxes")));
+		addRuleInternal("biocon_bands_hor", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_hor")));
+		addRuleInternal("biocon_bands_ver", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
+				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_ver")));
 		addRuleInternal("biocon_normal",
 				buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
 						MoreMystcraftGrammarData.SIZE_BASIC, Reference.forMoreMystcraft("biocon_normal")));

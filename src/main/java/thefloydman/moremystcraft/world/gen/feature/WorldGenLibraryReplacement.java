@@ -20,6 +20,7 @@ import com.xcompwiz.mystcraft.data.ModBlocks;
 import com.xcompwiz.mystcraft.nbt.NBTUtils;
 import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 import com.xcompwiz.mystcraft.treasure.LootTableHandler;
+import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 import io.netty.buffer.ByteBuf;
@@ -99,8 +100,29 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 			return;
 		}
 
-		if (world.provider.getDimensionType() != Mystcraft.dimensionType) {
+		if (!world.provider.getDimensionType().equals(Mystcraft.dimensionType)) {
 			return;
+		}
+		
+		// If a "No Libraries" page is present, set to 
+		int dimId = world.provider.getDimension();
+		try {
+			AgeData data = new AgeData("currentDim").getAge(dimId, false);
+			List symbolList = data.getSymbols(false);
+			ResourceLocation studyLoc = Reference.forMoreMystcraft("no_libraries");
+			if (symbolList.contains(studyLoc)) {
+				this.generationSetting = generationSettings.NO_LIBRARIES.ordinal();
+			} else {
+				if (new MoreMystcraftConfig().getLibrariesUpgraded()) {
+					this.generationSetting = generationSettings.UPGRADED_LIBRARIES.ordinal();
+				} else {
+					this.generationSetting = generationSettings.DEFAULT.ordinal();
+				}
+			}
+		} catch (NullPointerException e) {
+			return;
+		} catch (IllegalArgumentException e) {
+			System.out.println("Invalid Dimension ID: " + Integer.toString(dimId));
 		}
 
 		this.processing = true;

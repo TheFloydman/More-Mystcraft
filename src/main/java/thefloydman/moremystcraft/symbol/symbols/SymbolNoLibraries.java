@@ -27,27 +27,15 @@ public class SymbolNoLibraries extends MoreMystcraftSymbolBase {
 
 	@Override
 	public void registerLogic(final AgeDirector controller, final long seed) {
-		WorldGenLibraryReplacement generator = new WorldGenLibraryReplacement(1);
-		controller.registerInterface(new Populator(generator));
 	}
 
 	@Override
 	public boolean generatesConfigOption() {
 		return true;
 	}
-
-	private static class Populator implements IPopulate {
-		private WorldGenLibraryReplacement generator;
-
-		public Populator(final WorldGenLibraryReplacement generator) {
-			this.generator = generator;
-		}
-
-		@Override
-		public boolean populate(final World world, final Random rand, final int k, final int l, final boolean flag) {
-			this.generator.generate(rand, new ChunkPos(new BlockPos(k, 0, l)).x, new ChunkPos(new BlockPos(k, 0, l)).z,
-					world, null, null);
-			return true;
-		}
+	
+	public int instabilityModifier(int count) {
+		return -1000;
 	}
+
 }

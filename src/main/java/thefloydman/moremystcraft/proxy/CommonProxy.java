@@ -1,8 +1,10 @@
 package thefloydman.moremystcraft.proxy;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -38,7 +40,6 @@ import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
-import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class CommonProxy {

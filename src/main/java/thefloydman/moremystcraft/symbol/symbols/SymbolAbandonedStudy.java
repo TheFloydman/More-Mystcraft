@@ -26,7 +26,6 @@ public class SymbolAbandonedStudy extends MoreMystcraftSymbolBase {
 	}
 
 	public void registerLogic(AgeDirector controller, long seed) {
-		
 	}
 	
 	@Override

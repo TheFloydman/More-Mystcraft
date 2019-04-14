@@ -14,10 +14,13 @@ public class MoreMystcraftGrammarRules {
 	private static final ResourceLocation SIZE_GEN = Reference.forMoreMystcraft("size_adv");
 	public static final ResourceLocation SIZE_EXT = Reference.forMoreMystcraft("size_ext");
 	public static final ResourceLocation SIZE_SUN = Reference.forMoreMystcraft("size_sun");
+	public static final ResourceLocation SIZE_BIOCON = Reference.forMoreMystcraft("size_biocon");
 	public static final ResourceLocation SIZE_ISLAND_BIOCON = Reference.forMoreMystcraft("size_island_biocon");
 	public static final ResourceLocation TILT_SUN_SEQ = Reference.forMoreMystcraft("tilt_sun");
 
 	public static void initialize() {
+		registerRule(buildRule(null, MoreMystcraftGrammarRules.SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_BASIC));
+		registerRule(buildRule(0, MoreMystcraftGrammarRules.SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_SEQ));
 		registerRule(buildRule(1, MoreMystcraftGrammarData.SIZE_SEQ, MoreMystcraftGrammarRules.SIZE_GEN));
 		registerRule(buildRule(2, MoreMystcraftGrammarRules.SIZE_GEN, MoreMystcraftGrammarRules.SIZE_GEN, MoreMystcraftGrammarData.SIZE_BASIC));
 		registerRule(buildRule(0, MoreMystcraftGrammarRules.SIZE_GEN, MoreMystcraftGrammarData.SIZE_BASIC));

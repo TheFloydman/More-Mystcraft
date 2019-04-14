@@ -56,7 +56,7 @@ public class MoreMystcraftSymbols {
 		// Register cloud height modifiers.
 		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4,
 				"Transform", "Motion", "Tilt", "Zero");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 63.0f, "Half"), 4,
+		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 70.0f, "Half"), 4,
 				"Transform", "Motion", "Tilt", "Half");
 		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_full"), 127.0f, "Full"), 4,
 				"Transform", "Motion", "Tilt", "Full");
@@ -66,6 +66,8 @@ public class MoreMystcraftSymbols {
 				new String[] { "Terrain", "Form", "Infinite", "Maze" });
 		registerSymbol(new SymbolGiganticTrees(Reference.forMoreMystcraft("gigantic_trees")), 2,
 				new String[] { "Nature", "Stimulate", "Spur", "Elevate" });
+		registerSymbol(new SymbolNoLibraries(Reference.forMoreMystcraft("no_libraries")), null,
+				new String[] { "Civilization", "Contradict", "Inhibit", "Void" });
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

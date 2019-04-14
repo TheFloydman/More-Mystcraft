@@ -29,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.agedata.AgeData.AgeDataData;
@@ -36,6 +37,7 @@ import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.proxy.CommonProxy;
+import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
@@ -70,15 +72,11 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 		try {
 			if (dimId < 0) {
 				return;
-			} else if (MoreMystcraft.proxy.dimensionApi.isMystcraftAge(dimId) == true) {
+			} else if (world.provider.getDimensionType().equals(Mystcraft.dimensionType)) {
 				AgeData data = new AgeData("currentDim").getAge(dimId, false);
 				List symbolList = data.getSymbols(false);
-				ResourceLocation studyLoc = new ResourceLocation("moremystcraft", "abandoned_study");
-				for (int i = 0; i < symbolList.size(); i++) {
-					if (symbolList.get(i).equals(studyLoc) == true) {
-						generateOverworld(world, rand, blockX + 8, blockZ + 8);
-					}
-				}
+				ResourceLocation studyLoc = Reference.forMoreMystcraft("abandoned_study");
+				if (symbolList.contains(studyLoc)) generateOverworld(world, rand, blockX + 8, blockZ + 8);
 			}
 		} catch (NullPointerException e) {
 			return;
@@ -88,7 +86,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(World world, Random rand, int blockX, int blockZ) {
-		if ((int) (Math.random() * new MoreMystcraftConfig().getStudyFrequency()) == 0) {
+		if (rand.nextInt(1) * new MoreMystcraftConfig().getStudyFrequency() == 0) {
 			int y = getGroundFromAbove(world, blockX, blockZ);
 			BlockPos pos = new BlockPos(blockX, y, blockZ);
 			// Don't spawn on these blocks.

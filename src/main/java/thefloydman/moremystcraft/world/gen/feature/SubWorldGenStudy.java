@@ -107,12 +107,12 @@ public class SubWorldGenStudy extends WorldGenerator {
 					TileEntity entityLecternLeft = world.getTileEntity(blockpos2.add(-4, 1, 1));
 					IItemHandler handlerLecternLeft = entityLecternLeft
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					ItemStack stackDesBook = BookSpawner.generateDescriptiveBook(rand);
+					ItemStack stackDesBook = BookSpawner.generateBlankDescriptiveBook(rand);
 					handlerLecternLeft.insertItem(0, stackDesBook, false);
 
 					// Add Linking Book.
-					TileEntity entityLectern = world.getTileEntity(blockpos2.add(-4, 1, -1));
-					IItemHandler handlerLectern = entityLectern
+					TileEntity entityLecternRight = world.getTileEntity(blockpos2.add(-4, 1, -1));
+					IItemHandler handlerLecternRight = entityLecternRight
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 					ItemStack stackBook = new ItemStack(Item.getByNameOrId("mystcraft:linkbook"));
 					NBTTagCompound compoundBook = new NBTTagCompound();
@@ -126,7 +126,7 @@ public class SubWorldGenStudy extends WorldGenerator {
 					compoundBook.setFloat("damage", 0);
 					compoundBook.setString("TargetUUID", "00000000-0000-0000-0000-000000000000");
 					stackBook.setTagCompound(compoundBook);
-					handlerLectern.insertItem(0, stackBook, false);
+					handlerLecternRight.insertItem(0, stackBook, false);
 				}
 
 			}
@@ -143,7 +143,7 @@ public class SubWorldGenStudy extends WorldGenerator {
 
 	private void fillBelow(World world, BlockPos pos, IBlockState state) {
 		boolean empty = true;
-		while (empty == true) {
+		while (empty == true && pos.getY() >= 0) {
 			if (world.getBlockState(pos) == Blocks.AIR.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.STRUCTURE_VOID.getDefaultState()
 					|| world.getBlockState(pos) == Blocks.WATER.getDefaultState()

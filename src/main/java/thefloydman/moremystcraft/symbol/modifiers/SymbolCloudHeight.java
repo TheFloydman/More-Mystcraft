@@ -29,7 +29,7 @@ public class SymbolCloudHeight extends MoreMystcraftSymbolBase
         if (prev != null) {
             value = (prev.floatValue() + value) / 2;
         }
-        controller.setModifier("cloud_height", value);
+        controller.setCloudHeight(value);
     }
     
     public String generateLocalizedName() {

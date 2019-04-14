@@ -52,7 +52,7 @@ public class WorldGenGiganticTree {
 
 		return true;
 	}
-	
+
 	protected void generateTopLeaves() {
 		generateLeavesSphere(new BlockPos(xAnchor, this.treeHeightActual - 1, zAnchor));
 		generateLeavesSphere(new BlockPos(xAnchor + 3, this.treeHeightActual - 1, zAnchor));
@@ -165,6 +165,9 @@ public class WorldGenGiganticTree {
 	}
 
 	protected void generateLeavesSphere(final BlockPos pos) {
+		if (!this.world.getBlockState(pos).getMaterial().equals(Material.WOOD)) {
+			return;
+		}
 		for (int x = -this.leavesDistance; x <= this.leavesDistance; x++) {
 			for (int y = -this.leavesDistance; y <= this.leavesDistance; y++) {
 				for (int z = -this.leavesDistance; z <= this.leavesDistance; z++) {
@@ -257,7 +260,7 @@ public class WorldGenGiganticTree {
 		}
 		return y;
 	}
-	
+
 	protected int indirectDistanceBetween(BlockPos pos0, BlockPos pos1) {
 		return MathHelper.abs(pos1.getX() - pos0.getX()) + MathHelper.abs(pos1.getY() - pos0.getY())
 				+ MathHelper.abs(pos1.getZ() - pos0.getZ());
