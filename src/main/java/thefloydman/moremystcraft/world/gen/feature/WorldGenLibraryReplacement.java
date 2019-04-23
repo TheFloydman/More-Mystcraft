@@ -74,7 +74,7 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 	List<String> unchangedLibraries = new ArrayList<String>();
 	boolean processing = false;
 	int generationSetting;
-	
+
 	public WorldGenLibraryReplacement() {
 		MoreMystcraftConfig config = new MoreMystcraftConfig();
 		if (config.getLibrariesEnabled()) {
@@ -87,7 +87,7 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 			this.generationSetting = generationSettings.NO_LIBRARIES.ordinal();
 		}
 	}
-	
+
 	public WorldGenLibraryReplacement(final int genSet) {
 		this.generationSetting = genSet;
 	}
@@ -103,8 +103,8 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 		if (!world.provider.getDimensionType().equals(Mystcraft.dimensionType)) {
 			return;
 		}
-		
-		// If a "No Libraries" page is present, set to 
+
+		// If a "No Libraries" page is present, set to
 		int dimId = world.provider.getDimension();
 		try {
 			AgeData data = new AgeData("currentDim").getAge(dimId, false);
@@ -218,11 +218,17 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 
 	protected void generateUpgradedLibrary(final World world, final BlockPos pos, EnumFacing facing) {
 
+		IBlockState walls = Blocks.STONEBRICK.getDefaultState();
+		IBlockState stairs = Blocks.STONE_BRICK_STAIRS.getDefaultState();
+		IBlockState slabs = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
+				EnumType.SMOOTHBRICK);
+		IBlockState carpet = Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED);
+
 		for (int y = pos.getY() + 1; y < pos.getY() + 12; y++) {
 			for (int x = pos.getX(); x < pos.getX() + 16; x++) {
 				for (int z = pos.getZ(); z < pos.getZ() + 16; z++) {
 					if (world.getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.COBBLESTONE)) {
-						world.setBlockState(new BlockPos(x, y, z), Blocks.STONEBRICK.getDefaultState());
+						world.setBlockState(new BlockPos(x, y, z), walls);
 					} else if (world.getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.STONE_STAIRS)) {
 						EnumFacing propFacing = (EnumFacing) world.getBlockState(new BlockPos(x, y, z)).getProperties()
 								.get(BlockStairs.FACING);
@@ -230,85 +236,92 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 								.get(BlockStairs.HALF);
 						EnumShape propShape = (EnumShape) world.getBlockState(new BlockPos(x, y, z)).getProperties()
 								.get(BlockStairs.SHAPE);
-						world.setBlockState(new BlockPos(x, y, z),
-								Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, propFacing)
-										.withProperty(BlockStairs.HALF, propHalf)
-										.withProperty(BlockStairs.SHAPE, propShape));
+						world.setBlockState(new BlockPos(x, y, z), stairs.withProperty(BlockStairs.FACING, propFacing)
+								.withProperty(BlockStairs.HALF, propHalf).withProperty(BlockStairs.SHAPE, propShape));
 					} else if (world.getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.STONE_SLAB)) {
 						EnumBlockHalf propHalf = (EnumBlockHalf) world.getBlockState(new BlockPos(x, y, z))
 								.getProperties().get(BlockStoneSlab.HALF);
-						world.setBlockState(new BlockPos(x, y, z),
-								Blocks.STONE_SLAB.getDefaultState()
-										.withProperty(BlockStoneSlab.VARIANT, EnumType.SMOOTHBRICK)
-										.withProperty(BlockStoneSlab.HALF, propHalf));
+						world.setBlockState(new BlockPos(x, y, z), slabs.withProperty(BlockStoneSlab.HALF, propHalf));
 					}
 				}
 			}
 		}
+		int x = pos.getX();
+		int y = pos.getY();
+		int z = pos.getZ();
+		int[] xArray = new int[14];
+		for (int i = 0; i < xArray.length; i++) {
+			xArray[i] = x;
+		}
+		int[] yArray = new int[14];
+		for (int i = 0; i < yArray.length; i++) {
+			yArray[i] = y + 2;
+		}
+		int[] zArray = new int[14];
+		for (int i = 0; i < zArray.length; i++) {
+			zArray[i] = z;
+		}
 		if (facing.equals(EnumFacing.WEST)) {
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			world.setBlockState(new BlockPos(x + 2, y + 2, z + 4),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 2, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 3, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 4, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 4, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 7),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 4),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 3),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 7),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 7, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 7, y + 2, z + 4),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 7, y + 2, z + 3),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
+			xArray[0] += 2;
+			xArray[1] += 2;
+			xArray[2] += 3;
+			xArray[3] += 4;
+			xArray[4] += 4;
+			xArray[5] += 5;
+			xArray[6] += 5;
+			xArray[7] += 5;
+			xArray[8] += 5;
+			xArray[9] += 6;
+			xArray[10] += 6;
+			xArray[11] += 7;
+			xArray[12] += 7;
+			xArray[13] += 7;
+			zArray[0] += 4;
+			zArray[1] += 6;
+			zArray[2] += 5;
+			zArray[3] += 5;
+			zArray[4] += 6;
+			zArray[5] += 7;
+			zArray[6] += 6;
+			zArray[7] += 4;
+			zArray[8] += 3;
+			zArray[9] += 5;
+			zArray[10] += 7;
+			zArray[11] += 6;
+			zArray[12] += 4;
+			zArray[13] += 3;
 		} else {
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			world.setBlockState(new BlockPos(x + 4, y + 2, z + 2),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 2),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 3),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 4),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 4),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 7, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 4, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 3, y + 2, z + 5),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 5, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 7, y + 2, z + 6),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 6, y + 2, z + 7),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 4, y + 2, z + 7),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
-			world.setBlockState(new BlockPos(x + 3, y + 2, z + 7),
-					Blocks.CARPET.getDefaultState().withProperty(BlockCarpet.COLOR, EnumDyeColor.RED));
+			xArray[0] += 4;
+			xArray[1] += 6;
+			xArray[2] += 5;
+			xArray[3] += 5;
+			xArray[4] += 6;
+			xArray[5] += 7;
+			xArray[6] += 6;
+			xArray[7] += 4;
+			xArray[8] += 3;
+			xArray[9] += 5;
+			xArray[10] += 7;
+			xArray[11] += 6;
+			xArray[12] += 4;
+			xArray[13] += 3;
+			zArray[0] += 2;
+			zArray[1] += 2;
+			zArray[2] += 3;
+			zArray[3] += 4;
+			zArray[4] += 4;
+			zArray[5] += 5;
+			zArray[6] += 5;
+			zArray[7] += 5;
+			zArray[8] += 5;
+			zArray[9] += 6;
+			zArray[10] += 6;
+			zArray[11] += 7;
+			zArray[12] += 7;
+			zArray[13] += 7;
+		}
+		for (int i = 0; i < xArray.length; i++) {
+			world.setBlockState(new BlockPos(xArray[i], yArray[i], zArray[i]), carpet);
 		}
 	}
 
@@ -485,11 +498,9 @@ public class WorldGenLibraryReplacement implements IWorldGenerator {
 		return libraries;
 
 	}
-	
+
 	static enum generationSettings {
-		DEFAULT,
-		NO_LIBRARIES,
-		UPGRADED_LIBRARIES;
+		DEFAULT, NO_LIBRARIES, UPGRADED_LIBRARIES;
 	}
 
 }

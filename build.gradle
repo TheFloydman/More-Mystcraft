@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-def mystcraft_version = "0.13.7.01"
+def mystcraft_version = "0.13.7.03"
 
 repositories {
     maven {
@@ -20,7 +20,7 @@ repositories {
     }
 }
 
-version = "0.5.4"
+version = "0.5.5"
 group = "thefloydman.moremystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "moremystcraft-1.12.2"
 
@@ -43,9 +43,6 @@ minecraft {
 }
 
 dependencies {
-    
-    compileOnly "com.xcompwiz.mystcraft:mystcraft:${mystcraft_version}:dev"
-    runtime "com.xcompwiz.mystcraft:mystcraft:${mystcraft_version}"
     
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..

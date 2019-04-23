@@ -1,5 +1,6 @@
 package thefloydman.moremystcraft.world.gen.feature;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -8,7 +9,16 @@ import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockPlanks.EnumType;
+import net.minecraft.block.BlockStairs;
+import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -33,6 +43,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
@@ -41,7 +52,6 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import com.xcompwiz.mystcraft.block.BlockLectern;
 import com.xcompwiz.mystcraft.item.ItemAgebook;
 
 import thefloydman.moremystcraft.MoreMystcraft;
@@ -49,9 +59,12 @@ import thefloydman.moremystcraft.util.BookSpawner;
 import thefloydman.moremystcraft.util.Reference;
 
 public class SubWorldGenStudy extends WorldGenerator {
-	Random r2 = new Random();
 
-	int r;
+	HashMap<String, IBlockState> blockMap;
+
+	public SubWorldGenStudy(final HashMap<String, IBlockState> map) {
+		this.blockMap = map;
+	}
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos position) {
@@ -59,10 +72,10 @@ public class SubWorldGenStudy extends WorldGenerator {
 		MinecraftServer minecraftserver = world.getMinecraftServer();
 		TemplateManager templatemanager = worldserver.getStructureTemplateManager();
 		Template template = templatemanager.getTemplate(minecraftserver,
-				new ResourceLocation(Reference.MOD_ID, "abandoned_study"));
+				new ResourceLocation(Reference.MOD_ID, "abandoned_study_version_2"));
 
 		if (template == null) {
-			System.out.println("Structure not found: abandoned_study");
+			System.out.println("Structure not found: abandoned_study_version_2");
 			return false;
 		}
 
@@ -90,16 +103,11 @@ public class SubWorldGenStudy extends WorldGenerator {
 						((TileEntityChest) tileentity)
 								.setLootTable(new ResourceLocation("mystcraft", "mystcraft_treasure"), rand.nextLong());
 					}
-				}
-
-				if (entry.getValue().equals("cobblestone_down")) {
+				} else if (entry.getValue().equals("cobblestone_down")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.COBBLESTONE.getDefaultState(), 3);
 					fillBelow(world, blockpos2.down(), Blocks.COBBLESTONE.getDefaultState());
-				}
-
-				// Add a blank Descriptive Book and a Linking Book back to the study.
-				if (entry.getValue().equals("link_point")) {
+				} else if (entry.getValue().equals("link_point")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, Blocks.AIR.getDefaultState(), 3);
 
@@ -127,6 +135,54 @@ public class SubWorldGenStudy extends WorldGenerator {
 					compoundBook.setString("TargetUUID", "00000000-0000-0000-0000-000000000000");
 					stackBook.setTagCompound(compoundBook);
 					handlerLecternRight.insertItem(0, stackBook, false);
+				} else if (entry.getValue().equals("log")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("log"));
+				} else if (entry.getValue().equals("planks")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("planks"));
+				} else if (entry.getValue().equals("slab")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("slab"));
+				} else if (entry.getValue().equals("stairs_south_bottom_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_south_bottom_straight"));
+				} else if (entry.getValue().equals("stairs_north_bottom_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_north_bottom_straight"));
+				} else if (entry.getValue().equals("stairs_south_top_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_south_top_straight"));
+				} else if (entry.getValue().equals("stairs_north_top_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_north_top_straight"));
+				} else if (entry.getValue().equals("stairs_west_bottom_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_west_bottom_straight"));
+				} else if (entry.getValue().equals("stairs_north_bottom_outer_left")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_north_bottom_outer_left"));
+				} else if (entry.getValue().equals("stairs_south_bottom_outer_right")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_south_bottom_outer_right"));
+				} else if (entry.getValue().equals("stairs_west_top_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_west_top_straight"));
+				} else if (entry.getValue().equals("stairs_east_top_straight")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_east_top_straight"));
+				} else if (entry.getValue().equals("stairs_north_top_inner_left")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_north_top_inner_left"));
+				} else if (entry.getValue().equals("stairs_north_top_inner_right")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_north_top_inner_right"));
+				} else if (entry.getValue().equals("stairs_south_top_inner_left")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_south_top_inner_left"));
+				} else if (entry.getValue().equals("stairs_south_top_inner_right")) {
+					BlockPos blockpos2 = entry.getKey();
+					world.setBlockState(blockpos2, this.blockMap.get("stairs_south_top_inner_right"));
 				}
 
 			}

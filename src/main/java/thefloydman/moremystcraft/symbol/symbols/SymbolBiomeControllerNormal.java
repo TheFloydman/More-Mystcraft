@@ -148,13 +148,13 @@ public class SymbolBiomeControllerNormal extends MoreMystcraftSymbolBase {
 			GenLayer obj = (GenLayer) new GenLayerIsland(1L);
 			GenLayer obj2;
 			obj = (obj2 = (GenLayer) new GenLayerFuzzyZoom(2000L, obj));
-			obj2 = GenLayerZoomMyst.func_35515_a(1000L, obj2, 0);
-			obj2 = GenLayerZoomMyst.func_35515_a(1000L, obj2, this.zoomscale + 1);
+			obj2 = GenLayerZoomMyst.magnify(1000L, obj2, 0);
+			obj2 = GenLayerZoomMyst.magnify(1000L, obj2, this.zoomscale + 1);
 			obj2 = (GenLayer) new GenLayerSmooth(1000L, obj2);
 			GenLayer obj3 = obj;
-			obj3 = GenLayerZoomMyst.func_35515_a(1000L, obj3, 0);
+			obj3 = GenLayerZoomMyst.magnify(1000L, obj3, 0);
 			obj3 = new GenLayerBiomeMyst(200L, obj3, par2WorldType, this.allowedBiomes);
-			obj3 = GenLayerZoomMyst.func_35515_a(1000L, obj3, 2);
+			obj3 = GenLayerZoomMyst.magnify(1000L, obj3, 2);
 			for (int i = 0; i < this.zoomscale; ++i) {
 				obj3 = new GenLayerZoomMyst(1000 + i, obj3);
 			}

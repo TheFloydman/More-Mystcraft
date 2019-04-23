@@ -54,10 +54,10 @@ public class WorldGenGiganticTree {
 	}
 
 	protected void generateTopLeaves() {
-		generateLeavesSphere(new BlockPos(xAnchor, this.treeHeightActual - 1, zAnchor));
-		generateLeavesSphere(new BlockPos(xAnchor + 3, this.treeHeightActual - 1, zAnchor));
-		generateLeavesSphere(new BlockPos(xAnchor + 3, this.treeHeightActual - 1, zAnchor + 3));
-		generateLeavesSphere(new BlockPos(xAnchor, this.treeHeightActual - 1, zAnchor + 3));
+		generateLeavesSphere(new BlockPos(xAnchor, this.treeHeightActual - 1, zAnchor + 1));
+		generateLeavesSphere(new BlockPos(xAnchor + 2, this.treeHeightActual - 1, zAnchor));
+		generateLeavesSphere(new BlockPos(xAnchor + 3, this.treeHeightActual - 1, zAnchor + 2));
+		generateLeavesSphere(new BlockPos(xAnchor + 1, this.treeHeightActual - 1, zAnchor + 3));
 	}
 
 	protected void generateAllBranchesAndLeaves() {
