@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate;
@@ -41,6 +42,8 @@ import thefloydman.moremystcraft.data.MoreMystcraftSymbolRules;
 import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.util.handlers.CraftingHandler;
+import thefloydman.moremystcraft.util.handlers.OreGenHandler;
+import thefloydman.moremystcraft.util.handlers.WorldLoadHandler;
 import thefloydman.moremystcraft.world.gen.feature.WorldGenLibraryReplacement;
 import thefloydman.moremystcraft.world.gen.feature.WorldGenStudy;
 
@@ -70,6 +73,9 @@ public class MoreMystcraft {
 		MoreMystcraftSymbols.initialize();
 		MoreMystcraftSymbolRules.initialize();
 		MoreMystcraftBlocks.init();
+		
+		MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
+		MinecraftForge.ORE_GEN_BUS.register(new OreGenHandler());
 	}
 
 	@EventHandler

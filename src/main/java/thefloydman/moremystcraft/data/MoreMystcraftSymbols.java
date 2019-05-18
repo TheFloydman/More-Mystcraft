@@ -68,6 +68,8 @@ public class MoreMystcraftSymbols {
 				new String[] { "Nature", "Stimulate", "Spur", "Elevate" });
 		registerSymbol(new SymbolNoLibraries(Reference.forMoreMystcraft("no_libraries")), null,
 				new String[] { "Civilization", "Contradict", "Inhibit", "Void" });
+		registerSymbol(new SymbolLackingOres(Reference.forMoreMystcraft("lacking_ores")), 3,
+				new String[] { "Nature", "Possibility", "Form", "Void" });
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

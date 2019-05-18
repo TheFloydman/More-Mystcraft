@@ -232,12 +232,12 @@ public class BlockUnstablePortal extends BlockBreakable {
 		if (worldIn.isRemote) {
 			return;
 		}
-		final TileEntity te = MoreMystcraftPortalUtils.getTileEntity((IBlockAccess) worldIn, pos);
-		if (te == null || !(te instanceof TileEntityUnstableBookReceptacle)) {
+		final TileEntity tileEntity = MoreMystcraftPortalUtils.getTileEntity((IBlockAccess) worldIn, pos);
+		if (tileEntity == null || !(tileEntity instanceof TileEntityUnstableBookReceptacle)) {
 			worldIn.setBlockToAir(pos);
 			return;
 		}
-		final TileEntityUnstableBookReceptacle container = (TileEntityUnstableBookReceptacle) te;
+		final TileEntityUnstableBookReceptacle container = (TileEntityUnstableBookReceptacle) tileEntity;
 		if (container.getBook().isEmpty()) {
 			worldIn.setBlockToAir(pos);
 		} else if (container.getBook().getItem().equals(ModItems.agebook)) {

@@ -19,7 +19,7 @@ import thefloydman.moremystcraft.util.Reference;
 public class MoreMystcraftSymbolRules {
 	public static void initialize() {
 		addRuleInternal("abandoned_study",
-				buildRule(2, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
+				buildRule(null, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
 		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE,
 				Reference.forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
@@ -64,6 +64,8 @@ public class MoreMystcraftSymbolRules {
 				GrammarData.BLOCK_TERRAIN, Reference.forMoreMystcraft("terrain_maze")));
 		addRuleInternal("gigantic_trees",
 				buildRule(2, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("gigantic_trees")));
+		addRuleInternal("lacking_ores",
+				buildRule(3, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("lacking_ores")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {
