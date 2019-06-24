@@ -34,8 +34,8 @@ import thefloydman.moremystcraft.symbol.MoreMystcraftSunsetRenderer;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.util.Reference;
 
-public class SymbolSunTinted extends MoreMystcraftSymbolBase {
-	public SymbolSunTinted(final ResourceLocation identifier) {
+public class SymbolMoonTinted extends MoreMystcraftSymbolBase {
+	public SymbolMoonTinted(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -44,7 +44,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 		final Number period = controller.popModifier("wavelength").asNumber();
 		final Number angle = controller.popModifier("angle").asNumber();
 		final Number phase = controller.popModifier("phase").asNumber();
-		final ColorGradient sunset = controller.popModifier("sunset").asGradient();
+		final ColorGradient sunset = null;
 		final Color color = controller.popModifier("color").asColor();
 		final Number size = controller.popModifier("size").asNumber();
 		final Number tilt = controller.popModifier("tilt").asNumber();
@@ -106,7 +106,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 
 		@Override
 		public boolean providesLight() {
-			return true;
+			return false;
 		}
 
 		@SideOnly(Side.CLIENT)
@@ -120,7 +120,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
 					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.pushMatrix();
-			final float f16 = 1.0F - world.getRainStrength(partial);
+			final float f16 = 1F - world.getRainStrength(partial);
 			GlStateManager.color(this.color.r, this.color.g, this.color.b, f16);
 
 			GlStateManager.rotate(this.angle + 90f, 0f, 1f, 0f);
@@ -154,8 +154,10 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 			tes.draw();
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 			GlStateManager.popMatrix();
-			this.renderHorizon(eng, world, celestial_period,
-					getHorizonAngle(world.getWorldTime(), (double) this.tilt, (double) this.period), partial, 1.0f);
+			if (this.gradient != null) {
+				this.renderHorizon(eng, world, celestial_period,
+						getHorizonAngle(world.getWorldTime(), (double) this.tilt, (double) this.period), partial, 1.0f);
+			}
 		}
 
 		@Override

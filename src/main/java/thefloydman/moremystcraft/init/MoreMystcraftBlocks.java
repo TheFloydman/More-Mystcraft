@@ -28,6 +28,7 @@ import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,7 +36,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import thefloydman.moremystcraft.util.Reference;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+@EventBusSubscriber
 public class MoreMystcraftBlocks {
 	public static final Block LOCKED_LECTERN = (Block) new BlockLockedLectern();
 	public static final Block LOCKED_BOOKSTAND = (Block) new BlockLockedBookstand();
@@ -70,15 +71,14 @@ public class MoreMystcraftBlocks {
 	@SubscribeEvent
 	public static void registerBlock(RegistryEvent.Register<Block> event) {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
-			event.getRegistry().registerAll(TRAFFIC_CONE);
+			event.getRegistry().register(TRAFFIC_CONE);
 		}
 	}
 
 	@SubscribeEvent
 	public static void registerItemBlock(RegistryEvent.Register<Item> event) {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
-			event.getRegistry()
-					.registerAll(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
+			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
 	}
 

@@ -23,6 +23,14 @@ tile.moremystcraft.nexus_controller.name=Nexus Controller
 tile.moremystcraft.traffic_cone.name=Safety Cone
 tile.moremystcraft.unstable_receptacle.name=Unstable Book Receptacle
 tile.moremystcraft.unstable_portal.name=Unstable Portal
+tile.moremystcraft.link_portal_new.name=New Link Portal
+tile.moremystcraft.book_receptacle_new.name=New Book Receptacle
+
+// Item names
+item.moremystcraft.maintainer_suit.name=Maintainer Suit
+
+// Entity names
+entity.moremystcraft.maintainer_suit.name=Maintainer Suit
 
 //Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size

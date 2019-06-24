@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 import thefloydman.moremystcraft.client.gui.GuiBookLocked;
+import thefloydman.moremystcraft.client.gui.GuiMaintainerSuit;
 import thefloydman.moremystcraft.client.gui.GuiNexusController;
 import thefloydman.moremystcraft.inventory.ContainerBookLocked;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
@@ -24,7 +25,8 @@ public class GuiHandler implements IGuiHandler {
 					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerBookLocked(player.inventory, tileEntity);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
-			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world.getTileEntity(new BlockPos(x, y, z));
+			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world
+					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerNexusController(player.inventory, tileEntity);
 		}
 		return null;
@@ -38,7 +40,8 @@ public class GuiHandler implements IGuiHandler {
 					.getTileEntity(new BlockPos(x, y, z));
 			return new GuiBookLocked(player.inventory, tileEntity);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
-			return new GuiNexusController((Container) getServerGuiElement(id, player, world, x, y, z), player.inventory);
+			return new GuiNexusController((Container) getServerGuiElement(id, player, world, x, y, z),
+					player.inventory);
 		}
 		return null;
 	}

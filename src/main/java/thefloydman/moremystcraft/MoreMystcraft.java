@@ -58,35 +58,35 @@ public class MoreMystcraft {
 	public static Logger logger;
 
 	@EventHandler
-	public static void preInit(FMLPreInitializationEvent event) {
+	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.preInit(event);
 		MoreMystcraftGrammarRules.initialize();
 		GameRegistry.registerWorldGenerator(new WorldGenStudy(), Integer.MAX_VALUE);
-		
+
 		if (!new MoreMystcraftConfig().getLibrariesEnabled() || new MoreMystcraftConfig().getLibrariesUpgraded()) {
 			GameRegistry.registerWorldGenerator(new WorldGenLibraryReplacement(), Integer.MAX_VALUE);
-		}		
-		
+		}
+
 		GameRegistry.registerTileEntity(TileEntityUnstableBookReceptacle.class,
 				new ResourceLocation(Reference.MOD_ID, "unstable_receptacle"));
 		MoreMystcraftSymbols.initialize();
 		MoreMystcraftSymbolRules.initialize();
 		MoreMystcraftBlocks.init();
-		
+
 		MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
 		MinecraftForge.ORE_GEN_BUS.register(new OreGenHandler());
 	}
 
 	@EventHandler
-	public static void init(FMLInitializationEvent event) {
+	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
 		CraftingHandler.removeRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 
 	@EventHandler
-	public static void postInit(FMLPostInitializationEvent event) {
+	public void postInit(FMLPostInitializationEvent event) {
 
 	}
 

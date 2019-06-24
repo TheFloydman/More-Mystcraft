@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -25,6 +26,8 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.concurrent.Callable;
+
 import com.xcompwiz.mystcraft.api.MystObjects;
 import com.xcompwiz.mystcraft.api.event.LinkEvent;
 import com.xcompwiz.mystcraft.api.exception.APIUndefined;
@@ -37,14 +40,21 @@ import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.entity.capability.CapabilityMaintainerSuit;
+import thefloydman.moremystcraft.entity.capability.CapabilitySuited;
+import thefloydman.moremystcraft.entity.capability.IMaintainerSuit;
+import thefloydman.moremystcraft.entity.capability.ISuited;
+import thefloydman.moremystcraft.entity.capability.StorageMaintainerSuit;
+import thefloydman.moremystcraft.entity.capability.StorageSuited;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
+import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.proxy.ClientProxy;
 import thefloydman.moremystcraft.util.Reference;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
+		MoreMystcraftPacketHandler.register();
 	}
 
 	public DimensionAPI dimensionApi;
@@ -65,18 +75,6 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 
-	}
-
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void registerRenders(ModelRegistryEvent event) {
-		ClientProxy.registerRenders(event);
-	}
-	
-	@SideOnly(Side.CLIENT)
-	@SubscribeEvent
-	public static void registerColors(ColorHandlerEvent event) {
-		ClientProxy.registerColors(event);
 	}
 
 }
