@@ -40,7 +40,7 @@ public class EntityMaintainerSuit extends EntityLiving {
 
 	@Override
 	public boolean canDespawn() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -65,6 +65,9 @@ public class EntityMaintainerSuit extends EntityLiving {
 
 	@Override
 	public void onUpdate() {
+		if (this.getPosition().getY() <= 0) {
+			this.setPosition(this.getPosition().getX(), 0.0D, this.getPosition().getZ());
+		}
 		super.onUpdate();
 	}
 
@@ -94,8 +97,8 @@ public class EntityMaintainerSuit extends EntityLiving {
 			strafe = 0.0F;
 			forward = entitylivingbase.moveForward < 0 ? 0.0F : entitylivingbase.moveForward;
 			this.setAIMoveSpeed(0.025F);
-			super.travel(strafe, vertical, forward);
 		}
+		super.travel(strafe, vertical, forward);
 	}
 
 	@Override
@@ -108,9 +111,15 @@ public class EntityMaintainerSuit extends EntityLiving {
 			}
 		}
 	}
-	
+
 	@Override
-    public void onRemovedFromWorld() {
-        super.onRemovedFromWorld();
-    }
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
+	}
+
+	@Override
+	public boolean shouldDismountInWater(Entity rider) {
+		return false;
+	}
+
 }

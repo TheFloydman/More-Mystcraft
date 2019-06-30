@@ -4,22 +4,17 @@ import java.util.UUID;
 
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 
-public class CapabilityMaintainerSuit implements IMaintainerSuit {
+public class CapabilityPotionDummy implements IPotionDummy {
 
 	UUID uuid = UUID.randomUUID();
 
 	@Override
-	public void setSuit(UUID uuid) {
+	public void setParent(UUID uuid) {
 		this.uuid = uuid;
 	}
-
+	
 	@Override
-	public void clearSuit() {
-		this.uuid = UUID.randomUUID();
-	}
-
-	@Override
-	public UUID getSuit() {
+	public UUID getParent() {
 		return this.uuid;
 	}
 

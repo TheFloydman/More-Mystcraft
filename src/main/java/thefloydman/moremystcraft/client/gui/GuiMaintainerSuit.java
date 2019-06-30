@@ -1,7 +1,6 @@
 package thefloydman.moremystcraft.client.gui;
 
 import java.awt.Color;
-import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -10,32 +9,28 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IJumpingMount;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
-import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.util.Reference;
+import thefloydman.moremystcraft.util.handlers.PotionListHandler;
 
-@EventBusSubscriber
 public class GuiMaintainerSuit extends Gui {
 
-	protected static int viewWidth = 192;
-	protected static int viewHeight = 128;
-	protected static int viewTop;
-	protected static int viewBottom;
-	protected static int viewLeft;
-	protected static int viewRight;
-	protected static int width;
-	protected static int height;
+	protected int viewWidth = 192;
+	protected int viewHeight = 128;
+	protected int viewTop;
+	protected int viewBottom;
+	protected int viewLeft;
+	protected int viewRight;
+	protected int width;
+	protected int height;
 
-	protected static double zLevel = -1000.0D;
+	protected double zLevel = -1000.0D;
 
 	@SubscribeEvent
-	public static void renderHPOverlay(RenderGameOverlayEvent.Pre event) {
+	public void renderHPOverlay(RenderGameOverlayEvent.Pre event) {
 		boolean ridingMaintainerSuit = false;
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		Entity entity = player.getRidingEntity();
@@ -56,46 +51,52 @@ public class GuiMaintainerSuit extends Gui {
 			drawRect(0, viewTop, viewLeft, viewBottom, color, zLevel);
 			drawRect(viewRight, viewTop, width, viewBottom, color, zLevel);
 			drawRect(0, viewBottom, width, height, color, zLevel);
-			color = Color.HSBtoRGB(0.59444444444444444444444444444444F, 0.27F, 1.0F);
-			float alpha = 0.105F;
-			drawGlass(viewLeft, viewTop, viewLeft + 4, viewBottom);
-			drawGlass(viewLeft + 4, viewTop, viewRight - 4, viewTop + 4);
-			drawGlass(viewLeft + 4, viewBottom - 4, viewRight - 4, viewBottom);
-			drawGlass(viewRight - 4, viewTop, viewRight, viewBottom);
-			drawPixel(2, 4);
-			drawPixel(3, 3);
-			drawPixel(4, 2);
-			drawPixel(18, 4);
-			drawPixel(19, 3);
-			drawPixel(20, 2);
-			drawPixel(34, 4);
-			drawPixel(35, 3);
-			drawPixel(36, 2);
-			drawPixel(2, 20);
-			drawPixel(3, 19);
-			drawPixel(4, 18);
-			drawPixel(18, 20);
-			drawPixel(19, 19);
-			drawPixel(20, 18);
-			drawPixel(34, 20);
-			drawPixel(35, 19);
-			drawPixel(36, 18);
-			drawPixel(12, 13);
-			drawPixel(13, 12);
-			drawPixel(28, 13);
-			drawPixel(29, 12);
-			drawPixel(44, 13);
-			drawPixel(45, 12);
-			drawPixel(12, 29);
-			drawPixel(13, 28);
-			drawPixel(28, 29);
-			drawPixel(29, 28);
-			drawPixel(44, 29);
-			drawPixel(45, 28);
+			Minecraft.getMinecraft().renderEngine
+					.bindTexture(Reference.forMoreMystcraft("textures/gui/maintainer_suit.png"));
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.11F);
+			int textureX = 0;
+			drawTexturedRect(viewLeft, viewTop, textureX, 0, 192, 128, zLevel);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			int dim = Minecraft.getMinecraft().player.dimension;
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.blindness") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.digSlowDown") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 16, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.hunger") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 32, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.confusion") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 48, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.poison") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 64, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.moveSlowdown") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 80, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.weakness") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 96, textureX, 128, 16, 16, zLevel);
+			if (PotionListHandler.getPotionsList().containsKey(dim))
+				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.wither") ? 16 : 0;
+			drawTexturedRect(viewRight, viewTop + 112, textureX, 128, 16, 16, zLevel);
+			color = Color.WHITE.getRGB();
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Blindness", viewRight + 16, viewTop + 4, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Fatigue", viewRight + 16, viewTop + 20, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Hunger", viewRight + 16, viewTop + 36, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Nausea", viewRight + 16, viewTop + 52, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Poison", viewRight + 16, viewTop + 68, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Slowness", viewRight + 16, viewTop + 84, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Weakness", viewRight + 16, viewTop + 100, color);
+			super.drawString(Minecraft.getMinecraft().fontRenderer, "Wither", viewRight + 16, viewTop + 116, color);
+			GlStateManager.disableAlpha();
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
-	
-	public static void drawPixel(int x, int y) {
+
+	public void drawPixel(int x, int y) {
 		int left = viewLeft + (x * 4);
 		int top = viewTop + (y * 4);
 		int right = left + 4;
@@ -103,13 +104,13 @@ public class GuiMaintainerSuit extends Gui {
 		drawGlass(left, top, right, bottom);
 	}
 
-	public static void drawGlass(int left, int top, int right, int bottom) {
+	public void drawGlass(int left, int top, int right, int bottom) {
 		int color = Color.HSBtoRGB(0.59444444444444444444444444444444F, 0.27F, 1.0F);
-		float alpha = 0.105F;
+		float alpha = 0.1F;
 		drawRect(left, top, right, bottom, color, zLevel, alpha);
 	}
 
-	public static void drawRect(int left, int top, int right, int bottom, int color, double zLevel) {
+	public void drawRect(int left, int top, int right, int bottom, int color, double zLevel) {
 		float alpha = (float) (color >> 24 & 255) / 255.0F;
 		drawRect(left, top, right, bottom, color, zLevel, alpha);
 	}
@@ -118,20 +119,14 @@ public class GuiMaintainerSuit extends Gui {
 	 * Draws a solid-color rectangle on the screen at the specified z-level. Copied
 	 * from Minecraft's Gui class to allow for z-level manipulation.
 	 * 
-	 * @param left
-	 *            The origin x-value.
-	 * @param top
-	 *            The origin y-value.
-	 * @param right
-	 *            The destination x-value.
-	 * @param bottom
-	 *            The destination y-value.
-	 * @param color
-	 *            The color.
-	 * @param zLevel
-	 *            The z-level at which the rectangle will be drawn.
+	 * @param left   The origin x-value.
+	 * @param top    The origin y-value.
+	 * @param right  The destination x-value.
+	 * @param bottom The destination y-value.
+	 * @param color  The color.
+	 * @param zLevel The z-level at which the rectangle will be drawn.
 	 */
-	public static void drawRect(int left, int top, int right, int bottom, int color, double zLevel, float alpha) {
+	public void drawRect(int left, int top, int right, int bottom, int color, double zLevel, float alpha) {
 		if (left < right) {
 			int i = left;
 			left = right;
@@ -163,28 +158,27 @@ public class GuiMaintainerSuit extends Gui {
 		tessellator.draw();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.enableTexture2D();
-		GlStateManager.disableBlend();
 	}
 
-	public static void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height) {
+	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height, double z) {
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos((double) (x + 0), (double) (y + height), zLevel)
+		bufferbuilder.pos((double) (x + 0), (double) (y + height), z)
 				.tex((double) ((float) (textureX + 0) * 0.00390625F),
 						(double) ((float) (textureY + height) * 0.00390625F))
 				.endVertex();
-		bufferbuilder.pos((double) (x + width), (double) (y + height), zLevel)
+		bufferbuilder.pos((double) (x + width), (double) (y + height), z)
 				.tex((double) ((float) (textureX + width) * 0.00390625F),
 						(double) ((float) (textureY + height) * 0.00390625F))
 				.endVertex();
-		bufferbuilder.pos((double) (x + width), (double) (y + 0), zLevel)
+		bufferbuilder.pos((double) (x + width), (double) (y + 0), z)
 				.tex((double) ((float) (textureX + width) * 0.00390625F),
 						(double) ((float) (textureY + 0) * 0.00390625F))
 				.endVertex();
-		bufferbuilder.pos((double) (x + 0), (double) (y + 0), zLevel)
+		bufferbuilder.pos((double) (x + 0), (double) (y + 0), z)
 				.tex((double) ((float) (textureX + 0) * 0.00390625F), (double) ((float) (textureY + 0) * 0.00390625F))
 				.endVertex();
 		tessellator.draw();

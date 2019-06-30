@@ -10,21 +10,23 @@ import java.util.List;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import thefloydman.moremystcraft.util.Reference;
 
-public class MoreMystcraftWorldSavedData extends WorldSavedData {
+public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
 	private static final String NAME = Reference.MOD_ID;
 	private boolean conflictingOrePagesInstabilityAdded = false;
-	private static MoreMystcraftWorldSavedData instance;
+	private NBTTagList potionEffects = new NBTTagList();
+	private static MoreMystcraftSavedDataPerDimension instance;
 
-	public MoreMystcraftWorldSavedData() {
+	public MoreMystcraftSavedDataPerDimension() {
 		super(NAME);
 	}
 
-	public MoreMystcraftWorldSavedData(String str) {
+	public MoreMystcraftSavedDataPerDimension(String str) {
 		super(str);
 		markDirty();
 	}
@@ -32,31 +34,43 @@ public class MoreMystcraftWorldSavedData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		conflictingOrePagesInstabilityAdded = nbt.getBoolean("conflictingOrePagesInstabilityAdded");
+		potionEffects = nbt.getTagList("potionEffects", 8);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		nbt.setBoolean("conflictingOrePagesInstabilityAdded", conflictingOrePagesInstabilityAdded);
+		nbt.setTag("potionEffects", potionEffects);
 		return nbt;
 	}
 
-	public boolean getAdded() {
+	public static MoreMystcraftSavedDataPerDimension get(World world) {
+		MapStorage storage = world.getPerWorldStorage();
+		instance = (MoreMystcraftSavedDataPerDimension) storage.getOrLoadData(MoreMystcraftSavedDataPerDimension.class,
+				NAME);
+		if (instance == null) {
+			instance = new MoreMystcraftSavedDataPerDimension();
+			storage.setData(NAME, instance);
+		}
+		return instance;
+	}
+
+	public boolean getConflictingOreInstabilityAdded() {
 		return conflictingOrePagesInstabilityAdded;
 	}
 
-	public void setAdded(boolean added) {
+	public void setConflictingOreInstabilityAdded(boolean added) {
 		conflictingOrePagesInstabilityAdded = added;
 		markDirty();
 	}
 
-	public static MoreMystcraftWorldSavedData get(World world) {
-		MapStorage storage = world.getPerWorldStorage();
-		instance = (MoreMystcraftWorldSavedData) storage.getOrLoadData(MoreMystcraftWorldSavedData.class, NAME);
-		if (instance == null) {
-			instance = new MoreMystcraftWorldSavedData();
-			storage.setData(NAME, instance);
-		}
-		return instance;
+	public NBTTagList getPotionEffects() {
+		return potionEffects;
+	}
+
+	public void setPotionEffects(NBTTagList nbt) {
+		potionEffects = nbt;
+		markDirty();
 	}
 
 }

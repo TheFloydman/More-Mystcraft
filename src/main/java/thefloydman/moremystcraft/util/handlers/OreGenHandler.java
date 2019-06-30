@@ -1,23 +1,17 @@
 package thefloydman.moremystcraft.util.handlers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import com.xcompwiz.mystcraft.Mystcraft;
-import com.xcompwiz.mystcraft.api.event.DenseOresEvent;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import thefloydman.moremystcraft.util.Reference;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import thefloydman.moremystcraft.util.Reference;
 
 public class OreGenHandler {
 

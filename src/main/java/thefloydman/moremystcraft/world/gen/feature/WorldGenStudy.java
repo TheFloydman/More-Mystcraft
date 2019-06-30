@@ -47,6 +47,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import com.xcompwiz.mystcraft.Mystcraft;
 import com.xcompwiz.mystcraft.api.hook.DimensionAPI;
+import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 import com.xcompwiz.mystcraft.world.agedata.AgeData;
 import com.xcompwiz.mystcraft.world.agedata.AgeData.AgeDataData;
 import com.xcompwiz.mystcraft.api.impl.linking.DimensionAPIWrapper;
@@ -88,7 +89,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 		try {
 			if (dimId < 0) {
 				return;
-			} else if (world.provider.getDimensionType().equals(Mystcraft.dimensionType)) {
+			} else if (world.provider instanceof WorldProviderMyst) {
 				AgeData data = new AgeData("currentDim").getAge(dimId, false);
 				List symbolList = data.getSymbols(false);
 				ResourceLocation studyLoc = Reference.forMoreMystcraft("abandoned_study");

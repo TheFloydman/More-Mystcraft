@@ -7,16 +7,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.client.model.ModelMaintainerSuit;
+import thefloydman.moremystcraft.client.model.ModelPotionDummy;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
+import thefloydman.moremystcraft.entity.EntityPotionDummy;
 
-public class RenderMaintainerSuit extends RenderLiving<EntityMaintainerSuit> {
+public class RenderPotionDummy extends RenderLiving<EntityPotionDummy> {
 
-	public RenderMaintainerSuit(RenderManager renderManagerIn) {
-		super(renderManagerIn, new ModelMaintainerSuit(), 1.0F);
+	public RenderPotionDummy(RenderManager renderManagerIn) {
+		super(renderManagerIn, new ModelPotionDummy(), 1.0F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityMaintainerSuit entity) {
+	protected ResourceLocation getEntityTexture(EntityPotionDummy entity) {
 		return Reference.forMoreMystcraft("textures/entity/maintainer_suit.png");
 	}
 

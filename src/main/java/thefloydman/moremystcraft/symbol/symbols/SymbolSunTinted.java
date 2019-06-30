@@ -6,30 +6,24 @@
 
 package thefloydman.moremystcraft.symbol.symbols;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import thefloydman.moremystcraft.lwjgl.Matrix3f;
-import thefloydman.moremystcraft.lwjgl.Vector3f;
 
 import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
-import com.xcompwiz.mystcraft.symbol.SunsetRenderer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thefloydman.moremystcraft.lwjgl.Matrix3f;
+import thefloydman.moremystcraft.lwjgl.Vector3f;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSunsetRenderer;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.util.Reference;

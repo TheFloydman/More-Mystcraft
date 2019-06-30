@@ -6,31 +6,31 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ProviderSuited implements ICapabilitySerializable<NBTBase> {
+public class ProviderPotionDummy implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(ISuited.class)
-	public static final Capability<ISuited> SUITED = null;
+	@CapabilityInject(IPotionDummy.class)
+	public static final Capability<IPotionDummy> POTION_DUMMY = null;
 
-	private ISuited instance = SUITED.getDefaultInstance();
+	private IPotionDummy instance = POTION_DUMMY.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability.equals(SUITED);
+		return capability.equals(POTION_DUMMY);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability.equals(SUITED) ? SUITED.<T>cast(this.instance) : null;
+		return capability.equals(POTION_DUMMY) ? POTION_DUMMY.<T>cast(this.instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
-		return SUITED.getStorage().writeNBT(SUITED, this.instance, null);
+		return POTION_DUMMY.getStorage().writeNBT(POTION_DUMMY, this.instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		SUITED.getStorage().readNBT(SUITED, this.instance, null, nbt);
+		POTION_DUMMY.getStorage().readNBT(POTION_DUMMY, this.instance, null, nbt);
 	}
 
 }
