@@ -79,12 +79,14 @@ public class EntityPotionDummy extends EntityLiving {
 		UUID uuid = this.getParent();
 		if (this.getParent() != null) {
 			EntityPlayer parent = this.getEntityWorld().getPlayerEntityByUUID(uuid);
-			this.setPosition(parent.posX, parent.posY + 300, parent.posZ);
-			this.setHealth(20.0F);
-		} else {
-			this.setDead();
-			this.despawnEntity();
+			if (parent != null) {
+				this.setPosition(parent.posX, parent.posY + 300, parent.posZ);
+				this.setHealth(20.0F);
+				return;
+			}
 		}
+		this.setDead();
+		this.despawnEntity();
 	}
 
 	@Override

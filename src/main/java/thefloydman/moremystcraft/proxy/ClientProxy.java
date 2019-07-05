@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thefloydman.moremystcraft.client.gui.GuiMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderUnstableBookReceptacle;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
@@ -33,6 +35,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
+		MinecraftForge.EVENT_BUS.register(new GuiMaintainerSuit());
 	}
 
 	@Override

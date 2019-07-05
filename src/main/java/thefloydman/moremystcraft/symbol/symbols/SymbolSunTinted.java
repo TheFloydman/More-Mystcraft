@@ -206,7 +206,7 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 
 			/*
 			 * This lovely section of code adjusts the motion of the mock sun so that
-			 * sunrises and sunsets laster longer or shorter depending on the size of the
+			 * sunrises and sunsets last longer or shorter depending on the size of the
 			 * rendered sun.
 			 */
 

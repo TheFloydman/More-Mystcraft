@@ -58,7 +58,6 @@ public class MoreMystcraft {
 		MoreMystcraftBlocks.init();
 
 		MinecraftForge.EVENT_BUS.register(new WorldLoadHandler());
-		MinecraftForge.EVENT_BUS.register(new GuiMaintainerSuit());
 		MinecraftForge.ORE_GEN_BUS.register(new OreGenHandler());
 	}
 

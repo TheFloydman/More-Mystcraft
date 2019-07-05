@@ -36,7 +36,6 @@ public class ItemMaintainerSuit extends Item {
 			if (pos != null) {
 				if (world.getBlockState(pos).getMaterial().isSolid()) {
 					MoreMystcraftPacketHandler.spawnMaintainerSuit(pos, player.rotationYaw);
-					System.out.println(player.rotationYaw);
 				}
 			}
 			return ActionResult.newResult(EnumActionResult.SUCCESS, handStack);

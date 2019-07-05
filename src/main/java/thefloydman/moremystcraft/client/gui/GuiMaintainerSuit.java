@@ -29,6 +29,11 @@ public class GuiMaintainerSuit extends Gui {
 
 	protected double zLevel = -1000.0D;
 
+	protected String[] effectsCode = { "effect.blindness", "effect.digSlowDown", "effect.hunger", "effect.confusion",
+			"effect.poison", "effect.moveSlowdown", "effect.weakness", "effect.wither" };
+	protected String[] effectsName = { "Blindness", "Fatigue", "Hunger", "Nausea", "Poison", "Slowness", "Weakness",
+			"Wither" };
+
 	@SubscribeEvent
 	public void renderHPOverlay(RenderGameOverlayEvent.Pre event) {
 		boolean ridingMaintainerSuit = false;
@@ -38,6 +43,7 @@ public class GuiMaintainerSuit extends Gui {
 			ridingMaintainerSuit = true;
 		}
 		if (ridingMaintainerSuit) {
+			GlStateManager.pushMatrix();
 			width = event.getResolution().getScaledWidth();
 			height = event.getResolution().getScaledHeight();
 			viewTop = (height - viewHeight) / 2;
@@ -51,68 +57,40 @@ public class GuiMaintainerSuit extends Gui {
 			drawRect(0, viewTop, viewLeft, viewBottom, color, zLevel);
 			drawRect(viewRight, viewTop, width, viewBottom, color, zLevel);
 			drawRect(0, viewBottom, width, height, color, zLevel);
-			Minecraft.getMinecraft().renderEngine
-					.bindTexture(Reference.forMoreMystcraft("textures/gui/maintainer_suit.png"));
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 0.11F);
 			int textureX = 0;
+			Minecraft.getMinecraft().renderEngine
+					.bindTexture(Reference.forMoreMystcraft("textures/gui/maintainer_suit.png"));
 			drawTexturedRect(viewLeft, viewTop, textureX, 0, 192, 128, zLevel);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			int dim = Minecraft.getMinecraft().player.dimension;
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.blindness") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.digSlowDown") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 16, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.hunger") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 32, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.confusion") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 48, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.poison") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 64, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.moveSlowdown") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 80, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.weakness") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 96, textureX, 128, 16, 16, zLevel);
-			if (PotionListHandler.getPotionsList().containsKey(dim))
-				textureX = PotionListHandler.getPotionsList().get(dim).contains("effect.wither") ? 16 : 0;
-			drawTexturedRect(viewRight, viewTop + 112, textureX, 128, 16, 16, zLevel);
-			color = Color.WHITE.getRGB();
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Blindness", viewRight + 16, viewTop + 4, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Fatigue", viewRight + 16, viewTop + 20, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Hunger", viewRight + 16, viewTop + 36, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Nausea", viewRight + 16, viewTop + 52, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Poison", viewRight + 16, viewTop + 68, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Slowness", viewRight + 16, viewTop + 84, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Weakness", viewRight + 16, viewTop + 100, color);
-			super.drawString(Minecraft.getMinecraft().fontRenderer, "Wither", viewRight + 16, viewTop + 116, color);
-			GlStateManager.disableAlpha();
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			int topDelta = 0;
+			for (int i = 0; i < this.effectsCode.length; i++) {
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				textureX = 0;
+				color = Color.DARK_GRAY.getRGB();
+				if (PotionListHandler.getPotionsList().containsKey(dim)) {
+					if (PotionListHandler.getPotionsList().get(dim).contains(this.effectsCode[i])) {
+						textureX = 16;
+						color = Color.WHITE.getRGB();
+					}
+				} else {
+					textureX = 0;
+					color = Color.DARK_GRAY.getRGB();
+				}
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				Minecraft.getMinecraft().renderEngine
+						.bindTexture(Reference.forMoreMystcraft("textures/gui/maintainer_suit.png"));
+				drawTexturedRect(viewRight, viewTop + topDelta, textureX, 128, 16, 16, zLevel);
+				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+				super.drawString(Minecraft.getMinecraft().fontRenderer, this.effectsName[i], viewRight + 16,
+						viewTop + topDelta + 4, color);
+				topDelta += 16;
+			}
+			GlStateManager.popMatrix();
 		}
-	}
+		// Re-binds original texture so the HUD renders correctly.
+		Minecraft.getMinecraft().renderEngine.bindTexture(Gui.ICONS);
 
-	public void drawPixel(int x, int y) {
-		int left = viewLeft + (x * 4);
-		int top = viewTop + (y * 4);
-		int right = left + 4;
-		int bottom = top + 4;
-		drawGlass(left, top, right, bottom);
-	}
-
-	public void drawGlass(int left, int top, int right, int bottom) {
-		int color = Color.HSBtoRGB(0.59444444444444444444444444444444F, 0.27F, 1.0F);
-		float alpha = 0.1F;
-		drawRect(left, top, right, bottom, color, zLevel, alpha);
-	}
-
-	public void drawRect(int left, int top, int right, int bottom, int color, double zLevel) {
-		float alpha = (float) (color >> 24 & 255) / 255.0F;
-		drawRect(left, top, right, bottom, color, zLevel, alpha);
 	}
 
 	/**
@@ -126,7 +104,7 @@ public class GuiMaintainerSuit extends Gui {
 	 * @param color  The color.
 	 * @param zLevel The z-level at which the rectangle will be drawn.
 	 */
-	public void drawRect(int left, int top, int right, int bottom, int color, double zLevel, float alpha) {
+	public void drawRect(int left, int top, int right, int bottom, int color, double zLevel) {
 		if (left < right) {
 			int i = left;
 			left = right;
@@ -142,6 +120,7 @@ public class GuiMaintainerSuit extends Gui {
 		float red = (float) (color >> 16 & 255) / 255.0F;
 		float green = (float) (color >> 8 & 255) / 255.0F;
 		float blue = (float) (color & 255) / 255.0F;
+		float alpha = (float) (color >> 24 & 255) / 255.0F;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		GlStateManager.enableBlend();
@@ -160,6 +139,18 @@ public class GuiMaintainerSuit extends Gui {
 		GlStateManager.enableTexture2D();
 	}
 
+	/**
+	 * Draws a textured rectangle on the screen at the specified z-level. Copied
+	 * from Minecraft's Gui class to allow for z-level manipulation.
+	 * 
+	 * @param x        The origin x-value on-screen.
+	 * @param y        The origin y-value on-screen.
+	 * @param textureX The origin x-value in the texture.
+	 * @param textureY The origin y-value in the texture.
+	 * @param width    The width of the final texture.
+	 * @param height   The height of the final texture.
+	 * @param zLevel   The z-level at which the rectangle will be drawn.
+	 */
 	public void drawTexturedRect(int x, int y, int textureX, int textureY, int width, int height, double z) {
 		float f = 0.00390625F;
 		float f1 = 0.00390625F;

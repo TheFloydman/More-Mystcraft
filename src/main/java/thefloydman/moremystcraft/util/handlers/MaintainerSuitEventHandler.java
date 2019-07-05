@@ -16,8 +16,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
@@ -35,7 +33,8 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
@@ -241,6 +240,7 @@ public class MaintainerSuitEventHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void renderPlayer(RenderPlayerEvent.Pre event) {
 		EntityPlayer player = event.getEntityPlayer();
@@ -251,6 +251,7 @@ public class MaintainerSuitEventHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void renderHand(RenderSpecificHandEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
@@ -283,6 +284,7 @@ public class MaintainerSuitEventHandler {
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public static void renderOverlay(RenderGameOverlayEvent event) {
 		if (event.getType().equals(ElementType.CROSSHAIRS)) {

@@ -25,7 +25,7 @@ public class EntityMaintainerSuit extends EntityLiving {
 
 	public EntityMaintainerSuit(World world) {
 		super(world);
-		this.setSize(1.0F, 1.0F);
+		this.setSize(1.1F, 2.5F);
 		this.setHealth(100.0F);
 	}
 
