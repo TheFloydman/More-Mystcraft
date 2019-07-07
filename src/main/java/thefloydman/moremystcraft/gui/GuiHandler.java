@@ -24,6 +24,10 @@ public class GuiHandler implements IGuiHandler {
 			final TileEntityBookRotateable tileEntity = (TileEntityBookRotateable) player.world
 					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerBookLocked(player.inventory, tileEntity);
+		} else if (id == MoreMystcraftGUIs.BANNER_INSCRIBER.ordinal()) {
+			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world
+					.getTileEntity(new BlockPos(x, y, z));
+			return new ContainerNexusController(player.inventory, tileEntity);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
 			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world
 					.getTileEntity(new BlockPos(x, y, z));
