@@ -20,6 +20,7 @@ import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.entity.capability.IPotionDummy;
 import thefloydman.moremystcraft.entity.capability.StoragePotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.MoreMystcraftLoomPatterns;
 import thefloydman.moremystcraft.tileentity.TileEntityBannerInscriber;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
@@ -53,6 +54,7 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
+		MoreMystcraftLoomPatterns.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

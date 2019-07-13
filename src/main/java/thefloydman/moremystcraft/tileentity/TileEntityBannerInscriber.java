@@ -25,26 +25,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.inventory.ContainerBannerInscriber.Slots;
+import thefloydman.moremystcraft.util.MystcraftWords;
 import thefloydman.moremystcraft.util.Reference;
 
 public class TileEntityBannerInscriber extends TileEntity implements ISidedInventory {
 
 	public NonNullList<ItemStack> itemStacks;
 	private String customName;
-
-	public static List<String> mystcraftWords = Arrays.asList(WordData.Balance, WordData.Believe, WordData.Celestial,
-			WordData.Chain, WordData.Change, WordData.Chaos, WordData.Civilization, WordData.Constraint,
-			WordData.Contradict, WordData.Control, WordData.Convey, WordData.Creativity, WordData.Cycle,
-			WordData.Dependence, WordData.Discover, WordData.Dynamic, WordData.Elevate, WordData.Encourage,
-			WordData.Energy, WordData.Entropy, WordData.Ethereal, WordData.Exist, WordData.Explore, WordData.Flow,
-			WordData.Force, WordData.Form, WordData.Future, WordData.Growth, WordData.Harmony, WordData.Honor,
-			WordData.Image, WordData.Infinite, WordData.Inhibit, WordData.Intelligence, WordData.Love, WordData.Machine,
-			WordData.Merge, WordData.Momentum, WordData.Motion, WordData.Mutual, WordData.Nature, WordData.Nurture,
-			WordData.Order, WordData.Possibility, WordData.Power, WordData.Question, WordData.Rebirth,
-			WordData.Remember, WordData.Resilience, WordData.Resurrect, WordData.Sacrifice, WordData.Society,
-			WordData.Spur, WordData.Static, WordData.Stimulate, WordData.Survival, WordData.Sustain, WordData.System,
-			WordData.Terrain, WordData.Time, WordData.Tradition, WordData.Transform, WordData.Void, WordData.Weave,
-			WordData.Wisdom);
 
 	public static List<EnumDyeColor> inscriptionColors = Arrays
 			.asList(new EnumDyeColor[] { EnumDyeColor.BLACK, EnumDyeColor.RED, EnumDyeColor.GREEN, EnumDyeColor.BROWN,
@@ -251,7 +238,7 @@ public class TileEntityBannerInscriber extends TileEntity implements ISidedInven
 				if (words != null) {
 					int index = Slots.OUTPUT_0.ordinal();
 					for (String str : words) {
-						for (String word : mystcraftWords) {
+						for (String word : MystcraftWords.getBaseWords()) {
 							if (str.toLowerCase().equals(word.toLowerCase())) {
 								NBTTagList list = new NBTTagList();
 								existingPatterns.forEach((s, i) -> {
