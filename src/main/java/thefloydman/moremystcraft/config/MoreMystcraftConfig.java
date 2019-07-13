@@ -98,6 +98,14 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Traffic cone recipe enabled")
 		public boolean trafficConeRecipeEnabled = true;
+		
+		@RequiresMcRestart
+		@Name("Banner inscriber enabled")
+		public boolean bannerInscriberEnabled = true;
+
+		@RequiresMcRestart
+		@Name("Banner inscriber recipe enabled")
+		public boolean bannerInscriberRecipeEnabled = true;
 
 	}
 
@@ -176,6 +184,14 @@ public class MoreMystcraftConfig {
 
 	public boolean getTrafficConeRecipeEnabled() {
 		return catMisc.trafficConeRecipeEnabled;
+	}
+	
+	public boolean getBannerInscriberEnabled() {
+		return catMisc.bannerInscriberEnabled;
+	}
+
+	public boolean getBannerInscriberRecipeEnabled() {
+		return catMisc.bannerInscriberRecipeEnabled;
 	}
 
 	public boolean getUnstableReceptacleEnabled() {

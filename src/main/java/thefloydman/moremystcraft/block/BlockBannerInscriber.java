@@ -9,16 +9,23 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
-import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntityBannerInscriber;
 
 public class BlockBannerInscriber extends BlockContainer implements ITileEntityProvider {
+
+	public static final AxisAlignedBB BANNER_INSCRIBER_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.65D, 1.0D);
 
 	public BlockBannerInscriber() {
 		super(Material.IRON);
@@ -48,7 +55,38 @@ public class BlockBannerInscriber extends BlockContainer implements ITileEntityP
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityNexusController();
+		return new TileEntityBannerInscriber();
 	}
 
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		if (this.hasTileEntity) {
+			TileEntity tileEntity = worldIn.getTileEntity(pos);
+			if (tileEntity instanceof IInventory) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileEntity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
+		}
+		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return BANNER_INSCRIBER_AABB;
+	}
+
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.MODEL;
+	}
 }

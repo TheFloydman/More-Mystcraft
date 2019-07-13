@@ -1,39 +1,31 @@
 package thefloydman.moremystcraft.init;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.xcompwiz.mystcraft.config.MystConfig;
 import com.xcompwiz.mystcraft.data.ModRegistryPrimer;
 
-import thefloydman.moremystcraft.block.BlockTrafficCone;
-import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
-import thefloydman.moremystcraft.block.BlockUnstablePortal;
-import thefloydman.moremystcraft.block.BlockLockedBookstand;
-import thefloydman.moremystcraft.block.BlockLockedLectern;
-import thefloydman.moremystcraft.block.BlockNexusController;
-import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-
+import thefloydman.moremystcraft.block.BlockBannerInscriber;
+import thefloydman.moremystcraft.block.BlockLockedBookstand;
+import thefloydman.moremystcraft.block.BlockLockedLectern;
+import thefloydman.moremystcraft.block.BlockTrafficCone;
+import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
+import thefloydman.moremystcraft.block.BlockUnstablePortal;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -43,6 +35,7 @@ public class MoreMystcraftBlocks {
 	public static final Block TRAFFIC_CONE = (Block) new BlockTrafficCone();
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
+	public static final Block BANNER_INSCRIBER = (Block) new BlockBannerInscriber();
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -73,6 +66,9 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
+		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
+			event.getRegistry().register(BANNER_INSCRIBER);
+		}
 	}
 
 	@SubscribeEvent
@@ -80,12 +76,19 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
+		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
+			event.getRegistry()
+					.register(new ItemBlock(BANNER_INSCRIBER).setRegistryName(BANNER_INSCRIBER.getRegistryName()));
+		}
 	}
 
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
+		}
+		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
+			registerRender(Item.getItemFromBlock(BANNER_INSCRIBER));
 		}
 	}
 
