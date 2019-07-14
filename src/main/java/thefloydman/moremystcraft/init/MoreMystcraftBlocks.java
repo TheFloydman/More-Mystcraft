@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import thefloydman.moremystcraft.block.BlockBannerInscriber;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockTrafficCone;
@@ -35,7 +34,6 @@ public class MoreMystcraftBlocks {
 	public static final Block TRAFFIC_CONE = (Block) new BlockTrafficCone();
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
-	public static final Block BANNER_INSCRIBER = (Block) new BlockBannerInscriber();
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -66,9 +64,6 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
-		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
-			event.getRegistry().register(BANNER_INSCRIBER);
-		}
 	}
 
 	@SubscribeEvent
@@ -76,19 +71,12 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
-		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
-			event.getRegistry()
-					.register(new ItemBlock(BANNER_INSCRIBER).setRegistryName(BANNER_INSCRIBER.getRegistryName()));
-		}
 	}
 
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
-		}
-		if (new MoreMystcraftConfig().getBannerInscriberEnabled() == true) {
-			registerRender(Item.getItemFromBlock(BANNER_INSCRIBER));
 		}
 	}
 

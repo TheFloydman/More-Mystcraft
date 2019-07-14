@@ -14,15 +14,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.entity.capability.IPotionDummy;
 import thefloydman.moremystcraft.entity.capability.StoragePotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
-import thefloydman.moremystcraft.tileentity.MoreMystcraftLoomPatterns;
-import thefloydman.moremystcraft.tileentity.TileEntityBannerInscriber;
-import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
 public class CommonProxy {
@@ -35,8 +31,6 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		MoreMystcraftPacketHandler.register();
 		CapabilityManager.INSTANCE.register(IPotionDummy.class, new StoragePotionDummy(), CapabilityPotionDummy.class);
-		GameRegistry.registerTileEntity(TileEntityBannerInscriber.class,
-				Reference.forMoreMystcraft("banner_inscriber"));
 	}
 
 	public void init(FMLInitializationEvent event) {
@@ -54,7 +48,6 @@ public class CommonProxy {
 		} catch (APIUndefined e3) {
 			MoreMystcraft.logger.error("API undefined!");
 		}
-		MoreMystcraftLoomPatterns.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

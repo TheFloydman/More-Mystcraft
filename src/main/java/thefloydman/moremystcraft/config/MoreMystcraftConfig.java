@@ -6,18 +6,6 @@
 
 package thefloydman.moremystcraft.config;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.Config.Name;
@@ -27,8 +15,6 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.util.Reference;
 
 @Config(modid = Reference.MOD_ID)
@@ -45,7 +31,7 @@ public class MoreMystcraftConfig {
 
 	@Name("abandoned_studies")
 	public static CategoryStudies catStudies = new CategoryStudies();
-	
+
 	@Name("libraries")
 	public static CategoryLibraries catLibraries = new CategoryLibraries();
 
@@ -98,14 +84,6 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Traffic cone recipe enabled")
 		public boolean trafficConeRecipeEnabled = true;
-		
-		@RequiresMcRestart
-		@Name("Banner inscriber enabled")
-		public boolean bannerInscriberEnabled = true;
-
-		@RequiresMcRestart
-		@Name("Banner inscriber recipe enabled")
-		public boolean bannerInscriberRecipeEnabled = true;
 
 	}
 
@@ -125,17 +103,17 @@ public class MoreMystcraftConfig {
 		public int studyMinimumY = 64;
 
 	}
-	
+
 	private static class CategoryLibraries {
 
 		@RequiresMcRestart
 		@Name("Generate Mystcraft libraries")
 		public boolean librariesEnabled = true;
-		
+
 		@RequiresMcRestart
 		@Name("Upgrade Mystcraft libraries")
 		public boolean librariesUpgraded = true;
-		
+
 		@Name("Great Library generation percentage")
 		@RangeInt(min = 0, max = 100)
 		public int greatLibrariesPercentage = 10;
@@ -185,14 +163,6 @@ public class MoreMystcraftConfig {
 	public boolean getTrafficConeRecipeEnabled() {
 		return catMisc.trafficConeRecipeEnabled;
 	}
-	
-	public boolean getBannerInscriberEnabled() {
-		return catMisc.bannerInscriberEnabled;
-	}
-
-	public boolean getBannerInscriberRecipeEnabled() {
-		return catMisc.bannerInscriberRecipeEnabled;
-	}
 
 	public boolean getUnstableReceptacleEnabled() {
 		return catUnstable.unstableReceptacleEnabled;
@@ -221,15 +191,15 @@ public class MoreMystcraftConfig {
 	public boolean getLockedBookstandRecipeEnabled() {
 		return catLockedBlocks.lockedBookstandRecipeEnabled;
 	}
-	
+
 	public boolean getLibrariesEnabled() {
 		return catLibraries.librariesEnabled;
 	}
-	
+
 	public boolean getLibrariesUpgraded() {
 		return catLibraries.librariesUpgraded;
 	}
-	
+
 	public int getGreatLibraryPercentage() {
 		return catLibraries.greatLibrariesPercentage;
 	}

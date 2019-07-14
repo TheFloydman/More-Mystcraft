@@ -7,13 +7,10 @@ import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import thefloydman.moremystcraft.client.gui.GuiBannerInscriber;
 import thefloydman.moremystcraft.client.gui.GuiBookLocked;
 import thefloydman.moremystcraft.client.gui.GuiNexusController;
-import thefloydman.moremystcraft.inventory.ContainerBannerInscriber;
 import thefloydman.moremystcraft.inventory.ContainerBookLocked;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
-import thefloydman.moremystcraft.tileentity.TileEntityBannerInscriber;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
 public class GuiHandler implements IGuiHandler {
@@ -25,10 +22,6 @@ public class GuiHandler implements IGuiHandler {
 			final TileEntityBookRotateable tileEntity = (TileEntityBookRotateable) player.world
 					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerBookLocked(player.inventory, tileEntity);
-		} else if (id == MoreMystcraftGUIs.BANNER_INSCRIBER.ordinal()) {
-			final TileEntityBannerInscriber tileEntity = (TileEntityBannerInscriber) player.world
-					.getTileEntity(new BlockPos(x, y, z));
-			return new ContainerBannerInscriber(player.inventory, tileEntity);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
 			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world
 					.getTileEntity(new BlockPos(x, y, z));
@@ -44,9 +37,6 @@ public class GuiHandler implements IGuiHandler {
 			final TileEntityBookRotateable tileEntity = (TileEntityBookRotateable) player.world
 					.getTileEntity(new BlockPos(x, y, z));
 			return new GuiBookLocked(player.inventory, tileEntity);
-		} else if (id == MoreMystcraftGUIs.BANNER_INSCRIBER.ordinal()) {
-			return new GuiBannerInscriber((Container) getServerGuiElement(id, player, world, x, y, z),
-					player.inventory);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
 			return new GuiNexusController((Container) getServerGuiElement(id, player, world, x, y, z),
 					player.inventory);

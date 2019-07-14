@@ -9,9 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
-
-import com.xcompwiz.mystcraft.data.ModItems;
-
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.data.DummyRecipe;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
@@ -47,12 +44,6 @@ public class CraftingHandler {
 			}
 			if (new MoreMystcraftConfig().getTrafficConeRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.TRAFFIC_CONE)) {
-					recipeRegistry.remove(r.getRegistryName());
-					recipeRegistry.register(DummyRecipe.from(r));
-				}
-			}
-			if (new MoreMystcraftConfig().getBannerInscriberRecipeEnabled() != true) {
-				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.BANNER_INSCRIBER)) {
 					recipeRegistry.remove(r.getRegistryName());
 					recipeRegistry.register(DummyRecipe.from(r));
 				}
