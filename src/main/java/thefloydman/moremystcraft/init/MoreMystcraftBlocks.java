@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
+import thefloydman.moremystcraft.block.BlockNexusController;
 import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
@@ -34,6 +35,7 @@ public class MoreMystcraftBlocks {
 	public static final Block TRAFFIC_CONE = (Block) new BlockTrafficCone();
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
+	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -64,6 +66,7 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
+		event.getRegistry().register(NEXUS_CONTROLLER);
 	}
 
 	@SubscribeEvent
@@ -71,6 +74,7 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
+		event.getRegistry().register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -78,6 +82,7 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
 		}
+		registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
 	}
 
 	public static void registerRender(Item item) {

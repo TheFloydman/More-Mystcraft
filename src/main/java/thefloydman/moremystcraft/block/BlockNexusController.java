@@ -22,6 +22,7 @@ import thefloydman.moremystcraft.gui.GuiHandler;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.util.Reference;
 
 public class BlockNexusController extends BlockContainer implements ITileEntityProvider {
 
@@ -29,8 +30,8 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		super(Material.IRON);
 		this.setHardness(2.5f);
 		this.setSoundType(SoundType.METAL);
-		this.setUnlocalizedName("moremystcraft.nexus_controller");
-		this.setRegistryName("moremystcraft", "nexus_controller");
+		this.setUnlocalizedName(Reference.MOD_ID + ".nexus_controller");
+		this.setRegistryName(Reference.MOD_ID, "nexus_controller");
 		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
 		this.setLightLevel(0.1f);
 	}

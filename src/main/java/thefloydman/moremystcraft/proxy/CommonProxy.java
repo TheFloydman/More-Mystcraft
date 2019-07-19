@@ -14,11 +14,14 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.entity.capability.IPotionDummy;
 import thefloydman.moremystcraft.entity.capability.StoragePotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
 public class CommonProxy {
@@ -31,6 +34,8 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		MoreMystcraftPacketHandler.register();
 		CapabilityManager.INSTANCE.register(IPotionDummy.class, new StoragePotionDummy(), CapabilityPotionDummy.class);
+		GameRegistry.registerTileEntity(TileEntityNexusController.class,
+				Reference.forMoreMystcraft("nexus_controller"));
 	}
 
 	public void init(FMLInitializationEvent event) {
