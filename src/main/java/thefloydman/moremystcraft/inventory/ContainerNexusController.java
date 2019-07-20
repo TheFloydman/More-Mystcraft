@@ -68,7 +68,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
 		}
 
-		this.addSlotToContainer(new Slot(this.inputInventory, 0, 16, 97) {
+		this.addSlotToContainer(new Slot(this.inputInventory, 0, 17, 72) {
 
 			public boolean isItemValid(ItemStack stack) {
 				return stack.getItem() instanceof ItemAgebook;
@@ -76,7 +76,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			}
 		});
 
-		this.addSlotToContainer(new Slot(this.outputInventory, 0, 142, 97) {
+		this.addSlotToContainer(new Slot(this.outputInventory, 0, 143, 72) {
 
 			public boolean isItemValid(ItemStack stack) {
 				return false;
@@ -231,6 +231,23 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			return ((IItemPageProvider) book.getItem()).getPageList(this.player, book);
 		}
 		return null;
+	}
+
+	@Override
+	public void onCraftMatrixChanged(IInventory inventoryIn) {
+		acceptBook();
+		System.out.println(this.tileEntity.bookArray);
+		super.onCraftMatrixChanged(inventoryIn);
+	}
+	
+	protected void acceptBook() {
+		if (this.getSlotFromInventory(this.inputInventory, 0).getHasStack()) {
+			if (this.getSlotFromInventory(this.inputInventory, 0).getStack().getItem() instanceof ItemAgebook) {
+				this.tileEntity.bookArray.add(this.getSlotFromInventory(this.inputInventory, 0).getStack());
+				this.tileEntity.markDirty();
+				this.getSlotFromInventory(this.inputInventory, 0).decrStackSize(1);
+			}
+		}
 	}
 
 }
