@@ -38,7 +38,7 @@ public class GuiHandler implements IGuiHandler {
 					.getTileEntity(new BlockPos(x, y, z));
 			return new GuiBookLocked(player.inventory, tileEntity);
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
-			return new GuiNexusController((Container) getServerGuiElement(id, player, world, x, y, z),
+			return new GuiNexusController((ContainerNexusController) getServerGuiElement(id, player, world, x, y, z),
 					player.inventory);
 		}
 		return null;

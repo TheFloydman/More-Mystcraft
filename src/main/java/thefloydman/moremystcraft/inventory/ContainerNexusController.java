@@ -15,12 +15,13 @@ import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
 public class ContainerNexusController extends ContainerBase implements IBookContainer {
@@ -39,8 +40,6 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	private ILinkInfo cached_linkinfo;
 	private boolean cached_permitted;
 	public boolean bookSelected = false;
-	private final IInventory nexusInventory = new InventoryBasic("nexus_controller", false, 2) {
-	};
 
 	public ContainerNexusController(InventoryPlayer playerInv, TileEntityNexusController controller) {
 
@@ -57,8 +56,8 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
 		}
 
-		this.addSlotToContainer(new SlotNexusInput(this.nexusInventory, 0, 17, 72));
-		this.addSlotToContainer(new Slot(this.nexusInventory, 1, 143, 72) {
+		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 72));
+		this.addSlotToContainer(new Slot(controller, 1, 143, 72) {
 
 			public boolean isItemValid(ItemStack stack) {
 				return false;
@@ -216,10 +215,10 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	}
 
 	protected void acceptBook() {
-		if (this.getSlotFromInventory(this.nexusInventory, 0).getHasStack()) {
-			if (this.getSlotFromInventory(this.nexusInventory, 0).getStack().getItem() instanceof ItemLinking) {
-				if (this.tileEntity.getBookCount() < this.tileEntity.inventorySize) {
-					this.tileEntity.addBook(this.getSlotFromInventory(this.nexusInventory, 0).getStack());
+		if (this.getSlotFromInventory(this.tileEntity, 0).getHasStack()) {
+			if (this.getSlotFromInventory(this.tileEntity, 0).getStack().getItem() instanceof ItemLinking) {
+				if (this.tileEntity.getBookCount() < this.tileEntity.inventorySize - 2) {
+					this.tileEntity.addBook(this.getSlotFromInventory(this.tileEntity, 0).getStack());
 				}
 			}
 		}
@@ -230,7 +229,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		super.onContainerClosed(playerIn);
 
 		if (!this.tileEntity.getWorld().isRemote) {
-			this.clearContainer(playerIn, playerIn.world, this.nexusInventory);
+			this.clearContainer(playerIn, playerIn.world, this.tileEntity);
 		}
 	}
 
@@ -249,14 +248,19 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		@Override
 		public void onSlotChanged() {
 			super.onSlotChanged();
-			if (!ContainerNexusController.this.tileEntity.getWorld().isRemote) {
 				acceptBook();
-			} else {
-				acceptBook();
-				ContainerNexusController.this.getSlotFromInventory(ContainerNexusController.this.nexusInventory, 0).decrStackSize(1);
-			}
 		}
 
+	}
+
+	@Override
+	protected void clearContainer(EntityPlayer playerIn, World worldIn, IInventory inventoryIn) {
+		if (!playerIn.isEntityAlive()
+				|| playerIn instanceof EntityPlayerMP && ((EntityPlayerMP) playerIn).hasDisconnected()) {
+			playerIn.dropItem(inventoryIn.removeStackFromSlot(0), false);
+		} else {
+			playerIn.inventory.placeItemBackInInventory(worldIn, inventoryIn.removeStackFromSlot(0));
+		}
 	}
 
 }

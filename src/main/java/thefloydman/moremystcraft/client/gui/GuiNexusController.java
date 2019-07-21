@@ -36,10 +36,10 @@ public class GuiNexusController extends GuiContainerElements {
 	private GuiElement rootelement;
 	private ContainerNexusController container;
 
-	public GuiNexusController(Container container, InventoryPlayer playerInv) {
+	public GuiNexusController(ContainerNexusController container, InventoryPlayer playerInv) {
 		super(container);
 		this.playerInv = playerInv;
-		this.container = (ContainerNexusController)this.inventorySlots;
+		this.container = container;
 	}
 	
 	@Override
@@ -77,12 +77,24 @@ public class GuiNexusController extends GuiContainerElements {
 		mc.renderEngine.bindTexture(resLocNexusController);
 		drawTexturedModalRect(guiCenterX, guiCenterY, 0, 0, guiWidth, guiHeight);
 
-		int listOneX = guiCenterX + 7;
-		int listOneY = guiCenterY + 23;
-		int listTwoX = guiCenterX + 7;
-		int listTwoY = guiCenterY + 41;
-		int listThreeX = guiCenterX + 7;
-		int listThreeY = guiCenterY + 59;
+		int listWidth = 140;
+		int listHeight = 13;
+		
+		int listOneX = guiCenterX + 8;
+		int listOneY = guiCenterY + 24;
+		int listTwoX = guiCenterX + 8;
+		int listTwoY = guiCenterY + 24 + listHeight;
+		int listThreeX = guiCenterX + 8;
+		int listThreeY = guiCenterY + 24 + (listHeight * 2);
+		int listFourX = guiCenterX + 8;
+		int listFourY = guiCenterY + 24 + (listHeight * 3);
+		if (this.container.tileEntity.getStackInSlot(2).getItem() instanceof ItemLinking) {
+			drawTexturedModalRect(listOneX, listOneY, 0, 218, listWidth, listHeight);
+			drawTexturedModalRect(listTwoX, listTwoY, 0, 218, listWidth, listHeight);
+			drawTexturedModalRect(listThreeX, listThreeY, 0, 218, listWidth, listHeight);
+			drawTexturedModalRect(listFourX, listFourY, 0, 218, listWidth, listHeight);
+		}
+		
 		int searchStringX = guiCenterX + 9;
 		int searchStringY = guiCenterY + 9;
 		
@@ -95,18 +107,9 @@ public class GuiNexusController extends GuiContainerElements {
 	
 	@Override
 	protected void _onMouseUp(final int mouseX, final int mouseY, final int clicked_id, final boolean eaten) {
+		super._onMouseUp(mouseX, mouseY, clicked_id, eaten);
 		if (playerInv.getItemStack().isEmpty()) {
 			return;
-		}
-		/*if (isCursorOnBookDisplay(mouseX, mouseY) == true && playerInv.getItemStack().getItem() instanceof ItemLinking) {
-			this.container.bookArray.add(0, playerInv.getItemStack());
-			playerInv.setItemStack(Items.AIR.getDefaultInstance());
-		}*/
-		if (isCursorOnBookList(mouseX, mouseY) && playerInv.getItemStack().getItem() instanceof ItemLinking) {
-			this.container.tileEntity.bookList.add(0, playerInv.getItemStack());
-			this.container.tileEntity.markDirty();
-			playerInv.setItemStack(Items.AIR.getDefaultInstance());
-			this.container.bookSelected = true;
 		}
     }
 	
