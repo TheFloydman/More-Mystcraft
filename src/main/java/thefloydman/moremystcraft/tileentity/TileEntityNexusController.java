@@ -10,6 +10,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 
 public class TileEntityNexusController extends TileEntity implements ISidedInventory {
 
@@ -18,7 +19,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	public int inventorySize;
 
 	public TileEntityNexusController() {
-		this.inventorySize = 2 + 3;
+		this.inventorySize = 2 + 8;
 		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
 		this.bookCount = 0;
 	}
@@ -44,21 +45,27 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	}
 
 	public boolean addBook(ItemStack stack) {
-		System.out.println("Before: " + bookList);
 		for (int i = 2; i < this.inventorySize; i++) {
 			if (this.bookList.get(i).isEmpty()) {
 				this.bookList.set(i, stack);
-				// this.getWorld().notifyBlockUpdate(this.getPos(),
-				// MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
-				// MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
+				 this.getWorld().notifyBlockUpdate(this.getPos(),
+				 MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
+				 MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 				bookCount++;
 				this.removeStackFromSlot(0);
 				this.markDirty();
-				System.out.println("After: " + bookList);
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public void removeBook(int id) {
+		for (int i = id; i < this.bookList.size() - 1; i++) {
+			this.bookList.set(i, this.bookList.get(i + 1));
+		}
+		this.bookList.set(this.bookList.size() - 1, ItemStack.EMPTY);
+		this.bookCount--;
 	}
 
 	public int getBookCount() {

@@ -40,6 +40,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	private ILinkInfo cached_linkinfo;
 	private boolean cached_permitted;
 	public boolean bookSelected = false;
+	public int selectedBook;
 
 	public ContainerNexusController(InventoryPlayer playerInv, TileEntityNexusController controller) {
 
@@ -59,9 +60,15 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 72));
 		this.addSlotToContainer(new Slot(controller, 1, 143, 72) {
 
+			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return false;
-
+			}
+			
+			@Override
+			public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+				ContainerNexusController.this.tileEntity.removeBook(ContainerNexusController.this.selectedBook);
+				return super.onTake(thePlayer, stack);
 			}
 		});
 
@@ -248,7 +255,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		@Override
 		public void onSlotChanged() {
 			super.onSlotChanged();
-				acceptBook();
+			acceptBook();
 		}
 
 	}
@@ -261,6 +268,14 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		} else {
 			playerIn.inventory.placeItemBackInInventory(worldIn, inventoryIn.removeStackFromSlot(0));
 		}
+	}
+
+	@Override
+	public boolean enchantItem(EntityPlayer playerIn, int id) {
+		this.selectedBook = id;
+		this.getSlotFromInventory(this.tileEntity, 1).putStack(this.tileEntity.getStackInSlot(id));
+		this.acceptBook();
+		return true;
 	}
 
 }
