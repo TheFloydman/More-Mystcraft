@@ -1,171 +1,90 @@
 package thefloydman.moremystcraft.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.xcompwiz.mystcraft.item.ItemLinking;
 
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
+import thefloydman.moremystcraft.util.Reference;
 
-public class TileEntityNexusController extends TileEntity implements ISidedInventory {
+public class TileEntityNexusController extends TileEntity {
 
-	public List<ItemStack> bookArray;
+	public NonNullList<ItemStack> bookList;
+	protected int bookCount;
+	public int inventorySize;
 
 	public TileEntityNexusController() {
-		bookArray = new ArrayList<ItemStack>();
+		this.inventorySize = 2;
+		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+		this.bookCount = 0;
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
-		NBTTagCompound books = nbt.getCompoundTag("books");
-		for (int i = 0; i < nbt.getCompoundTag("books").getSize(); i++) {
-			ItemStack stack = new ItemStack(nbt.getCompoundTag("books").getCompoundTag(Integer.toString(i)));
-			bookArray.add(stack);
-		}
-		System.out.println("readFromNBT Successful");
 		super.readFromNBT(nbt);
+		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+		ItemStackHelper.loadAllItems(nbt, this.bookList);
+		bookCount = 0;
+		for (ItemStack stack : this.bookList) {
+			if (!stack.isEmpty()) {
+				bookCount++;
+			}
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		NBTTagCompound books = new NBTTagCompound();
-		System.out.println("bookArray size: " + Integer.toString(bookArray.size()));
-		for (int i = 0; i < bookArray.size(); i++) {
-			NBTTagCompound stack = new NBTTagCompound();
-			bookArray.get(i).writeToNBT(stack);
-			books.setTag(Integer.toString(i), stack);
-			System.out.println("bookArray added to NBT");
-		}
-		nbt.setTag("books", books);
-		System.out.println("writeToNBT Successful");
-		return super.writeToNBT(nbt);
+		super.writeToNBT(nbt);
+		ItemStackHelper.saveAllItems(nbt, this.bookList);
+		return nbt;
 	}
 
-	@Override
-	public int getSizeInventory() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (stack.getItem() instanceof ItemAgebook) {
-			return true;
+	public boolean addBook(ItemStack stack) {
+		System.out.println("Before: " + bookList);
+		for (int i = 0; i < this.inventorySize; i++) {
+			if (this.bookList.get(i).isEmpty()) {
+				this.bookList.set(i, stack);
+				this.getWorld().notifyBlockUpdate(this.getPos(), MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
+				bookCount++;
+				this.markDirty();
+				System.out.println("After: " + bookList);
+				return true;
+			}
 		}
 		return false;
 	}
 
+	public int getBookCount() {
+		return this.bookCount;
+	}
+	
 	@Override
-	public int getField(int id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound nbt = new NBTTagCompound();
+		ItemStackHelper.saveAllItems(nbt, this.bookList);
+		return new SPacketUpdateTileEntity(this.getPos(), 1, nbt);
 	}
 
 	@Override
-	public void setField(int id, int value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		// TODO Auto-generated method stub
-		return false;
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		NBTTagCompound nbt = pkt.getNbtCompound();
+		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+		ItemStackHelper.loadAllItems(nbt, this.bookList);
+		bookCount = 0;
+		for (ItemStack stack : this.bookList) {
+			if (!stack.isEmpty()) {
+				bookCount++;
+			}
+		}
 	}
 
 }

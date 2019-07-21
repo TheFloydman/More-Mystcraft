@@ -10,7 +10,6 @@ import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.inventory.ContainerBase;
 import com.xcompwiz.mystcraft.inventory.IBookContainer;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
@@ -40,17 +39,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	private ILinkInfo cached_linkinfo;
 	private boolean cached_permitted;
 	public boolean bookSelected = false;
-	private final IInventory inputInventory = new InventoryBasic("nexus_input", false, 1) {
-		public void markDirty() {
-			super.markDirty();
-			ContainerNexusController.this.onCraftMatrixChanged(this);
-		}
-	};
-	private final IInventory outputInventory = new InventoryBasic("nexus_output", false, 1) {
-		public void markDirty() {
-			super.markDirty();
-			ContainerNexusController.this.onCraftMatrixChanged(this);
-		}
+	private final IInventory nexusInventory = new InventoryBasic("nexus_controller", false, 2) {
 	};
 
 	public ContainerNexusController(InventoryPlayer playerInv, TileEntityNexusController controller) {
@@ -68,15 +57,8 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
 		}
 
-		this.addSlotToContainer(new Slot(this.inputInventory, 0, 17, 72) {
-
-			public boolean isItemValid(ItemStack stack) {
-				return stack.getItem() instanceof ItemAgebook;
-
-			}
-		});
-
-		this.addSlotToContainer(new Slot(this.outputInventory, 0, 143, 72) {
+		this.addSlotToContainer(new SlotNexusInput(this.nexusInventory, 0, 17, 72));
+		this.addSlotToContainer(new Slot(this.nexusInventory, 1, 143, 72) {
 
 			public boolean isItemValid(ItemStack stack) {
 				return false;
@@ -129,7 +111,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	@Nonnull
 	@Override
 	public ItemStack getBook() {
-		if (this.tileEntity.bookArray.isEmpty() || !bookSelected) {
+		if (this.tileEntity.bookList.isEmpty() || !bookSelected) {
 			return ItemStack.EMPTY;
 		}
 		return this.getSlot(1).getStack();
@@ -233,21 +215,48 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		return null;
 	}
 
-	@Override
-	public void onCraftMatrixChanged(IInventory inventoryIn) {
-		acceptBook();
-		System.out.println(this.tileEntity.bookArray);
-		super.onCraftMatrixChanged(inventoryIn);
-	}
-	
 	protected void acceptBook() {
-		if (this.getSlotFromInventory(this.inputInventory, 0).getHasStack()) {
-			if (this.getSlotFromInventory(this.inputInventory, 0).getStack().getItem() instanceof ItemAgebook) {
-				this.tileEntity.bookArray.add(this.getSlotFromInventory(this.inputInventory, 0).getStack());
-				this.tileEntity.markDirty();
-				this.getSlotFromInventory(this.inputInventory, 0).decrStackSize(1);
+		if (this.getSlotFromInventory(this.nexusInventory, 0).getHasStack()) {
+			if (this.getSlotFromInventory(this.nexusInventory, 0).getStack().getItem() instanceof ItemLinking) {
+				if (this.tileEntity.getBookCount() < this.tileEntity.inventorySize) {
+					this.tileEntity.addBook(this.getSlotFromInventory(this.nexusInventory, 0).getStack());
+				}
 			}
 		}
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+		super.onContainerClosed(playerIn);
+
+		if (!this.tileEntity.getWorld().isRemote) {
+			this.clearContainer(playerIn, playerIn.world, this.nexusInventory);
+		}
+	}
+
+	public class SlotNexusInput extends Slot {
+
+		public SlotNexusInput(IInventory inventoryIn, int index, int xPosition, int yPosition) {
+			super(inventoryIn, index, xPosition, yPosition);
+		}
+
+		@Override
+		public boolean isItemValid(ItemStack stack) {
+			return stack.getItem() instanceof ItemLinking;
+
+		}
+
+		@Override
+		public void onSlotChanged() {
+			super.onSlotChanged();
+			if (!ContainerNexusController.this.tileEntity.getWorld().isRemote) {
+				acceptBook();
+			} else {
+				acceptBook();
+				ContainerNexusController.this.getSlotFromInventory(ContainerNexusController.this.nexusInventory, 0).decrStackSize(1);
+			}
+		}
+
 	}
 
 }

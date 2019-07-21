@@ -103,7 +103,7 @@ public class GuiNexusController extends GuiContainerElements {
 			playerInv.setItemStack(Items.AIR.getDefaultInstance());
 		}*/
 		if (isCursorOnBookList(mouseX, mouseY) && playerInv.getItemStack().getItem() instanceof ItemLinking) {
-			this.container.tileEntity.bookArray.add(0, playerInv.getItemStack());
+			this.container.tileEntity.bookList.add(0, playerInv.getItemStack());
 			this.container.tileEntity.markDirty();
 			playerInv.setItemStack(Items.AIR.getDefaultInstance());
 			this.container.bookSelected = true;
