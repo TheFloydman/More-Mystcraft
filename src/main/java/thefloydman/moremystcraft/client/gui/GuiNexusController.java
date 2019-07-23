@@ -2,6 +2,8 @@ package thefloydman.moremystcraft.client.gui;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.xcompwiz.mystcraft.client.gui.GuiContainerElements;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -17,6 +19,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -45,11 +48,13 @@ public class GuiNexusController extends GuiContainerElements {
 	private boolean scrollbarEnabled;
 	private int scrollBlockX = 0;
 	private int scrollBlockY = 0;
-	int scrollBlockWidth;
-	int scrollBlockHeight;
-	int scrollbarHeight;
+	private int scrollBlockWidth;
+	private int scrollBlockHeight;
+	private int scrollbarHeight;
 	private boolean scrollBlockBeingDragged;
 	private GuiElementTextField searchBar;
+	private List<Integer> filteredList;
+	private List<Integer> displayedBooks;
 
 	public GuiNexusController(ContainerNexusController container, InventoryPlayer playerInv) {
 		super(container);
@@ -57,6 +62,9 @@ public class GuiNexusController extends GuiContainerElements {
 		this.container = container;
 		this.tileEntity = container.tileEntity;
 		this.firstDisplayedBook = 2;
+		for (int i = 2; i < 6; i++) {
+			this.displayedBooks.add(i);
+		}
 		this.selectedCell = -1;
 		this.container.selectedBook = -1;
 		this.scrollFraction = 0.0F;
@@ -64,6 +72,10 @@ public class GuiNexusController extends GuiContainerElements {
 		this.scrollBlockHeight = 15;
 		this.scrollbarHeight = 52;
 		this.scrollBlockBeingDragged = false;
+		this.filteredList = new ArrayList<Integer>();
+		for (int i = 0; i < this.tileEntity.getShortList().size(); i++) {
+			this.filteredList.add(i + 2);
+		}
 	}
 
 	@Override
@@ -106,23 +118,27 @@ public class GuiNexusController extends GuiContainerElements {
 		mc.renderEngine.bindTexture(TEXTURE);
 		drawTexturedModalRect(guiX, guiY, 0, 0, guiWidth, guiHeight);
 
+		int index = (int) Math.rint(((this.tileEntity.getBookCount() - 4) * this.scrollFraction));
+		displayedBooks = new ArrayList<Integer>();
+		for (int i = 0; i < 4; i++) {
+			displayedBooks.add(this.filteredList.get(index + i));
+		}
 		this.firstDisplayedBook = (int) Math.rint(((this.tileEntity.getBookCount() - 4) * this.scrollFraction) + 2);
 		int listWidth = 142;
 		int listHeight = 13;
 		int listX = guiX + 8;
 		int listY = guiY + 8;
-		for (int i = this.firstDisplayedBook; i < this.firstDisplayedBook + 4
-				&& i < this.tileEntity.getSizeInventory(); i++, listY += listHeight) {
-			if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemLinking) {
+		for (int i = 0; i < 4 && i < this.filteredList.size(); i++, listY += listHeight) {
+			if (this.tileEntity.getStackInSlot(this.filteredList.get(i)).getItem() instanceof ItemLinking) {
 				int textureY = this.container.selectedBook == i ? 231 : 218;
 				float red = 1.0F;
 				float green = 1.0F;
 				float blue = 1.0F;
-				if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemAgebook) {
+				if (this.tileEntity.getStackInSlot(this.filteredList.get(i)).getItem() instanceof ItemAgebook) {
 					red = 241.0F / 255.0F;
 					green = 215.0F / 255.0F;
 					blue = 94.0F / 255.0F;
-				} else if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemLinkbook) {
+				} else if (this.tileEntity.getStackInSlot(this.filteredList.get(i)).getItem() instanceof ItemLinkbook) {
 					red = 55.0F / 255.0F;
 					green = 203.0F / 255.0F;
 					blue = 79.0F / 255.0F;
@@ -175,9 +191,13 @@ public class GuiNexusController extends GuiContainerElements {
 		if (selectedCell < 0) {
 			return;
 		}
-		this.container.selectedBook = this.selectedCell + this.firstDisplayedBook < this.tileEntity.getBookCount() + 2
-				? this.selectedCell + this.firstDisplayedBook
-				: -1;
+		if (selectedCell < this.filteredList.size()) {
+			this.container.selectedBook = this.filteredList.get(this.selectedCell) < this.tileEntity.getSizeInventory()
+					? this.filteredList.get(this.selectedCell)
+					: -1;
+		} else {
+			this.container.selectedBook = -1;
+		}
 		if (this.container.selectedBook > 1) {
 			this.container.enchantItem(this.player, this.container.selectedBook);
 			this.mc.playerController.sendEnchantPacket(this.container.windowId, this.container.selectedBook);
@@ -241,6 +261,27 @@ public class GuiNexusController extends GuiContainerElements {
 			MystcraftPacketHandler.CHANNEL
 					.sendToServer(new MPacketGuiMessage(GuiNexusController.this.container.windowId, nbt));
 			GuiNexusController.this.container.processMessage(GuiNexusController.this.mc.player, nbt);
+		}
+	}
+
+	protected void filterBooks(String text) {
+		this.filteredList = new ArrayList<Integer>();
+		for (int i = 0; i < this.tileEntity.getShortList().size(); i++) {
+			this.filteredList.add(i + 2);
+		}
+		List<ItemStack> shortList = this.tileEntity.getShortList();
+		List<String> displayNames = new ArrayList<String>();
+		for (ItemStack stack : shortList) {
+			displayNames.add(((ItemLinking) stack.getItem()).getLinkInfo(stack).getDisplayName());
+		}
+		for (int i = 0; i < this.tileEntity.getShortList().size(); i++) {
+			this.filteredList.set(i, i);
+		}
+		for (int i = 0; i < displayNames.size(); i++) {
+			if (!displayNames.get(i).toLowerCase().contains(text.toLowerCase())) {
+				int index = filteredList.indexOf(i);
+				filteredList.remove(index);
+			}
 		}
 	}
 

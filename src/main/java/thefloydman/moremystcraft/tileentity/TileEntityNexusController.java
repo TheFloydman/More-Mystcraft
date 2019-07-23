@@ -1,8 +1,12 @@
 package thefloydman.moremystcraft.tileentity;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import com.xcompwiz.mystcraft.item.ItemLinking;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +25,7 @@ import net.minecraft.world.World;
 public class TileEntityNexusController extends TileEntity implements ISidedInventory {
 
 	protected NonNullList<ItemStack> bookList;
+	protected List<ItemStack> shortList;
 	protected int bookCount;
 	protected int inventorySize;
 	protected String query = null;
@@ -28,6 +33,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	public TileEntityNexusController() {
 		this.inventorySize = 2 + 128;
 		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+		this.shortList = new ArrayList<ItemStack>();
 		this.bookCount = 0;
 	}
 
@@ -42,6 +48,14 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 			for (ItemStack stack : this.bookList) {
 				if (!stack.isEmpty()) {
 					bookCount++;
+				}
+			}
+			this.shortList = new ArrayList<ItemStack>();
+			for (int i = 2; i < this.bookList.size(); i++) {
+				if (!this.bookList.get(i).isEmpty()) {
+					this.shortList.add(this.bookList.get(i));
+				} else {
+					break;
 				}
 			}
 		} else {
@@ -72,6 +86,8 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		for (int i = 2; i < this.inventorySize; i++) {
 			if (this.bookList.get(i).isEmpty()) {
 				this.bookList.set(i, stack);
+				this.shortList.add(stack);
+				this.sortBookList();
 				bookCount++;
 				this.removeStackFromSlot(0);
 				return true;
@@ -85,6 +101,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 			this.bookList.set(i, this.bookList.get(i + 1));
 		}
 		this.bookList.set(this.bookList.size() - 1, ItemStack.EMPTY);
+		this.shortList.remove(id - 2);
 		this.bookCount--;
 		this.markDirty();
 	}
@@ -120,6 +137,14 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 			for (ItemStack stack : this.bookList) {
 				if (!stack.isEmpty()) {
 					bookCount++;
+				}
+			}
+			this.shortList = new ArrayList<ItemStack>();
+			for (int i = 2; i < this.bookList.size(); i++) {
+				if (!this.bookList.get(i).isEmpty()) {
+					this.shortList.add(this.bookList.get(i));
+				} else {
+					break;
 				}
 			}
 		} else {
@@ -263,7 +288,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		this.markDirty();
 	}
 
-	public List<ItemStack> getBookList() {
+	public NonNullList<ItemStack> getBookList() {
 		return this.bookList;
 	}
 
@@ -296,6 +321,14 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 					bookCount++;
 				}
 			}
+			this.shortList = new ArrayList<ItemStack>();
+			for (int i = 2; i < this.bookList.size(); i++) {
+				if (!this.bookList.get(i).isEmpty()) {
+					shortList.add(this.bookList.get(i));
+				} else {
+					break;
+				}
+			}
 		} else {
 			this.bookList = null;
 		}
@@ -304,6 +337,21 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		} else {
 			this.query = null;
 		}
+	}
+
+	protected void sortBookList() {
+		Comparator<ItemStack> compareByDisplayName = (ItemStack o1, ItemStack o2) -> ((ItemLinking) o1.getItem())
+				.getLinkInfo(o1).getDisplayName().toLowerCase()
+				.compareTo(((ItemLinking) o2.getItem()).getLinkInfo(o2).getDisplayName().toLowerCase());
+		shortList.sort(compareByDisplayName);
+		for (int i = 0; i < shortList.size(); i++) {
+			this.bookList.set(i + 2, shortList.get(i));
+		}
+		this.markDirty();
+	}
+	
+	public List<ItemStack> getShortList() {
+		return this.shortList;
 	}
 
 }
