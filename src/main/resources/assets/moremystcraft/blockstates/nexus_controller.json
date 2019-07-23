@@ -1,13 +1,8 @@
 {
     "variants": {
-        "normal": [
-            {
-                "textures": {
-                    "side": "moremystcraft:blocks/nexus_controller",
-                    "end": "moremystcraft:blocks/nexus_controller"
-                },
-                "model": "moremystcraft:nexus_controller"
-            }
-        ]
+        "facing=north": { "model": "moremystcraft:nexus_controller" },
+        "facing=south": { "model": "moremystcraft:nexus_controller", "y": 180 },
+        "facing=west":  { "model": "moremystcraft:nexus_controller", "y": 270 },
+        "facing=east":  { "model": "moremystcraft:nexus_controller", "y": 90 }
     }
 }

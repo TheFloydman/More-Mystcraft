@@ -10,9 +10,12 @@ import com.xcompwiz.mystcraft.api.item.IItemPageProvider;
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.inventory.ContainerBase;
 import com.xcompwiz.mystcraft.inventory.IBookContainer;
+import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
+import com.xcompwiz.mystcraft.linking.LinkListenerManager;
+import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,9 +25,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
-public class ContainerNexusController extends ContainerBase implements IBookContainer {
+public class ContainerNexusController extends ContainerBase implements IBookContainer, IGuiMessageHandler {
 
 	public TileEntityNexusController tileEntity;
 	InventoryPlayer inventory;
@@ -32,20 +36,20 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	private String itemName;
 	private ItemStack itemStack;
 	private NBTTagCompound bookCompound;
-	// public List<ItemStack> bookArray = new ArrayList<ItemStack>();
 	private ItemStack currentpage;
 	private int currentpageIndex;
 	private int pagecount;
 	private EntityPlayer player;
 	private ILinkInfo cached_linkinfo;
 	private boolean cached_permitted;
-	public boolean bookSelected = false;
 	public int selectedBook;
+	protected String query;
 
 	public ContainerNexusController(InventoryPlayer playerInv, TileEntityNexusController controller) {
 
 		this.tileEntity = controller;
 		this.inventory = playerInv;
+		this.query = "";
 		// Add player inventory slots.
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -64,10 +68,11 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			public boolean isItemValid(ItemStack stack) {
 				return false;
 			}
-			
+
 			@Override
 			public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
 				ContainerNexusController.this.tileEntity.removeBook(ContainerNexusController.this.selectedBook);
+				ContainerNexusController.this.selectedBook = -1;
 				return super.onTake(thePlayer, stack);
 			}
 		});
@@ -117,10 +122,10 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	@Nonnull
 	@Override
 	public ItemStack getBook() {
-		if (this.tileEntity.bookList.isEmpty() || !bookSelected) {
+		if (this.tileEntity.getBookList() == null || this.tileEntity.getBookList().isEmpty() || this.selectedBook < 2) {
 			return ItemStack.EMPTY;
 		}
-		return this.getSlot(1).getStack();
+		return this.getSlotFromInventory(this.tileEntity, 1).getStack();
 	}
 
 	@Override
@@ -179,7 +184,14 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 
 	@Override
 	public boolean isLinkPermitted() {
-		return true;
+		ILinkInfo linkinfo = getLinkInfo();
+		if (linkinfo == null) {
+			return false;
+		}
+		if (ItemAgebook.isNewAgebook(getBook())) {
+			return true;
+		}
+		return LinkListenerManager.isLinkPermitted(this.tileEntity.getWorld(), this.player, linkinfo);
 	}
 
 	@Override
@@ -224,7 +236,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	protected void acceptBook() {
 		if (this.getSlotFromInventory(this.tileEntity, 0).getHasStack()) {
 			if (this.getSlotFromInventory(this.tileEntity, 0).getStack().getItem() instanceof ItemLinking) {
-				if (this.tileEntity.getBookCount() < this.tileEntity.inventorySize - 2) {
+				if (this.tileEntity.getBookCount() < this.tileEntity.getSizeInventory() - 2) {
 					this.tileEntity.addBook(this.getSlotFromInventory(this.tileEntity, 0).getStack());
 				}
 			}
@@ -238,6 +250,48 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		if (!this.tileEntity.getWorld().isRemote) {
 			this.clearContainer(playerIn, playerIn.world, this.tileEntity);
 		}
+	}
+
+	@Override
+	protected void clearContainer(EntityPlayer playerIn, World worldIn, IInventory inventoryIn) {
+		inventoryIn.removeStackFromSlot(1);
+		if (!playerIn.isEntityAlive()
+				|| playerIn instanceof EntityPlayerMP && ((EntityPlayerMP) playerIn).hasDisconnected()) {
+			playerIn.dropItem(inventoryIn.removeStackFromSlot(0), false);
+		} else {
+			playerIn.inventory.placeItemBackInInventory(worldIn, inventoryIn.removeStackFromSlot(0));
+		}
+	}
+
+	@Override
+	public boolean enchantItem(EntityPlayer playerIn, int id) {
+		this.selectedBook = id;
+		this.getSlotFromInventory(this.tileEntity, 1).putStack(this.tileEntity.getStackInSlot(id));
+		return true;
+	}
+
+	@Override
+	public void processMessage(EntityPlayer player, NBTTagCompound data) {
+		if (data.hasKey("Link") && this.tileEntity != null) {
+			ItemStack book = this.tileEntity.getStackInSlot(1);
+			if (book.isEmpty())
+				return;
+			if (book.getItem() instanceof ItemLinking) {
+				this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
+						MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
+						MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
+				((ItemLinking) book.getItem()).activate(book, this.tileEntity.getWorld(), player);
+			}
+
+		}
+		if (data.hasKey("query")) {
+			this.query = data.getString("query");
+			this.tileEntity.setQuery(this.query);
+		}
+	}
+	
+	public String getQuery() {
+		return this.query;
 	}
 
 	public class SlotNexusInput extends Slot {
@@ -258,24 +312,6 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			acceptBook();
 		}
 
-	}
-
-	@Override
-	protected void clearContainer(EntityPlayer playerIn, World worldIn, IInventory inventoryIn) {
-		if (!playerIn.isEntityAlive()
-				|| playerIn instanceof EntityPlayerMP && ((EntityPlayerMP) playerIn).hasDisconnected()) {
-			playerIn.dropItem(inventoryIn.removeStackFromSlot(0), false);
-		} else {
-			playerIn.inventory.placeItemBackInInventory(worldIn, inventoryIn.removeStackFromSlot(0));
-		}
-	}
-
-	@Override
-	public boolean enchantItem(EntityPlayer playerIn, int id) {
-		this.selectedBook = id;
-		this.getSlotFromInventory(this.tileEntity, 1).putStack(this.tileEntity.getStackInSlot(id));
-		this.acceptBook();
-		return true;
 	}
 
 }

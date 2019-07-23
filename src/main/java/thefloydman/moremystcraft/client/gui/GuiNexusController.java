@@ -6,6 +6,9 @@ import java.io.IOException;
 import com.xcompwiz.mystcraft.client.gui.GuiContainerElements;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook;
+import com.xcompwiz.mystcraft.client.gui.element.GuiElementTextField;
+import com.xcompwiz.mystcraft.item.ItemAgebook;
+import com.xcompwiz.mystcraft.item.ItemLinkbook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
@@ -16,7 +19,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.util.math.MathHelper;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.util.Reference;
@@ -25,20 +28,28 @@ public class GuiNexusController extends GuiContainerElements {
 
 	protected static final ResourceLocation TEXTURE = new ResourceLocation(Reference.MOD_ID,
 			"textures/gui/nexus_controller.png");
-	int guiWidth = 176;
-	int guiHeight = 218;
-	int windowCenterX = 0;
-	int windowCenterY = 0;
-	int guiCenterX = 0;
-	int guiCenterY = 0;
+	private int guiWidth = 176;
+	private int guiHeight = 218;
+	private int windowCenterX = 0;
+	private int windowCenterY = 0;
+	private int guiX = 0;
+	private int guiY = 0;
 	private InventoryPlayer playerInv;
 	private EntityPlayer player;
-	private GuiElement rootelement;
 	private ContainerNexusController container;
 	private TileEntityNexusController tileEntity;
-	int firstDisplayedBook;
-	int selectedCell;
-	int selectedBook;
+	private int firstDisplayedBook;
+	private int selectedCell;
+	private int selectedBook;
+	private float scrollFraction;
+	private boolean scrollbarEnabled;
+	private int scrollBlockX = 0;
+	private int scrollBlockY = 0;
+	int scrollBlockWidth;
+	int scrollBlockHeight;
+	int scrollbarHeight;
+	private boolean scrollBlockBeingDragged;
+	private GuiElementTextField searchBar;
 
 	public GuiNexusController(ContainerNexusController container, InventoryPlayer playerInv) {
 		super(container);
@@ -47,11 +58,21 @@ public class GuiNexusController extends GuiContainerElements {
 		this.tileEntity = container.tileEntity;
 		this.firstDisplayedBook = 2;
 		this.selectedCell = -1;
-		this.selectedBook = -1;
+		this.container.selectedBook = -1;
+		this.scrollFraction = 0.0F;
+		this.scrollBlockWidth = 12;
+		this.scrollBlockHeight = 15;
+		this.scrollbarHeight = 52;
+		this.scrollBlockBeingDragged = false;
 	}
 
 	@Override
 	public void validate() {
+		TextBoxHandler handler = new TextBoxHandler();
+		this.searchBar = new GuiElementTextField(handler, handler, "query", 7, 39, 162, 12);
+		this.searchBar.setMaxLength(32);
+		this.searchBar.setFocused(true);
+		this.addElement(this.searchBar);
 		this.addElement(new GuiElementBook(this.container, new LinkHandler(), 43, 55, 90, 50));
 	}
 
@@ -79,34 +100,67 @@ public class GuiNexusController extends GuiContainerElements {
 	protected void _drawBackgroundLayer(final int mouseX, final int mouseY, final float f) {
 		windowCenterX = this.width / 2;
 		windowCenterY = this.height / 2;
-		guiCenterX = windowCenterX - (guiWidth / 2);
-		guiCenterY = windowCenterY - (guiHeight / 2);
+		guiX = windowCenterX - (guiWidth / 2);
+		guiY = windowCenterY - (guiHeight / 2);
 		GlStateManager.color(1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(TEXTURE);
-		drawTexturedModalRect(guiCenterX, guiCenterY, 0, 0, guiWidth, guiHeight);
+		drawTexturedModalRect(guiX, guiY, 0, 0, guiWidth, guiHeight);
 
-		int listWidth = 140;
+		this.firstDisplayedBook = (int) Math.rint(((this.tileEntity.getBookCount() - 4) * this.scrollFraction) + 2);
+		int listWidth = 142;
 		int listHeight = 13;
-		int listX = guiCenterX + 8;
-		int listY = guiCenterY + 24;
+		int listX = guiX + 8;
+		int listY = guiY + 8;
 		for (int i = this.firstDisplayedBook; i < this.firstDisplayedBook + 4
-				&& i < this.tileEntity.inventorySize; i++, listY += listHeight) {
+				&& i < this.tileEntity.getSizeInventory(); i++, listY += listHeight) {
 			if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemLinking) {
-				int textureY = this.selectedBook == i ? 231 : 218;
-				GlStateManager.color(1.0F, 1.0F, 1.0F);
+				int textureY = this.container.selectedBook == i ? 231 : 218;
+				float red = 1.0F;
+				float green = 1.0F;
+				float blue = 1.0F;
+				if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemAgebook) {
+					red = 241.0F / 255.0F;
+					green = 215.0F / 255.0F;
+					blue = 94.0F / 255.0F;
+				} else if (this.tileEntity.getStackInSlot(i).getItem() instanceof ItemLinkbook) {
+					red = 55.0F / 255.0F;
+					green = 203.0F / 255.0F;
+					blue = 79.0F / 255.0F;
+				}
+				GlStateManager.color(red, green, blue);
 				mc.renderEngine.bindTexture(TEXTURE);
 				drawTexturedModalRect(listX, listY, 0, textureY, listWidth, listHeight);
-				fontRenderer.drawString(
+				this.fontRenderer.drawString(
 						((ItemLinking) this.tileEntity.getStackInSlot(i).getItem())
 								.getLinkInfo(this.tileEntity.getStackInSlot(i)).getDisplayName(),
 						listX + 2, listY + 3, Color.BLACK.getRGB());
 			}
 		}
+		this.scrollbarEnabled = this.tileEntity.getBookCount() > 4;
+		GlStateManager.color(1.0F, 1.0F, 1.0F);
+		mc.renderEngine.bindTexture(TEXTURE);
+		this.scrollBlockX = this.guiX + 156;
+		this.scrollBlockY = this.guiY + 8;
+		if (this.scrollbarEnabled) {
+			if (this.scrollBlockBeingDragged == true) {
+				this.scrollBlockY = mouseY - 7;
+				if (this.scrollBlockY < this.guiY + 8) {
+					this.scrollBlockY = this.guiY + 8;
+				} else if (this.scrollBlockY > this.guiY + 8 + this.scrollbarHeight - this.scrollBlockHeight) {
+					this.scrollBlockY = this.guiY + 8 + this.scrollbarHeight - this.scrollBlockHeight;
+				}
+			} else {
+				this.scrollBlockY += Math.rint((this.scrollbarHeight - this.scrollBlockHeight) * this.scrollFraction);
+			}
+			int textureX = 176;
+			drawTexturedModalRect(this.scrollBlockX, this.scrollBlockY, textureX, 0, this.scrollBlockWidth,
+					this.scrollBlockHeight);
+		} else {
+			int textureX = 188;
+			drawTexturedModalRect(this.scrollBlockX, this.scrollBlockY, textureX, 0, this.scrollBlockWidth,
+					this.scrollBlockHeight);
+		}
 
-		int searchStringX = guiCenterX + 9;
-		int searchStringY = guiCenterY + 9;
-
-		fontRenderer.drawString("Search (nonfunctioning)", searchStringX, searchStringY, 0xFFFFFF);
 	}
 
 	@Override
@@ -116,34 +170,19 @@ public class GuiNexusController extends GuiContainerElements {
 	@Override
 	protected void _onMouseUp(final int mouseX, final int mouseY, final int clicked_id, final boolean eaten) {
 		super._onMouseUp(mouseX, mouseY, clicked_id, eaten);
+		this.scrollBlockBeingDragged = false;
 		this.selectedCell = this.determineClickedCell(mouseX, mouseY);
-		this.selectedBook = this.selectedCell + this.firstDisplayedBook;
-		if (this.selectedBook > 1) {
-			this.container.enchantItem(this.player, this.selectedBook);
-			this.mc.playerController.sendEnchantPacket(this.container.windowId, this.selectedBook);
+		if (selectedCell < 0) {
+			return;
 		}
-	}
-
-	protected boolean isCursorOnBookDisplay(final int mouseX, final int mouseY) {
-		int bookLeft = guiCenterX + 43;
-		int bookTop = guiCenterY + 81;
-		int bookRight = guiCenterX + 132;
-		int bookBottom = guiCenterY + 130;
-		if (mouseX >= bookLeft && mouseX <= bookRight && mouseY >= bookTop && mouseY <= bookBottom) {
-			return true;
+		this.container.selectedBook = this.selectedCell + this.firstDisplayedBook < this.tileEntity.getBookCount() + 2
+				? this.selectedCell + this.firstDisplayedBook
+				: -1;
+		if (this.container.selectedBook > 1) {
+			this.container.enchantItem(this.player, this.container.selectedBook);
+			this.mc.playerController.sendEnchantPacket(this.container.windowId, this.container.selectedBook);
 		}
-		return false;
-	}
-
-	protected boolean isCursorOnBookList(final int mouseX, final int mouseY) {
-		int bookLeft = guiCenterX + 7;
-		int bookTop = guiCenterY + 23;
-		int bookRight = guiCenterX + 148;
-		int bookBottom = guiCenterY + 76;
-		if (mouseX >= bookLeft && mouseX <= bookRight && mouseY >= bookTop && mouseY <= bookBottom) {
-			return true;
-		}
-		return false;
+		this.searchBar.setFocused(true);
 	}
 
 	public class LinkHandler implements GuiElementBook.IGuiOnLinkHandler {
@@ -151,20 +190,58 @@ public class GuiNexusController extends GuiContainerElements {
 		public void onLink(final GuiElement elem) {
 			final NBTTagCompound nbttagcompound = new NBTTagCompound();
 			nbttagcompound.setByte("Link", (byte) 0);
-			MystcraftPacketHandler.CHANNEL.sendToServer(
-					(IMessage) new MPacketGuiMessage(GuiNexusController.this.container.windowId, nbttagcompound));
+			MystcraftPacketHandler.CHANNEL
+					.sendToServer(new MPacketGuiMessage(GuiNexusController.this.container.windowId, nbttagcompound));
 		}
 	}
 
 	protected int determineClickedCell(int mouseX, int mouseY) {
-		int listWidth = 140;
+		int listWidth = 142;
 		int listHeight = 13;
-		int listX = guiCenterX + 8;
-		int listY = guiCenterY + 24;
+		int listX = guiX + 8;
+		int listY = guiY + 8;
 		for (int i = 0; i < 4; i++, listY += listHeight) {
 			if (mouseX >= listX && mouseX <= listX + listWidth && mouseY >= listY && mouseY <= listY + listHeight)
 				return i;
 		}
 		return -1;
 	}
+
+	@Override
+	protected void _onMouseDrag(int mouseX, int mouseY, int clicked_id, long lastclick, boolean eaten) {
+		if (this.mouseOnScrollBlock(mouseX, mouseY) && this.scrollbarEnabled) {
+			this.scrollBlockBeingDragged = true;
+			float localY = mouseY - 8 - (this.scrollBlockHeight / 2) - this.guiY;
+			this.scrollFraction = MathHelper.clamp(localY / (this.scrollbarHeight - this.scrollBlockHeight), 0.0F,
+					1.0F);
+		}
+	}
+
+	protected boolean mouseOnScrollBlock(int mouseX, int mouseY) {
+		if (mouseX >= this.scrollBlockX && mouseX <= this.scrollBlockX + this.scrollBlockWidth
+				&& mouseY >= this.scrollBlockY && mouseY <= this.scrollBlockY + this.scrollBlockHeight) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected void _keyTyped(char c, int i, boolean eaten) {
+		super._keyTyped(c, i, eaten);
+	}
+
+	public class TextBoxHandler implements GuiElementTextField.IGuiTextProvider, GuiElementTextField.IGuiOnTextChange {
+		public String getText(GuiElementTextField caller) {
+			return GuiNexusController.this.container.getQuery();
+		}
+
+		public void onTextChange(GuiElementTextField caller, String text) {
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString("query", text);
+			MystcraftPacketHandler.CHANNEL
+					.sendToServer(new MPacketGuiMessage(GuiNexusController.this.container.windowId, nbt));
+			GuiNexusController.this.container.processMessage(GuiNexusController.this.mc.player, nbt);
+		}
+	}
+
 }
