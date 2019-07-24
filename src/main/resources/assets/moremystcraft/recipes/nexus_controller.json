@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "moremystcraft:nexus_controller",
+        "count": 1
+    },
+    "pattern": [
+        "iii",
+        "ccc",
+        "iii"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "i": {
+            "item": "minecraft:iron_block",
+            "data": 0
+        },
+        "c": {
+            "item": "mystcraft:blockcrystal",
+            "data": 0
+        }
+    }
+}

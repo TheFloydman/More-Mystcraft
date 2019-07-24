@@ -50,17 +50,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		this.tileEntity = controller;
 		this.inventory = playerInv;
 		this.query = "";
-		// Add player inventory slots.
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 110 + i * 18));
-			}
-		}
-
-		for (int k = 0; k < 9; k++) {
-			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
-		}
-
+		
 		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 72));
 		this.addSlotToContainer(new Slot(controller, 1, 143, 72) {
 
@@ -76,6 +66,16 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 				return super.onTake(thePlayer, stack);
 			}
 		});
+		
+		// Add player inventory slots.
+		for (int k = 0; k < 9; k++) {
+			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
+		}
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 110 + i * 18));
+			}
+		}
 
 	}
 
@@ -86,37 +86,37 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack copyStack = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
 		if (slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack existingStack = slot.getStack();
+			copyStack = existingStack.copy();
 
 			int containerSlots = inventorySlots.size() - player.inventory.mainInventory.size();
 
 			if (index < containerSlots) {
-				if (!this.mergeItemStack(itemstack1, containerSlots, inventorySlots.size(), true)) {
+				if (!this.mergeItemStack(existingStack, containerSlots, inventorySlots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 0, containerSlots, false)) {
+			} else if (!this.mergeItemStack(existingStack, 0, containerSlots, false)) {
 				return ItemStack.EMPTY;
 			}
 
-			if (itemstack1.getCount() == 0) {
+			if (existingStack.getCount() == 0) {
 				slot.putStack(ItemStack.EMPTY);
 			} else {
 				slot.onSlotChanged();
 			}
 
-			if (itemstack1.getCount() == itemstack.getCount()) {
+			if (existingStack.getCount() == copyStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
 
-			slot.onTake(player, itemstack1);
+			slot.onTake(player, existingStack);
 		}
 
-		return itemstack;
+		return copyStack;
 	}
 
 	@Nonnull
@@ -277,9 +277,6 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			if (book.isEmpty())
 				return;
 			if (book.getItem() instanceof ItemLinking) {
-				this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
-						MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
-						MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 				((ItemLinking) book.getItem()).activate(book, this.tileEntity.getWorld(), player);
 			}
 
@@ -288,6 +285,9 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			this.query = data.getString("query");
 			this.tileEntity.setQuery(this.query);
 		}
+		this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
+				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
+				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 	}
 	
 	public String getQuery() {

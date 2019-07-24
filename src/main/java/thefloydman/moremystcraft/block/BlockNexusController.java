@@ -68,6 +68,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		if (world.isRemote) {
 			return true;
 		}
+		((TileEntityNexusController)world.getTileEntity(pos)).setQuery("");
 		world.notifyBlockUpdate(pos, MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 		player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),

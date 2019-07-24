@@ -21,11 +21,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import scala.actors.threadpool.Arrays;
 
 public class TileEntityNexusController extends TileEntity implements ISidedInventory {
 
 	protected NonNullList<ItemStack> bookList;
 	protected List<ItemStack> shortList;
+	private List<Integer> filteredList;
 	protected int bookCount;
 	protected int inventorySize;
 	protected String query = null;
@@ -35,6 +37,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
 		this.shortList = new ArrayList<ItemStack>();
 		this.bookCount = 0;
+		this.filteredList = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -66,6 +69,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		} else {
 			this.query = null;
 		}
+		this.filterBooks(this.query);
 	}
 
 	@Override
@@ -90,6 +94,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 				this.sortBookList();
 				bookCount++;
 				this.removeStackFromSlot(0);
+				this.filterBooks(this.query);
 				return true;
 			}
 		}
@@ -103,6 +108,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		this.bookList.set(this.bookList.size() - 1, ItemStack.EMPTY);
 		this.shortList.remove(id - 2);
 		this.bookCount--;
+		this.filterBooks(this.query);
 		this.markDirty();
 	}
 
@@ -155,6 +161,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		} else {
 			this.query = null;
 		}
+		this.filterBooks(this.query);
 		this.markDirty();
 	}
 
@@ -226,6 +233,9 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		if (index == 0 && stack.getItem() instanceof ItemLinking) {
+			return true;
+		}
 		return false;
 	}
 
@@ -260,11 +270,21 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
+		if (Arrays.asList(EnumFacing.HORIZONTALS).contains(side)) {
+			return new int[] { 0 };
+		}
 		return null;
 	}
 
 	@Override
 	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+		if (index == 0) {
+			if (Arrays.asList(EnumFacing.HORIZONTALS).contains(direction)) {
+				if (itemStackIn.getItem() instanceof ItemLinking) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -337,6 +357,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		} else {
 			this.query = null;
 		}
+		this.filterBooks(this.query);
 	}
 
 	protected void sortBookList() {
@@ -349,9 +370,38 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		}
 		this.markDirty();
 	}
-	
+
 	public List<ItemStack> getShortList() {
 		return this.shortList;
+	}
+
+	public void filterBooks(String text) {
+		this.filteredList = new ArrayList<Integer>();
+		for (int i = 0; i < this.getShortList().size(); i++) {
+			this.filteredList.add(i + 2);
+		}
+		if (text == null || text.trim().isEmpty()) {
+			return;
+		}
+		List<String> displayNames = new ArrayList<String>();
+		for (ItemStack stack : this.shortList) {
+			displayNames.add(((ItemLinking) stack.getItem()).getLinkInfo(stack).getDisplayName());
+		}
+		this.filteredList = new ArrayList<Integer>();
+		for (int i = 0; i < this.getShortList().size(); i++) {
+			this.filteredList.add(i + 2);
+		}
+		for (int i = 0; i < displayNames.size(); i++) {
+			if (!displayNames.get(i).toLowerCase().contains(text.toLowerCase())) {
+				int index = filteredList.indexOf(i + 2);
+				filteredList.remove(index);
+			}
+		}
+		this.markDirty();
+	}
+
+	public List<Integer> getFilteredBookList() {
+		return this.filteredList;
 	}
 
 }
