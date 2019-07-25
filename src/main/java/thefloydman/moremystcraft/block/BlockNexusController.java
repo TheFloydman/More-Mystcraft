@@ -1,5 +1,8 @@
 package thefloydman.moremystcraft.block;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 
 import net.minecraft.block.BlockContainer;
@@ -32,7 +35,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	public BlockNexusController() {
 		super(Material.IRON);
-		this.setHardness(2.5f);
+		this.setHardness(5.0f);
 		this.setSoundType(SoundType.METAL);
 		this.setUnlocalizedName(Reference.MOD_ID + ".nexus_controller");
 		this.setRegistryName(Reference.MOD_ID, "nexus_controller");
@@ -68,7 +71,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		if (world.isRemote) {
 			return true;
 		}
-		((TileEntityNexusController)world.getTileEntity(pos)).setQuery("");
+		((TileEntityNexusController) world.getTileEntity(pos)).setQuery("");
 		world.notifyBlockUpdate(pos, MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 		player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),
@@ -110,6 +113,47 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+		boolean canPlace = false;
+		canPlace = super.canPlaceBlockAt(worldIn, pos);
+		return canPlace;
+	}
+
+	public static Map<BlockPos, Integer> getConnectedNexusBlocks(World world, BlockPos pos, int type) {
+		Map<BlockPos, Integer> finishedBlocks = new HashMap<BlockPos, Integer>();
+		Map<BlockPos, Integer> uncheckedBlocks = new HashMap<BlockPos, Integer>();
+		uncheckedBlocks.put(pos, type);
+		do {
+			Map<BlockPos, Integer> map = getAdjacentNexusBlocks(world, pos, finishedBlocks);
+			if (map.isEmpty()) {
+				finishedBlocks.put(pos, type);
+				uncheckedBlocks.remove(pos);
+			}
+			for (Map.Entry<BlockPos, Integer> entry : map.entrySet()) {
+				if (!uncheckedBlocks.containsKey(entry.getKey()) && !finishedBlocks.containsKey(entry.getKey())) {
+					uncheckedBlocks.put(entry.getKey(), entry.getValue());
+				}
+			}
+		} while (uncheckedBlocks.size() > 0);
+	}
+
+	public static Map<BlockPos, Integer> getAdjacentNexusBlocks(final World world, final BlockPos pos, Map<BlockPos, Integer> checkedBlocks) {
+		Map<BlockPos, Integer> blocks = new HashMap<BlockPos, Integer>();
+		BlockPos[] positions = new BlockPos[] { pos.down(), pos.north(), pos.east(), pos.south(), pos.west(), pos.up() };
+		for (BlockPos position : positions) {
+			if (checkedBlocks.containsKey(position)) {
+				continue;
+			}
+			if (world.getBlockState(position).getBlock() instanceof BlockNexusStorage) {
+				blocks.put(position, 0);
+			} else if (world.getBlockState(position).getBlock() instanceof BlockNexusController) {
+				blocks.put(position, 1);
+			}
+		}
+		return blocks;
 	}
 
 }

@@ -19,13 +19,13 @@ moremystcraft.symbol.lacking_ores.name=Lacking Ores
 // Block names
 tile.moremystcraft.locked_lectern.name=Locked Lectern
 tile.moremystcraft.locked_bookstand.name=Locked Bookstand
-tile.moremystcraft.nexus_controller.name=Nexus Controller
 tile.moremystcraft.traffic_cone.name=Safety Cone
 tile.moremystcraft.unstable_receptacle.name=Unstable Book Receptacle
 tile.moremystcraft.unstable_portal.name=Unstable Portal
 tile.moremystcraft.link_portal_new.name=New Link Portal
 tile.moremystcraft.book_receptacle_new.name=New Book Receptacle
-tile.moremystcraft.banner_inscriber.name=Banner Inscriber
+tile.moremystcraft.nexus_controller.name=Nexus Controller
+tile.moremystcraft.nexus_storage.name=Nexus Storage
 
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit
@@ -34,7 +34,7 @@ item.moremystcraft.maintainer_suit.name=Maintainer Suit
 entity.moremystcraft.maintainer_suit.name=Maintainer Suit
 
 // Container names
-container.moremystcraft.maintainer_suit.name=Banner Inscriber
+container.moremystcraft.nexus_controller.name=Nexus Controller
 
 //Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "moremystcraft:nexus_storage" },
+        "facing=south": { "model": "moremystcraft:nexus_storage", "y": 180 },
+        "facing=west":  { "model": "moremystcraft:nexus_storage", "y": 270 },
+        "facing=east":  { "model": "moremystcraft:nexus_storage", "y": 90 }
+    }
+}

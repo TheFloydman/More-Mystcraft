@@ -2,7 +2,8 @@ package thefloydman.moremystcraft.client.gui;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
+
+import org.lwjgl.input.Mouse;
 
 import com.xcompwiz.mystcraft.client.gui.GuiContainerElements;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
@@ -21,7 +22,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.util.Reference;
@@ -30,8 +30,6 @@ public class GuiNexusController extends GuiContainerElements {
 
 	protected static final ResourceLocation TEXTURE = new ResourceLocation(Reference.MOD_ID,
 			"textures/gui/nexus_controller.png");
-	private int guiWidth = 176;
-	private int guiHeight = 218;
 	private int windowCenterX = 0;
 	private int windowCenterY = 0;
 	private int guiX = 0;
@@ -53,9 +51,13 @@ public class GuiNexusController extends GuiContainerElements {
 	private boolean scrollBlockBeingDragged;
 	private GuiElementTextField searchBar;
 	private int[] displayedBooks;
+	private GuiElementArea scrollDetectionArea;
+	private GuiElementBook bookElement;
 
 	public GuiNexusController(ContainerNexusController container, InventoryPlayer playerInv) {
 		super(container);
+		this.xSize = 176;
+		this.ySize = 218;
 		this.playerInv = playerInv;
 		this.container = container;
 		this.tileEntity = container.tileEntity;
@@ -67,18 +69,21 @@ public class GuiNexusController extends GuiContainerElements {
 		this.scrollBlockHeight = 15;
 		this.scrollbarHeight = 52;
 		this.scrollBlockBeingDragged = false;
-		this.displayedBooks = new int[] {-1, -1, -1, -1};
+		this.displayedBooks = new int[] { -1, -1, -1, -1 };
 	}
 
 	@Override
 	public void validate() {
 		super.validate();
 		TextBoxHandler handler = new TextBoxHandler();
-		this.searchBar = new GuiElementTextField(handler, handler, "query", 7, 39, 162, 12);
+		this.searchBar = new GuiElementTextField(handler, handler, "query", 7, 65, 162, 12);
 		this.searchBar.setMaxLength(32);
 		this.searchBar.setFocused(true);
 		this.addElement(this.searchBar);
-		this.addElement(new GuiElementBook(this.container, new LinkHandler(), 43, 55, 90, 50));
+		this.bookElement = new GuiElementBook(this.container, new LinkHandler(), 43, 81, 90, 50);
+		this.addElement(this.bookElement);
+		this.scrollDetectionArea = new GuiElementArea(7, 7, 144, 54);
+		this.addElement(this.scrollDetectionArea);
 	}
 
 	@Override
@@ -89,7 +94,7 @@ public class GuiNexusController extends GuiContainerElements {
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-		
+
 	}
 
 	@Override
@@ -106,11 +111,11 @@ public class GuiNexusController extends GuiContainerElements {
 	protected void _drawBackgroundLayer(final int mouseX, final int mouseY, final float f) {
 		windowCenterX = this.width / 2;
 		windowCenterY = this.height / 2;
-		guiX = windowCenterX - (guiWidth / 2);
-		guiY = windowCenterY - (guiHeight / 2);
+		guiX = windowCenterX - (this.xSize / 2);
+		guiY = windowCenterY - (this.ySize / 2);
 		GlStateManager.color(1.0F, 1.0F, 1.0F);
 		mc.renderEngine.bindTexture(TEXTURE);
-		drawTexturedModalRect(guiX, guiY, 0, 0, guiWidth, guiHeight);
+		drawTexturedModalRect(guiX, guiY, 0, 0, this.xSize, this.ySize);
 
 		int index = (int) Math.rint(((this.tileEntity.getFilteredBookList().size() - 4) * this.scrollFraction));
 		for (int i = 0; i < 4 && i < this.tileEntity.getFilteredBookList().size(); i++) {
@@ -120,8 +125,7 @@ public class GuiNexusController extends GuiContainerElements {
 		int listHeight = 13;
 		int listX = guiX + 8;
 		int listY = guiY + 8;
-		for (int i = 0; i < 4
-				&& i < this.tileEntity.getFilteredBookList().size(); i++, listY += listHeight) {
+		for (int i = 0; i < 4 && i < this.tileEntity.getFilteredBookList().size(); i++, listY += listHeight) {
 			if (this.tileEntity.getStackInSlot(this.displayedBooks[i]).getItem() instanceof ItemLinking) {
 				int textureY = this.container.selectedBook == this.displayedBooks[i] ? 231 : 218;
 				float red = 1.0F;
@@ -178,6 +182,7 @@ public class GuiNexusController extends GuiContainerElements {
 	@Override
 	protected void _onMouseUp(final int mouseX, final int mouseY, final int clicked_id, final boolean eaten) {
 		super._onMouseUp(mouseX, mouseY, clicked_id, eaten);
+		this.searchBar.setFocused(true);
 		this.scrollBlockBeingDragged = false;
 		this.selectedCell = this.determineClickedCell(mouseX, mouseY);
 		if (selectedCell < 0) {
@@ -235,6 +240,7 @@ public class GuiNexusController extends GuiContainerElements {
 
 	@Override
 	protected void _keyTyped(char c, int i, boolean eaten) {
+		this.scrollFraction = 0.0F;
 		super._keyTyped(c, i, eaten);
 	}
 
@@ -250,6 +256,45 @@ public class GuiNexusController extends GuiContainerElements {
 					.sendToServer(new MPacketGuiMessage(GuiNexusController.this.container.windowId, nbt));
 			GuiNexusController.this.container.processMessage(GuiNexusController.this.mc.player, nbt);
 		}
+	}
+
+	private class GuiElementArea extends GuiElement {
+
+		public GuiElementArea(int guiLeft, int guiTop, int xSize, int ySize) {
+			super(guiLeft, guiTop, xSize, ySize);
+		}
+
+		@Override
+		public void _handleMouseInput() {
+			int input = Mouse.getEventDWheel();
+
+			if (GuiNexusController.this.scrollbarEnabled && input != 0) {
+				input = input > 0 ? 1 : -1;
+				float outsideFraction = 1.0F
+						/ ((float) GuiNexusController.this.tileEntity.getFilteredBookList().size() - 3.0F);
+				float insideFraction = (outsideFraction + (2.0F * outsideFraction)) / 2.0F;
+				if (GuiNexusController.this.scrollFraction == 0.0F || GuiNexusController.this.scrollFraction == 1.0F) {
+					GuiNexusController.this.scrollFraction -= (float) input * insideFraction;
+				} else {
+					GuiNexusController.this.scrollFraction -= (float) input * outsideFraction;
+				}
+
+				if (GuiNexusController.this.scrollFraction > (outsideFraction
+						* (GuiNexusController.this.tileEntity.getFilteredBookList().size() - 4))) {
+					GuiNexusController.this.scrollFraction = 1.0F;
+				}
+				if (GuiNexusController.this.scrollFraction < outsideFraction) {
+					GuiNexusController.this.scrollFraction = 0.0F;
+				}
+			}
+		}
+
+		@Override
+		protected boolean _onKeyPress(char c, int i) {
+			GuiNexusController.this.scrollFraction = 0.0F;
+			return false;
+		}
+
 	}
 
 }

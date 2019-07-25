@@ -51,8 +51,8 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		this.inventory = playerInv;
 		this.query = "";
 		
-		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 72));
-		this.addSlotToContainer(new Slot(controller, 1, 143, 72) {
+		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 98));
+		this.addSlotToContainer(new Slot(controller, 1, 143, 98) {
 
 			@Override
 			public boolean isItemValid(ItemStack stack) {
@@ -69,11 +69,11 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		
 		// Add player inventory slots.
 		for (int k = 0; k < 9; k++) {
-			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 168));
+			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 194));
 		}
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 110 + i * 18));
+				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 136 + i * 18));
 			}
 		}
 
@@ -184,14 +184,14 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 
 	@Override
 	public boolean isLinkPermitted() {
-		ILinkInfo linkinfo = getLinkInfo();
-		if (linkinfo == null) {
+		ILinkInfo linkInfo = getLinkInfo();
+		if (linkInfo == null) {
 			return false;
 		}
 		if (ItemAgebook.isNewAgebook(getBook())) {
 			return true;
 		}
-		return LinkListenerManager.isLinkPermitted(this.tileEntity.getWorld(), this.player, linkinfo);
+		return this.tileEntity.getWorld().provider.getDimension() != linkInfo.getDimensionUID();
 	}
 
 	@Override

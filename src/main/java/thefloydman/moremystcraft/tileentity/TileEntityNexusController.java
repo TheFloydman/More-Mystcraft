@@ -295,7 +295,10 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 
 	@Override
 	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
-		return false;
+		if (oldState.getBlock().equals(newSate.getBlock())) {
+			return false;
+		}
+		return true;
 	}
 
 	@Nonnull

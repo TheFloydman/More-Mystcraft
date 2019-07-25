@@ -1,0 +1,32 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "rotindex=0": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=1": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=2": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=3": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=4": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=5": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=6": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "rotindex=7": {
+            "model": "moremystcraft:locked_bookstand"
+        },
+        "inventory": {
+            "model": "moremystcraft:locked_bookstand"
+        }
+    }
+}

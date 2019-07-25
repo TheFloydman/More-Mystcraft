@@ -1,0 +1,20 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "facing=north": {
+            "model": "moremystcraft:locked_lectern"
+        },
+        "facing=east": {
+            "model": "moremystcraft:locked_lectern"
+        },
+        "facing=south": {
+            "model": "moremystcraft:locked_lectern"
+        },
+        "facing=west": {
+            "model": "moremystcraft:locked_lectern"
+        },
+        "inventory": {
+            "model": "moremystcraft:locked_lectern"
+        }
+    }
+}
