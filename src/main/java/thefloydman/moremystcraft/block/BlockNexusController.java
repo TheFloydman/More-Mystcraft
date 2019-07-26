@@ -144,8 +144,8 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 			uncheckedBlocks.remove(pos);
 			if (uncheckedBlocks.size() > 0) {
 				pos = uncheckedBlocks.entrySet().stream().findFirst().get().getKey();
+				type = uncheckedBlocks.entrySet().stream().findFirst().get().getValue();
 			}
-			System.out.println(finishedBlocks);
 		} while (uncheckedBlocks.size() > 0);
 		return finishedBlocks;
 	}
@@ -156,7 +156,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		BlockPos[] positions = new BlockPos[] { pos.down(), pos.north(), pos.east(), pos.south(), pos.west(),
 				pos.up() };
 		for (BlockPos position : positions) {
-			if (checkedBlocks.containsKey(position) || uncheckedBlocks.containsKey(position)) {
+			if (checkedBlocks.containsKey(position)) {
 				continue;
 			}
 			if (world.getBlockState(position).getBlock() instanceof BlockNexusStorage) {

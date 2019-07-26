@@ -57,7 +57,6 @@ public class BlockNexusStorage extends BlockHorizontal {
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 		Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(worldIn, pos, 0);
-		System.out.println(Collections.frequency(nexusBlocks.values(), 1));
 		boolean placeMod = Collections.frequency(nexusBlocks.values(), 1) < 2;
 		boolean placeVanilla = super.canPlaceBlockAt(worldIn, pos);
 		if (worldIn.isRemote && (!placeVanilla || !placeMod)) {

@@ -7,6 +7,6 @@
         "south": "moremystcraft:blocks/nexus_storage_slots",
         "east": "moremystcraft:blocks/nexus_storage_siding",
         "west": "moremystcraft:blocks/nexus_storage_siding",
-        "particle": "moremystcraft:blocks/nexus_top"
+        "particle": "moremystcraft:blocks/nexus_storage_top"
     }
 }
