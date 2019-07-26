@@ -36,6 +36,9 @@ entity.moremystcraft.maintainer_suit.name=Maintainer Suit
 // Container names
 container.moremystcraft.nexus_controller.name=Nexus Controller
 
+// Messages
+message.moremystcraft.nexus_place_error.desc="Error: Cannot connect two Nexus Controllers."
+
 //Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size
 grammar.moremystcraft.size_uncommon.name=Size

@@ -1,5 +1,6 @@
 package thefloydman.moremystcraft.block;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +24,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
@@ -117,9 +120,13 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		boolean canPlace = false;
-		canPlace = super.canPlaceBlockAt(worldIn, pos);
-		return canPlace;
+		Map<BlockPos, Integer> nexusBlocks = getConnectedNexusBlocks(worldIn, pos, 1);
+		boolean placeMod = Collections.frequency(nexusBlocks.values(), 1) < 2;
+		boolean placeVanilla = super.canPlaceBlockAt(worldIn, pos);
+		if (worldIn.isRemote && (!placeVanilla || !placeMod)) {
+			Minecraft.getMinecraft().player.sendMessage(new TextComponentTranslation("message.moremystcraft.nexus_place_error.desc"));
+		}
+		return placeVanilla && placeMod;
 	}
 
 	public static Map<BlockPos, Integer> getConnectedNexusBlocks(World world, BlockPos pos, int type) {
@@ -127,24 +134,29 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		Map<BlockPos, Integer> uncheckedBlocks = new HashMap<BlockPos, Integer>();
 		uncheckedBlocks.put(pos, type);
 		do {
-			Map<BlockPos, Integer> map = getAdjacentNexusBlocks(world, pos, finishedBlocks);
-			if (map.isEmpty()) {
-				finishedBlocks.put(pos, type);
-				uncheckedBlocks.remove(pos);
-			}
+			Map<BlockPos, Integer> map = getAdjacentNexusBlocks(world, pos, finishedBlocks, uncheckedBlocks);			
 			for (Map.Entry<BlockPos, Integer> entry : map.entrySet()) {
 				if (!uncheckedBlocks.containsKey(entry.getKey()) && !finishedBlocks.containsKey(entry.getKey())) {
 					uncheckedBlocks.put(entry.getKey(), entry.getValue());
 				}
 			}
+			finishedBlocks.put(pos, type);
+			uncheckedBlocks.remove(pos);
+			if (uncheckedBlocks.size() > 0) {
+				pos = uncheckedBlocks.entrySet().stream().findFirst().get().getKey();
+			}
+			System.out.println(finishedBlocks);
 		} while (uncheckedBlocks.size() > 0);
+		return finishedBlocks;
 	}
 
-	public static Map<BlockPos, Integer> getAdjacentNexusBlocks(final World world, final BlockPos pos, Map<BlockPos, Integer> checkedBlocks) {
+	public static Map<BlockPos, Integer> getAdjacentNexusBlocks(final World world, final BlockPos pos,
+			Map<BlockPos, Integer> checkedBlocks, Map<BlockPos, Integer> uncheckedBlocks) {
 		Map<BlockPos, Integer> blocks = new HashMap<BlockPos, Integer>();
-		BlockPos[] positions = new BlockPos[] { pos.down(), pos.north(), pos.east(), pos.south(), pos.west(), pos.up() };
+		BlockPos[] positions = new BlockPos[] { pos.down(), pos.north(), pos.east(), pos.south(), pos.west(),
+				pos.up() };
 		for (BlockPos position : positions) {
-			if (checkedBlocks.containsKey(position)) {
+			if (checkedBlocks.containsKey(position) || uncheckedBlocks.containsKey(position)) {
 				continue;
 			}
 			if (world.getBlockState(position).getBlock() instanceof BlockNexusStorage) {
