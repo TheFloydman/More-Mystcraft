@@ -21,6 +21,7 @@ import thefloydman.moremystcraft.entity.capability.IPotionDummy;
 import thefloydman.moremystcraft.entity.capability.StoragePotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntityNexusStorage;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
@@ -36,6 +37,7 @@ public class CommonProxy {
 		CapabilityManager.INSTANCE.register(IPotionDummy.class, new StoragePotionDummy(), CapabilityPotionDummy.class);
 		GameRegistry.registerTileEntity(TileEntityNexusController.class,
 				Reference.forMoreMystcraft("nexus_controller"));
+		GameRegistry.registerTileEntity(TileEntityNexusStorage.class, Reference.forMoreMystcraft("nexus_storage"));
 	}
 
 	public void init(FMLInitializationEvent event) {

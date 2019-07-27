@@ -3,10 +3,12 @@ package thefloydman.moremystcraft.block;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -14,15 +16,20 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntityNexusStorage;
 import thefloydman.moremystcraft.util.Reference;
 
-public class BlockNexusStorage extends BlockHorizontal {
+public class BlockNexusStorage extends BlockHorizontal implements ITileEntityProvider {
 
 	public BlockNexusStorage() {
 
@@ -73,8 +80,11 @@ public class BlockNexusStorage extends BlockHorizontal {
 			ItemStack stack) {
 		Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(worldIn, pos, 0);
 		BlockPos controllerPos = getKey(nexusBlocks, 1);
-		worldIn.notifyBlockUpdate(controllerPos, worldIn.getBlockState(controllerPos),
-				worldIn.getBlockState(controllerPos), 3);
+		if (controllerPos != null) {
+			worldIn.notifyBlockUpdate(controllerPos, worldIn.getBlockState(controllerPos),
+					worldIn.getBlockState(controllerPos), 3);
+		}
+		super.onBlockPlacedBy(worldIn, controllerPos, state, placer, stack);
 	}
 
 	/*
@@ -90,12 +100,25 @@ public class BlockNexusStorage extends BlockHorizontal {
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(worldIn, pos, 0);
-		BlockPos controllerPos = getKey(nexusBlocks, 1);
-		worldIn.notifyBlockUpdate(controllerPos, worldIn.getBlockState(controllerPos),
-				worldIn.getBlockState(controllerPos), 3);
-		super.breakBlock(worldIn, pos, state);
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+
+		if (tileEntity instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
+			world.updateComparatorOutputLevel(pos, this);
+		}
+
+		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public boolean hasTileEntity() {
+		return true;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityNexusStorage();
 	}
 
 }

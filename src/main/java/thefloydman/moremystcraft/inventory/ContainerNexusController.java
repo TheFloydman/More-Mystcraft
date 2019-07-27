@@ -234,9 +234,11 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	}
 
 	protected void acceptBook() {
+		System.out.println(this.tileEntity.getBookList().size());
+		System.out.println(this.tileEntity.getBookCount());
 		if (this.getSlotFromInventory(this.tileEntity, 0).getHasStack()) {
 			if (this.getSlotFromInventory(this.tileEntity, 0).getStack().getItem() instanceof ItemLinking) {
-				if (this.tileEntity.getBookCount() < this.tileEntity.getSizeInventory() - 2) {
+				if (this.tileEntity.getBookCount() < this.tileEntity.getBookList().size() - 2) {
 					this.tileEntity.addBook(this.getSlotFromInventory(this.tileEntity, 0).getStack());
 				}
 			}
@@ -288,6 +290,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
+		this.tileEntity.markDirty();
 	}
 	
 	public String getQuery() {

@@ -75,9 +75,11 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		if (world.isRemote) {
 			return true;
 		}
-		((TileEntityNexusController) world.getTileEntity(pos)).setQuery("");
+		TileEntityNexusController tileEntity = ((TileEntityNexusController) world.getTileEntity(pos));
+		tileEntity.setQuery("");
 		world.notifyBlockUpdate(pos, MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
+		tileEntity.markDirty();
 		player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),
 				pos.getY(), pos.getZ());
 		return true;
