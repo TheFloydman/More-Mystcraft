@@ -19,6 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -88,7 +89,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityNexusController();
+		return new TileEntityNexusController(worldIn);
 	}
 
 	@Override
@@ -166,6 +167,25 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 			}
 		}
 		return blocks;
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
+			ItemStack stack) {
+		worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos),
+				worldIn.getBlockState(pos), 3);
+	}
+	
+	/*
+	 * Source as of 26 July 2019: https://www.baeldung.com/java-map-key-from-value
+	 */
+	protected <K, V> K getKey(Map<K, V> map, V value) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			if (entry.getValue().equals(value)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 }
