@@ -109,14 +109,20 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		}
 		map.remove(this.getPos());
 		int count = 0;
-		for (int i = this.getSizeInventory(); i < this.getBookList().size(); i++) {
+		for (int i = this.getSizeInventory(); i < this.getBookList().size()
+				&& i < this.getSizeInventory() + (map.size() * 8); i++) {
 			BlockPos blockPos = map.entrySet().stream().findFirst().get().getKey();
 			TileEntity tileEntity = this.getWorld().getTileEntity(blockPos);
 			if (tileEntity instanceof TileEntityNexusStorage) {
-				TileEntityNexusStorage tileEntityStorage = (TileEntityNexusStorage) this.getWorld().getTileEntity(blockPos);
-				tileEntityStorage.clearBookList();
+				TileEntityNexusStorage tileEntityStorage = (TileEntityNexusStorage) this.getWorld()
+						.getTileEntity(blockPos);
+				if (count == 0) {
+					tileEntityStorage.clearBookList();
+				}
 				tileEntityStorage.addBook(this.getBookList().get(i));
 			}
+			this.getWorld().notifyBlockUpdate(blockPos, this.getWorld().getBlockState(blockPos),
+					this.getWorld().getBlockState(blockPos), 7);
 			count++;
 			if (count > 7) {
 				map.remove(blockPos);
@@ -137,6 +143,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 				this.sortBookList();
 				this.removeStackFromSlot(0);
 				this.filterBooks(this.query);
+				this.writeToNBT(new NBTTagCompound());
 				return true;
 			}
 		}
@@ -378,11 +385,7 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	@Override
 	public void onLoad() {
 		if (!this.getWorld().isRemote) {
-			Map<BlockPos, Integer> map = BlockNexusController.getConnectedNexusBlocks(this.getWorld(), this.getPos(),
-					1);
-			int totalSize = (Collections.frequency(map.values(), 0) * 8) + this.getSizeInventory();
-			this.bookList = NonNullList.<ItemStack>withSize(totalSize, ItemStack.EMPTY);
-			System.out.println("LOAD: " + this.getBookList().size());
+			this.readFromNBT(this.writeToNBT(new NBTTagCompound()));
 			this.getWorld().notifyBlockUpdate(this.getPos(), this.getWorld().getBlockState(this.getPos()),
 					this.getWorld().getBlockState(this.getPos()), 7);
 		}

@@ -89,7 +89,6 @@ public class TileEntityNexusStorage extends TileEntity implements IInventory {
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound nbt = pkt.getNbtCompound();
 		this.readFromNBT(nbt);
-		this.markDirty();
 	}
 
 	@Override
@@ -117,7 +116,6 @@ public class TileEntityNexusStorage extends TileEntity implements IInventory {
 		super.handleUpdateTag(tag);
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.readFromNBT(nbt);
-		this.markDirty();
 	}
 
 	@Override

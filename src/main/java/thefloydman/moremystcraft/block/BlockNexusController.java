@@ -95,8 +95,11 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		world.notifyBlockUpdate(pos, state, state, 7);
 		TileEntity tileEntity = world.getTileEntity(pos);
-
+		if (tileEntity instanceof TileEntityNexusController) {
+			TileEntityNexusController entityNexus = (TileEntityNexusController) tileEntity;
+		}
 		if (tileEntity instanceof IInventory) {
 			InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
 			world.updateComparatorOutputLevel(pos, this);
