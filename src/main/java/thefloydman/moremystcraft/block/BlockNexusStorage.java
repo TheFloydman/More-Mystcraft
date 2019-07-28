@@ -78,13 +78,13 @@ public class BlockNexusStorage extends BlockHorizontal implements ITileEntityPro
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(worldIn, pos, 0);
+		/*Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(worldIn, pos, 0);
 		BlockPos controllerPos = getKey(nexusBlocks, 1);
 		if (controllerPos != null) {
 			worldIn.notifyBlockUpdate(controllerPos, worldIn.getBlockState(controllerPos),
 					worldIn.getBlockState(controllerPos), 3);
 		}
-		super.onBlockPlacedBy(worldIn, controllerPos, state, placer, stack);
+		super.onBlockPlacedBy(worldIn, controllerPos, state, placer, stack);*/
 	}
 
 	/*

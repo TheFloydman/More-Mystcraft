@@ -79,7 +79,6 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		tileEntity.setQuery("");
 		world.notifyBlockUpdate(pos, MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
-		tileEntity.markDirty();
 		player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal(), world, pos.getX(),
 				pos.getY(), pos.getZ());
 		return true;
@@ -91,7 +90,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityNexusController(worldIn);
+		return new TileEntityNexusController();
 	}
 
 	@Override
@@ -174,8 +173,8 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
-		worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos),
-				worldIn.getBlockState(pos), 3);
+		/*worldIn.notifyBlockUpdate(pos, worldIn.getBlockState(pos),
+				worldIn.getBlockState(pos), 3);*/
 	}
 	
 	/*

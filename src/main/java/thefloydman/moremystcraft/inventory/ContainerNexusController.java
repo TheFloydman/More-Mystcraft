@@ -17,6 +17,7 @@ import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,6 +26,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
@@ -50,7 +52,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		this.tileEntity = controller;
 		this.inventory = playerInv;
 		this.query = "";
-		
+
 		this.addSlotToContainer(new SlotNexusInput(controller, 0, 17, 98));
 		this.addSlotToContainer(new Slot(controller, 1, 143, 98) {
 
@@ -66,7 +68,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 				return super.onTake(thePlayer, stack);
 			}
 		});
-		
+
 		// Add player inventory slots.
 		for (int k = 0; k < 9; k++) {
 			this.addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 194));
@@ -76,6 +78,9 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 136 + i * 18));
 			}
 		}
+		
+		System.out.println(this.tileEntity.getWorld().isRemote);
+		System.out.println(this.tileEntity.getBookList().size());
 
 	}
 
@@ -234,12 +239,17 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	}
 
 	protected void acceptBook() {
-		System.out.println(this.tileEntity.getBookList().size());
-		System.out.println(this.tileEntity.getBookCount());
+
 		if (this.getSlotFromInventory(this.tileEntity, 0).getHasStack()) {
 			if (this.getSlotFromInventory(this.tileEntity, 0).getStack().getItem() instanceof ItemLinking) {
 				if (this.tileEntity.getBookCount() < this.tileEntity.getBookList().size() - 2) {
 					this.tileEntity.addBook(this.getSlotFromInventory(this.tileEntity, 0).getStack());
+				}
+
+				if (!this.tileEntity.getWorld().isRemote) {
+					this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
+							this.tileEntity.getWorld().getBlockState(this.tileEntity.getPos()),
+							this.tileEntity.getWorld().getBlockState(this.tileEntity.getPos()), 7);
 				}
 			}
 		}
@@ -287,12 +297,8 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 			this.query = data.getString("query");
 			this.tileEntity.setQuery(this.query);
 		}
-		this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
-				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
-				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
-		this.tileEntity.markDirty();
 	}
-	
+
 	public String getQuery() {
 		return this.query;
 	}

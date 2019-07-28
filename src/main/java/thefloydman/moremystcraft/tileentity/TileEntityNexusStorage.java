@@ -1,5 +1,7 @@
 package thefloydman.moremystcraft.tileentity;
 
+import java.util.Map;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import thefloydman.moremystcraft.block.BlockNexusController;
 
 public class TileEntityNexusStorage extends TileEntity implements IInventory {
 
@@ -56,6 +59,10 @@ public class TileEntityNexusStorage extends TileEntity implements IInventory {
 			if (this.bookList.get(i).isEmpty()) {
 				this.bookList.set(i, stack);
 				this.markDirty();
+				if (!this.getWorld().isRemote) {
+					this.getWorld().notifyBlockUpdate(this.getPos(), this.getWorld().getBlockState(this.getPos()),
+							this.getWorld().getBlockState(this.getPos()), 3);
+				}
 				return true;
 			}
 		}
@@ -102,11 +109,7 @@ public class TileEntityNexusStorage extends TileEntity implements IInventory {
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		super.getUpdateTag();
-		NBTTagCompound nbt = this.getTileData();
-		nbt = this.writeToNBT(nbt);
-		this.markDirty();
-		return nbt;
+		return this.writeToNBT(super.getUpdateTag());
 	}
 
 	@Override
@@ -201,6 +204,32 @@ public class TileEntityNexusStorage extends TileEntity implements IInventory {
 
 	@Override
 	public void clear() {
+	}
+
+	@Override
+	public void onLoad() {
+		if (this.getWorld().isRemote) {
+			return;
+		}
+		Map<BlockPos, Integer> nexusBlocks = BlockNexusController.getConnectedNexusBlocks(this.getWorld(),
+				this.getPos(), 0);
+		BlockPos controllerPos = this.getKey(nexusBlocks, 1);
+		if (controllerPos != null) {
+			this.getWorld().notifyBlockUpdate(controllerPos, this.getWorld().getBlockState(controllerPos),
+					this.getWorld().getBlockState(controllerPos), 3);
+		}
+	}
+
+	/*
+	 * Source as of 26 July 2019: https://www.baeldung.com/java-map-key-from-value
+	 */
+	protected <K, V> K getKey(Map<K, V> map, V value) {
+		for (Map.Entry<K, V> entry : map.entrySet()) {
+			if (entry.getValue().equals(value)) {
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 
 }
