@@ -22,7 +22,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
-import thefloydman.moremystcraft.block.BlockNexusStorage;
 import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
@@ -37,7 +36,6 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
-	public static final Block NEXUS_STORAGE = (Block) new BlockNexusStorage();
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -69,7 +67,6 @@ public class MoreMystcraftBlocks {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
 		event.getRegistry().register(NEXUS_CONTROLLER);
-		event.getRegistry().register(NEXUS_STORAGE);
 	}
 
 	@SubscribeEvent
@@ -77,8 +74,8 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
-		event.getRegistry().register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
-		event.getRegistry().register(new ItemBlock(NEXUS_STORAGE).setRegistryName(NEXUS_STORAGE.getRegistryName()));
+		event.getRegistry()
+				.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -87,7 +84,6 @@ public class MoreMystcraftBlocks {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
 		}
 		registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
-		registerRender(Item.getItemFromBlock(NEXUS_STORAGE));
 	}
 
 	public static void registerRender(Item item) {

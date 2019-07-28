@@ -15,7 +15,6 @@ import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.network.MystcraftPacketHandler;
 import com.xcompwiz.mystcraft.network.packet.MPacketGuiMessage;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -71,8 +70,6 @@ public class GuiNexusController extends GuiContainerElements {
 		this.scrollbarHeight = 52;
 		this.scrollBlockBeingDragged = false;
 		this.displayedBooks = new int[] { -1, -1, -1, -1 };
-		this.mc = Minecraft.getMinecraft();
-		this.player = this.mc.player;
 	}
 
 	@Override
@@ -191,7 +188,7 @@ public class GuiNexusController extends GuiContainerElements {
 		if (selectedCell < 0) {
 			return;
 		}
-		this.container.selectedBook = this.displayedBooks[this.selectedCell] < this.tileEntity.getBookList().size()
+		this.container.selectedBook = this.displayedBooks[this.selectedCell] < this.tileEntity.getSizeInventory()
 				? this.displayedBooks[this.selectedCell]
 				: -1;
 		if (this.container.selectedBook > 1) {

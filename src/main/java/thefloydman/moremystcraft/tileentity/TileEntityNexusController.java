@@ -1,11 +1,8 @@
 package thefloydman.moremystcraft.tileentity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
@@ -25,40 +22,37 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import scala.actors.threadpool.Arrays;
-import thefloydman.moremystcraft.block.BlockNexusController;
 
 public class TileEntityNexusController extends TileEntity implements ISidedInventory {
 
 	protected NonNullList<ItemStack> bookList;
 	protected List<ItemStack> shortList;
 	private List<Integer> filteredList;
+	protected int bookCount;
 	protected int inventorySize;
 	protected String query = null;
-	List<BlockPos> storageBlocks;
 
 	public TileEntityNexusController() {
-		this.inventorySize = 2 + 4;
-		this.bookList = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
+		this.inventorySize = 2 + 128;
+		this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
 		this.shortList = new ArrayList<ItemStack>();
+		this.bookCount = 0;
 		this.filteredList = new ArrayList<Integer>();
-		this.storageBlocks = new ArrayList<BlockPos>();
-	}
-
-	public static int distanceWalked(final BlockPos startBlock, final BlockPos endBlock) {
-		return Math.abs(startBlock.getX() - endBlock.getX()) + Math.abs(startBlock.getY() - endBlock.getY())
-				+ Math.abs(startBlock.getZ() - endBlock.getZ());
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-		Map<BlockPos, Integer> map = BlockNexusController.getConnectedNexusBlocks(this.getWorld(), this.getPos(), 1);
-		int totalSize = (Collections.frequency(map.values(), 0) * 8) + this.getSizeInventory();
 		if (nbt.hasKey("books")) {
 			NBTTagCompound books = nbt.getCompoundTag("books");
-			this.bookList = NonNullList.<ItemStack>withSize(totalSize, ItemStack.EMPTY);
-			System.out.println("READ:" + this.getBookList().size());
+			this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
 			ItemStackHelper.loadAllItems(books, this.bookList);
+			bookCount = 0;
+			for (ItemStack stack : this.bookList) {
+				if (!stack.isEmpty()) {
+					bookCount++;
+				}
+			}
 			this.shortList = new ArrayList<ItemStack>();
 			for (int i = 2; i < this.bookList.size(); i++) {
 				if (!this.bookList.get(i).isEmpty()) {
@@ -69,21 +63,6 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 			}
 		} else {
 			this.bookList = null;
-		}
-		for (Entry<BlockPos, Integer> entry : map.entrySet()) {
-			if (entry.getValue() == 0) {
-				TileEntityNexusStorage tileEntity = (TileEntityNexusStorage) this.getWorld()
-						.getTileEntity(entry.getKey());
-				if (tileEntity == null) {
-					continue;
-				}
-				List<ItemStack> list = tileEntity.getBookList();
-				for (ItemStack stack : list) {
-					if (!stack.isEmpty()) {
-						this.addBook(stack);
-					}
-				}
-			}
 		}
 		if (nbt.hasKey("query")) {
 			this.query = nbt.getString("query");
@@ -96,38 +75,10 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
-		Map<BlockPos, Integer> map = BlockNexusController.getConnectedNexusBlocks(this.getWorld(), this.getPos(), 1);
-		int totalSize = (Collections.frequency(map.values(), 0) * 8) + this.getSizeInventory();
-		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(this.getSizeInventory(), ItemStack.EMPTY);
-		for (int i = 0; i < this.getSizeInventory(); i++) {
-			list.set(i, this.bookList.get(i));
-		}
 		if (this.bookList != null) {
 			NBTTagCompound books = new NBTTagCompound();
-			ItemStackHelper.saveAllItems(books, list);
+			ItemStackHelper.saveAllItems(books, this.bookList);
 			nbt.setTag("books", books);
-		}
-		map.remove(this.getPos());
-		int count = 0;
-		for (int i = this.getSizeInventory(); i < this.getBookList().size()
-				&& i < this.getSizeInventory() + (map.size() * 8); i++) {
-			BlockPos blockPos = map.entrySet().stream().findFirst().get().getKey();
-			TileEntity tileEntity = this.getWorld().getTileEntity(blockPos);
-			if (tileEntity instanceof TileEntityNexusStorage) {
-				TileEntityNexusStorage tileEntityStorage = (TileEntityNexusStorage) this.getWorld()
-						.getTileEntity(blockPos);
-				if (count == 0) {
-					tileEntityStorage.clearBookList();
-				}
-				tileEntityStorage.addBook(this.getBookList().get(i));
-			}
-			this.getWorld().notifyBlockUpdate(blockPos, this.getWorld().getBlockState(blockPos),
-					this.getWorld().getBlockState(blockPos), 7);
-			count++;
-			if (count > 7) {
-				map.remove(blockPos);
-				count = 0;
-			}
 		}
 		if (this.query != null) {
 			nbt.setString("query", this.query);
@@ -136,14 +87,14 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	}
 
 	public boolean addBook(ItemStack stack) {
-		for (int i = 2; i < this.getBookList().size(); i++) {
+		for (int i = 2; i < this.inventorySize; i++) {
 			if (this.bookList.get(i).isEmpty()) {
 				this.bookList.set(i, stack);
 				this.shortList.add(stack);
 				this.sortBookList();
+				bookCount++;
 				this.removeStackFromSlot(0);
 				this.filterBooks(this.query);
-				this.writeToNBT(new NBTTagCompound());
 				return true;
 			}
 		}
@@ -156,25 +107,62 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 		}
 		this.bookList.set(this.bookList.size() - 1, ItemStack.EMPTY);
 		this.shortList.remove(id - 2);
+		this.bookCount--;
 		this.filterBooks(this.query);
 		this.markDirty();
 	}
 
 	public int getBookCount() {
-		return this.getShortList().size();
+		return this.bookCount;
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
+		super.getUpdatePacket();
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt = this.writeToNBT(nbt);
+		if (this.bookList != null) {
+			NBTTagCompound books = new NBTTagCompound();
+			ItemStackHelper.saveAllItems(books, this.bookList);
+			nbt.setTag("books", books);
+		}
+		if (this.query != null) {
+			nbt.setString("query", this.query);
+		}
 		return new SPacketUpdateTileEntity(this.getPos(), 1, nbt);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
 		NBTTagCompound nbt = pkt.getNbtCompound();
-		this.readFromNBT(nbt);
+		if (nbt.hasKey("books")) {
+			NBTTagCompound books = nbt.getCompoundTag("books");
+			this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+			ItemStackHelper.loadAllItems(books, this.bookList);
+			bookCount = 0;
+			for (ItemStack stack : this.bookList) {
+				if (!stack.isEmpty()) {
+					bookCount++;
+				}
+			}
+			this.shortList = new ArrayList<ItemStack>();
+			for (int i = 2; i < this.bookList.size(); i++) {
+				if (!this.bookList.get(i).isEmpty()) {
+					this.shortList.add(this.bookList.get(i));
+				} else {
+					break;
+				}
+			}
+		} else {
+			this.bookList = null;
+		}
+		if (nbt.hasKey("query")) {
+			this.query = nbt.getString("query");
+		} else {
+			this.query = null;
+		}
+		this.filterBooks(this.query);
+		this.markDirty();
 	}
 
 	@Override
@@ -306,8 +294,8 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 	}
 
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-		if (oldState.getBlock().equals(newState.getBlock())) {
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+		if (oldState.getBlock().equals(newSate.getBlock())) {
 			return false;
 		}
 		return true;
@@ -329,13 +317,50 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
-		return this.writeToNBT(super.getUpdateTag());
+		super.getUpdateTag();
+		NBTTagCompound nbt = this.getTileData();
+		if (this.bookList != null) {
+			NBTTagCompound books = new NBTTagCompound();
+			ItemStackHelper.saveAllItems(books, this.bookList);
+			nbt.setTag("books", books);
+		}
+		if (this.query != null) {
+			nbt.setString("query", this.query);
+		}
+		return nbt;
 	}
 
 	@Override
 	public void handleUpdateTag(NBTTagCompound tag) {
 		super.handleUpdateTag(tag);
-		this.readFromNBT(tag);
+		NBTTagCompound nbt = new NBTTagCompound();
+		if (nbt.hasKey("books")) {
+			NBTTagCompound books = nbt.getCompoundTag("books");
+			this.bookList = NonNullList.<ItemStack>withSize(this.inventorySize, ItemStack.EMPTY);
+			ItemStackHelper.loadAllItems(books, this.bookList);
+			bookCount = 0;
+			for (ItemStack stack : this.bookList) {
+				if (!stack.isEmpty()) {
+					bookCount++;
+				}
+			}
+			this.shortList = new ArrayList<ItemStack>();
+			for (int i = 2; i < this.bookList.size(); i++) {
+				if (!this.bookList.get(i).isEmpty()) {
+					shortList.add(this.bookList.get(i));
+				} else {
+					break;
+				}
+			}
+		} else {
+			this.bookList = null;
+		}
+		if (nbt.hasKey("query")) {
+			this.query = nbt.getString("query");
+		} else {
+			this.query = null;
+		}
+		this.filterBooks(this.query);
 	}
 
 	protected void sortBookList() {
@@ -380,27 +405,6 @@ public class TileEntityNexusController extends TileEntity implements ISidedInven
 
 	public List<Integer> getFilteredBookList() {
 		return this.filteredList;
-	}
-
-	@Override
-	public void onLoad() {
-		if (!this.getWorld().isRemote) {
-			this.readFromNBT(this.writeToNBT(new NBTTagCompound()));
-			this.getWorld().notifyBlockUpdate(this.getPos(), this.getWorld().getBlockState(this.getPos()),
-					this.getWorld().getBlockState(this.getPos()), 7);
-		}
-	}
-
-	/*
-	 * Source as of 26 July 2019: https://www.baeldung.com/java-map-key-from-value
-	 */
-	protected <K, V> K getKey(Map<K, V> map, V value) {
-		for (Map.Entry<K, V> entry : map.entrySet()) {
-			if (entry.getValue().equals(value)) {
-				return entry.getKey();
-			}
-		}
-		return null;
 	}
 
 }
