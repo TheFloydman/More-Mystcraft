@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -54,6 +55,11 @@ public class EventHandler {
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 		event.getRegistry().register(MoreMystcraftEntityEntries.MAINTAINER_SUIT);
 		event.getRegistry().register(MoreMystcraftEntityEntries.POTION_DUMMY);
+	}
+	
+	@SubscribeEvent
+	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+		CraftingHandler.removeRecipes(event.getRegistry());
 	}
 
 	@SubscribeEvent

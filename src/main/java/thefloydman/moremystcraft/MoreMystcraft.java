@@ -64,7 +64,6 @@ public class MoreMystcraft {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.init(event);
-		CraftingHandler.removeRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 	}
 
