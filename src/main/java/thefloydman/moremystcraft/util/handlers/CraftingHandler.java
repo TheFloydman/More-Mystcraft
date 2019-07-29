@@ -47,6 +47,12 @@ public class CraftingHandler {
 					recipeRegistry.register(DummyRecipe.from(r));
 				}
 			}
+			if (new MoreMystcraftConfig().getNexusControllerRecipeEnabled() != true) {
+				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.NEXUS_CONTROLLER)) {
+					recipeRegistry.remove(r.getRegistryName());
+					recipeRegistry.register(DummyRecipe.from(r));
+				}
+			}
 			if (new MoreMystcraftConfig().getUnstableReceptacleRecipeEnabled() != true) {
 				if (output.getItem() == Item.getItemFromBlock(MoreMystcraftBlocks.UNSTABLE_RECEPTACLE)) {
 					recipeRegistry.remove(r.getRegistryName());

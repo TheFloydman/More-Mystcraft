@@ -66,7 +66,9 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
-		event.getRegistry().register(NEXUS_CONTROLLER);
+		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+			event.getRegistry().register(NEXUS_CONTROLLER);
+		}
 	}
 
 	@SubscribeEvent
@@ -74,8 +76,10 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
-		event.getRegistry()
-				.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
+		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+			event.getRegistry()
+					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
+		}
 	}
 
 	@SubscribeEvent
@@ -83,7 +87,9 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
 		}
-		registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
+		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+			registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
+		}
 	}
 
 	public static void registerRender(Item item) {

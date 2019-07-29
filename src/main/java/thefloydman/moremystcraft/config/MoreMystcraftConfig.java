@@ -26,8 +26,8 @@ public class MoreMystcraftConfig {
 	@Name("unstable_receptacle")
 	public static CategoryUnstable catUnstable = new CategoryUnstable();
 
-	@Name("misc_blocks")
-	public static CategoryMisc catMisc = new CategoryMisc();
+	@Name("added_blocks")
+	public static CategoryAddedBlocks catAddedBlocks = new CategoryAddedBlocks();
 
 	@Name("abandoned_studies")
 	public static CategoryStudies catStudies = new CategoryStudies();
@@ -75,7 +75,7 @@ public class MoreMystcraftConfig {
 
 	}
 
-	private static class CategoryMisc {
+	private static class CategoryAddedBlocks {
 
 		@RequiresMcRestart
 		@Name("Traffic cone enabled")
@@ -84,6 +84,14 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Traffic cone recipe enabled")
 		public boolean trafficConeRecipeEnabled = true;
+		
+		@RequiresMcRestart
+		@Name("Nexus controller enabled")
+		public boolean nexusControllerEnabled = true;
+
+		@RequiresMcRestart
+		@Name("Nexus controller recipe enabled")
+		public boolean nexusControllerRecipeEnabled = true;
 
 	}
 
@@ -157,11 +165,19 @@ public class MoreMystcraftConfig {
 	}
 
 	public boolean getTrafficConeEnabled() {
-		return catMisc.trafficConeEnabled;
+		return catAddedBlocks.trafficConeEnabled;
 	}
 
 	public boolean getTrafficConeRecipeEnabled() {
-		return catMisc.trafficConeRecipeEnabled;
+		return catAddedBlocks.trafficConeRecipeEnabled;
+	}
+	
+	public boolean getNexusControllerEnabled() {
+		return catAddedBlocks.nexusControllerEnabled;
+	}
+
+	public boolean getNexusControllerRecipeEnabled() {
+		return catAddedBlocks.nexusControllerRecipeEnabled;
 	}
 
 	public boolean getUnstableReceptacleEnabled() {
