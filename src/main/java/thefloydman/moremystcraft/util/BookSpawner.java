@@ -2,21 +2,16 @@ package thefloydman.moremystcraft.util;
 
 import java.util.Random;
 
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.world.ChunkProviderMyst;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
 public abstract class BookSpawner {
-	
+
 	public static ItemStack generateBlankDescriptiveBook(final Random rand) {
-		
+
 		ItemStack itemStackBook = new ItemStack(Item.getByNameOrId("mystcraft:agebook"));
 		itemStackBook.setItemDamage(0);
 
@@ -31,7 +26,7 @@ public abstract class BookSpawner {
 		compoundDesBook.setTag("Authors", listAuthors);
 
 		NBTTagList listPages = new NBTTagList();
-		
+
 		// Add link panel.
 		NBTTagCompound compoundLinkPanel = generateLinkPanelPage();
 		listPages.appendTag(compoundLinkPanel);
@@ -67,10 +62,10 @@ public abstract class BookSpawner {
 
 		compoundDesBook.setTag("Pages", listPages);
 		itemStackBook.setTagCompound(compoundDesBook);
-		
+
 		return itemStackBook;
 	}
-	
+
 	public static NBTTagCompound generateLinkPanelPage() {
 		NBTTagCompound compoundPage = new NBTTagCompound();
 		compoundPage.setByte("Count", (byte) 1);
@@ -81,7 +76,7 @@ public abstract class BookSpawner {
 		compoundPage.setTag("tag", tag);
 		return compoundPage;
 	}
-	
+
 	public static NBTTagCompound generateSymbolPage(String id) {
 		NBTTagCompound compoundPage = new NBTTagCompound();
 		compoundPage.setByte("Count", (byte) 1);
@@ -92,7 +87,7 @@ public abstract class BookSpawner {
 		compoundPage.setTag("tag", tag);
 		return compoundPage;
 	}
-	
+
 	public static NBTTagCompound generateBlankPage() {
 		NBTTagCompound compoundPage = new NBTTagCompound();
 		compoundPage.setByte("Count", (byte) 1);
