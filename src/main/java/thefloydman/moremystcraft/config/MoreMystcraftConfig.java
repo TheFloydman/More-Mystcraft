@@ -133,6 +133,14 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Mystcraft's book binder recipe enabled")
 		public boolean bookBinderRecipeEnabled = true;
+		
+		@RequiresMcRestart
+		@Name("Maintainer suit enabled")
+		public boolean maintainerSuitEnabled = true;
+		
+		@RequiresMcRestart
+		@Name("Maintainer suit recipe enabled")
+		public boolean maintainerSuitRecipeEnabled = true;
 
 	}
 
@@ -140,84 +148,92 @@ public class MoreMystcraftConfig {
 	 * Getters and setters for config options.
 	 */
 
-	public boolean getBookBinderRecipeEnabled() {
+	public static boolean getBookBinderRecipeEnabled() {
 		return catOther.bookBinderRecipeEnabled;
 	}
 
-	public void setBookBinderRecipeEnabled(boolean var) {
+	public static void setBookBinderRecipeEnabled(boolean var) {
 		catOther.bookBinderRecipeEnabled = var;
 	}
 
-	public int getStudyMinimumY() {
+	public static int getStudyMinimumY() {
 		return catStudies.studyMinimumY;
 	}
 
-	public void setStudyMinimumY(int var) {
+	public static void setStudyMinimumY(int var) {
 		catStudies.studyFrequency = var;
 	}
 
-	public int getStudyFrequency() {
+	public static int getStudyFrequency() {
 		return catStudies.studyFrequency;
 	}
 
-	public boolean getStudiesEnabled() {
+	public static boolean getStudiesEnabled() {
 		return catStudies.abandonedStudiesOverworldEnabled;
 	}
 
-	public boolean getTrafficConeEnabled() {
+	public static boolean getTrafficConeEnabled() {
 		return catAddedBlocks.trafficConeEnabled;
 	}
 
-	public boolean getTrafficConeRecipeEnabled() {
+	public static boolean getTrafficConeRecipeEnabled() {
 		return catAddedBlocks.trafficConeRecipeEnabled;
 	}
 	
-	public boolean getNexusControllerEnabled() {
+	public static boolean getNexusControllerEnabled() {
 		return catAddedBlocks.nexusControllerEnabled;
 	}
 
-	public boolean getNexusControllerRecipeEnabled() {
+	public static boolean getNexusControllerRecipeEnabled() {
 		return catAddedBlocks.nexusControllerRecipeEnabled;
 	}
 
-	public boolean getUnstableReceptacleEnabled() {
+	public static boolean getUnstableReceptacleEnabled() {
 		return catUnstable.unstableReceptacleEnabled;
 	}
 
-	public boolean getUnstableReceptacleRecipeEnabled() {
+	public static boolean getUnstableReceptacleRecipeEnabled() {
 		return catUnstable.unstableReceptacleRecipeEnabled;
 	}
 
-	public int getSpawnAttempts() {
+	public static int getSpawnAttempts() {
 		return catUnstable.unstableLinkingAttempts;
 	}
 
-	public boolean getLockedLecternEnabled() {
+	public static boolean getLockedLecternEnabled() {
 		return catLockedBlocks.lockedLecternEnabled;
 	}
 
-	public boolean getLockedBookstandEnabled() {
+	public static boolean getLockedBookstandEnabled() {
 		return catLockedBlocks.lockedBookstandEnabled;
 	}
 
-	public boolean getLockedLecternRecipeEnabled() {
+	public static boolean getLockedLecternRecipeEnabled() {
 		return catLockedBlocks.lockedLecternRecipeEnabled;
 	}
 
-	public boolean getLockedBookstandRecipeEnabled() {
+	public static boolean getLockedBookstandRecipeEnabled() {
 		return catLockedBlocks.lockedBookstandRecipeEnabled;
 	}
 
-	public boolean getLibrariesEnabled() {
+	public static boolean getLibrariesEnabled() {
 		return catLibraries.librariesEnabled;
 	}
 
-	public boolean getLibrariesUpgraded() {
+	public static boolean getLibrariesUpgraded() {
 		return catLibraries.librariesUpgraded;
 	}
 
-	public int getGreatLibraryPercentage() {
+	public static int getGreatLibraryPercentage() {
 		return catLibraries.greatLibrariesPercentage;
+	}
+	
+	public static boolean getMaintainerSuitEnabled() {
+		return catOther.maintainerSuitEnabled;
+	}
+	
+	public static boolean getMaintainerSuitRecipeEnabled() {
+		return catOther.maintainerSuitRecipeEnabled;
 	}
 
 	@Mod.EventBusSubscriber

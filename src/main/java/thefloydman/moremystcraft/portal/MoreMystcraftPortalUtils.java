@@ -44,10 +44,10 @@ public final class MoreMystcraftPortalUtils {
 	}
 
 	public static int isValidLinkPortalBlock(final IBlockState blockstate) {
-		if (blockstate.getBlock() == getFrameBlock()) {
+		if (blockstate.getBlock().getClass().isInstance(getFrameBlock())) {
 			return 1;
 		}
-		if (blockstate.getBlock() == getPortalBlock()) {
+		if (blockstate.getBlock().getClass().isInstance(getPortalBlock())) {
 			return 1;
 		}
 		return 0;

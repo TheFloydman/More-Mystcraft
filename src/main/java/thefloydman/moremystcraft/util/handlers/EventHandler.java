@@ -27,6 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
@@ -47,19 +48,23 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		MoreMystcraftBlocks.registerMystcraftModels();
-		RenderingRegistry.registerEntityRenderingHandler(EntityMaintainerSuit.class, RenderMaintainerSuit::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityPotionDummy.class, RenderPotionDummy::new);
+		if (MoreMystcraftConfig.getMaintainerSuitEnabled()) {
+			RenderingRegistry.registerEntityRenderingHandler(EntityMaintainerSuit.class, RenderMaintainerSuit::new);
+			RenderingRegistry.registerEntityRenderingHandler(EntityPotionDummy.class, RenderPotionDummy::new);
+		}
 	}
 
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
-		event.getRegistry().register(MoreMystcraftEntityEntries.MAINTAINER_SUIT);
-		event.getRegistry().register(MoreMystcraftEntityEntries.POTION_DUMMY);
+		if (MoreMystcraftConfig.getMaintainerSuitEnabled()) {
+			event.getRegistry().register(MoreMystcraftEntityEntries.MAINTAINER_SUIT);
+			event.getRegistry().register(MoreMystcraftEntityEntries.POTION_DUMMY);
+		}
 	}
-	
+
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		CraftingHandler.removeRecipes(event.getRegistry());
+		CraftingHandler.handleRecipes(event.getRegistry());
 	}
 
 	@SubscribeEvent
