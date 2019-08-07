@@ -9,12 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -30,11 +32,14 @@ import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
+import thefloydman.moremystcraft.entity.capability.ProviderJourneyCloth;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
+import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
 public class EventHandler {
@@ -120,6 +125,14 @@ public class EventHandler {
 				entity.setPosition(groundPos.getX() + 0.5D, groundPos.getY() + 1.0D, groundPos.getZ() + 0.5D);
 				world.spawnEntity(entity);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void attachCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
+		TileEntity tileEntity = event.getObject();
+		if (tileEntity instanceof TileEntityJourneyCloth) {
+			event.addCapability(Reference.forMoreMystcraft("journey_cloth"), new ProviderJourneyCloth());
 		}
 	}
 

@@ -16,8 +16,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
+import thefloydman.moremystcraft.entity.capability.CapabilityJourneyCloth;
 import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
-import thefloydman.moremystcraft.entity.capability.IPotionDummy;
+import thefloydman.moremystcraft.entity.capability.IJourneyClothCapability;
+import thefloydman.moremystcraft.entity.capability.IPotionDummyCapability;
+import thefloydman.moremystcraft.entity.capability.StorageJourneyCloth;
 import thefloydman.moremystcraft.entity.capability.StoragePotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
@@ -34,11 +37,13 @@ public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
 		MoreMystcraftPacketHandler.register();
-		CapabilityManager.INSTANCE.register(IPotionDummy.class, new StoragePotionDummy(), CapabilityPotionDummy.class);
+		CapabilityManager.INSTANCE.register(IPotionDummyCapability.class, new StoragePotionDummy(),
+				CapabilityPotionDummy::new);
+		CapabilityManager.INSTANCE.register(IJourneyClothCapability.class, new StorageJourneyCloth(),
+				CapabilityJourneyCloth::new);
 		GameRegistry.registerTileEntity(TileEntityNexusController.class,
 				Reference.forMoreMystcraft("nexus_controller"));
-		GameRegistry.registerTileEntity(TileEntityJourneyCloth.class,
-				Reference.forMoreMystcraft("journey_cloth"));
+		GameRegistry.registerTileEntity(TileEntityJourneyCloth.class, Reference.forMoreMystcraft("journey_cloth"));
 	}
 
 	public void init(FMLInitializationEvent event) {

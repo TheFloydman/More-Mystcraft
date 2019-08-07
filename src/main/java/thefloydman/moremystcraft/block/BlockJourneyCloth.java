@@ -32,6 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
+import thefloydman.moremystcraft.entity.capability.CapabilityJourneyCloth;
+import thefloydman.moremystcraft.entity.capability.ProviderJourneyCloth;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
@@ -132,6 +134,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
+				CapabilityJourneyCloth cap = tileEntity.getCapability(ProviderJourneyCloth.JOURNEY_CLOTH, facing);
 				UUID uuid = ((TileEntityJourneyCloth) tileEntity).getUUID();
 				System.out.println(uuid);
 				Set<String> tags = player.getTags();

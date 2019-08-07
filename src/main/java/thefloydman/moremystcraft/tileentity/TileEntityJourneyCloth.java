@@ -2,6 +2,8 @@ package thefloydman.moremystcraft.tileentity;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -14,12 +16,11 @@ public class TileEntityJourneyCloth extends TileEntity {
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-			UUID uuidIn = nbt.getUniqueId("uuid");
-			if (uuidIn != null) {
-				this.setUUID(uuidIn);
-			}
+		UUID uuidIn = nbt.getUniqueId("uuid");
+		if (uuidIn != null) {
+			this.setUUID(uuidIn);
 		}
-	
+	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
