@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import thefloydman.moremystcraft.block.BlockJourneyCloth;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
@@ -26,6 +27,7 @@ import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -36,6 +38,7 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
+	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.HAND);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -69,6 +72,7 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
 			event.getRegistry().register(NEXUS_CONTROLLER);
 		}
+		event.getRegistry().register(JOURNEY_CLOTH_HAND);
 	}
 
 	@SubscribeEvent
@@ -80,6 +84,8 @@ public class MoreMystcraftBlocks {
 			event.getRegistry()
 					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 		}
+		event.getRegistry()
+		.register(new ItemBlock(JOURNEY_CLOTH_HAND).setRegistryName(JOURNEY_CLOTH_HAND.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -90,6 +96,7 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
 			registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
 		}
+		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
 	}
 
 	public static void registerRender(Item item) {

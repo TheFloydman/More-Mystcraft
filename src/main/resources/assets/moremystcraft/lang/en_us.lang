@@ -26,6 +26,7 @@ tile.moremystcraft.link_portal_new.name=New Link Portal
 tile.moremystcraft.book_receptacle_new.name=New Book Receptacle
 tile.moremystcraft.nexus_controller.name=Nexus Controller
 tile.moremystcraft.nexus_storage.name=Nexus Storage
+tile.moremystcraft.journey_cloth_hand.name=Journey Cloth
 
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit

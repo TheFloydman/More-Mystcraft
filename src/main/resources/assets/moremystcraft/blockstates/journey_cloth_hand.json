@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "moremystcraft:journey_cloth_hand"
+        },
+        "facing=south": {
+            "model": "moremystcraft:journey_cloth_hand",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "moremystcraft:journey_cloth_hand",
+            "y": 270
+        },
+        "facing=east": {
+            "model": "moremystcraft:journey_cloth_hand",
+            "y": 90
+        }
+    }
+}

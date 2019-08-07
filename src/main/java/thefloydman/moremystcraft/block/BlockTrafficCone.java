@@ -36,7 +36,7 @@ public class BlockTrafficCone extends Block {
 		super(Material.IRON);
 		this.setHardness(2.5f);
 		this.setSoundType(SoundType.WOOD);
-		this.setUnlocalizedName("moremystcraft.traffic_cone");
+		this.setUnlocalizedName(Reference.MOD_ID + ".traffic_cone");
 		this.setRegistryName(Reference.forMoreMystcraft("traffic_cone"));
 		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
 		this.setDefaultState(blockState.getBaseState().withProperty(ROTATION, 0));

@@ -13,20 +13,18 @@ import net.minecraft.world.storage.WorldSavedData;
 import thefloydman.moremystcraft.util.JourneyClothUtils.ClothType;
 import thefloydman.moremystcraft.util.Reference;
 
-public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
+public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 	private static final String NAME = Reference.MOD_ID;
-	private boolean conflictingOrePagesInstabilityAdded = false;
-	private NBTTagList potionEffects = new NBTTagList();
 	private NBTTagCompound journeyClothInfo = new NBTTagCompound();
-	private static MoreMystcraftSavedDataPerDimension instance;
+	private static MoreMystcraftSavedDataPerSave instance;
 
-	public MoreMystcraftSavedDataPerDimension() {
+	public MoreMystcraftSavedDataPerSave() {
 		super(NAME);
 		setupClothCompounds();
 		markDirty();
 	}
 
-	public MoreMystcraftSavedDataPerDimension(String str) {
+	public MoreMystcraftSavedDataPerSave(String str) {
 		super(str);
 		setupClothCompounds();
 		markDirty();
@@ -40,46 +38,24 @@ public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		conflictingOrePagesInstabilityAdded = nbt.getBoolean("conflictingOrePagesInstabilityAdded");
-		potionEffects = nbt.getTagList("potionEffects", 8);
 		journeyClothInfo = nbt.getCompoundTag("journeyClothInfo");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt.setBoolean("conflictingOrePagesInstabilityAdded", conflictingOrePagesInstabilityAdded);
-		nbt.setTag("potionEffects", potionEffects);
 		nbt.setTag("journeyClothInfo", journeyClothInfo);
 		return nbt;
 	}
 
-	public static MoreMystcraftSavedDataPerDimension get(World world) {
-		MapStorage storage = world.getPerWorldStorage();
-		instance = (MoreMystcraftSavedDataPerDimension) storage.getOrLoadData(MoreMystcraftSavedDataPerDimension.class,
+	public static MoreMystcraftSavedDataPerSave get(World world) {
+		MapStorage storage = world.getMapStorage();
+		instance = (MoreMystcraftSavedDataPerSave) storage.getOrLoadData(MoreMystcraftSavedDataPerSave.class,
 				NAME);
 		if (instance == null) {
-			instance = new MoreMystcraftSavedDataPerDimension();
+			instance = new MoreMystcraftSavedDataPerSave();
 			storage.setData(NAME, instance);
 		}
 		return instance;
-	}
-
-	public boolean getConflictingOreInstabilityAdded() {
-		return conflictingOrePagesInstabilityAdded;
-	}
-
-	public void setConflictingOreInstabilityAdded(boolean added) {
-		conflictingOrePagesInstabilityAdded = added;
-		markDirty();
-	}
-
-	public NBTTagList getPotionEffects() {
-		return potionEffects;
-	}
-
-	public void setPotionEffects(NBTTagList nbt) {
-		potionEffects = nbt;
-		markDirty();
 	}
 
 	public NBTTagCompound getJourneyClothInfo() {
