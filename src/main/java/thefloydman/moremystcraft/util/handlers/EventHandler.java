@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -32,13 +33,14 @@ import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
-import thefloydman.moremystcraft.entity.capability.ProviderJourneyCloth;
+import thefloydman.moremystcraft.entity.capability.ProviderPlayerJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
+import thefloydman.moremystcraft.tileentity.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -129,10 +131,20 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public static void attachCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
+	public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
 		TileEntity tileEntity = event.getObject();
 		if (tileEntity instanceof TileEntityJourneyCloth) {
-			event.addCapability(Reference.forMoreMystcraft("journey_cloth"), new ProviderJourneyCloth());
+			event.addCapability(Reference.forMoreMystcraft("uuid"),
+					new ProviderUUIDCapability());
+		}
+	}
+
+	@SubscribeEvent
+	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
+		Entity entity = event.getObject();
+		if (entity instanceof EntityPlayer) {
+			event.addCapability(Reference.forMoreMystcraft("journey_cloths_activated"),
+					new ProviderPlayerJourneyClothsCollectedCapability());
 		}
 	}
 

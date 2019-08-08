@@ -1,8 +1,5 @@
 package thefloydman.moremystcraft.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
@@ -20,7 +17,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -31,10 +27,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
-import thefloydman.moremystcraft.entity.capability.CapabilityJourneyCloth;
-import thefloydman.moremystcraft.entity.capability.ProviderJourneyCloth;
+import thefloydman.moremystcraft.entity.capability.CapabilityPlayerJourneyClothsCollected;
+import thefloydman.moremystcraft.entity.capability.ProviderPlayerJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
+import thefloydman.moremystcraft.tileentity.capability.CapabilityUUID;
+import thefloydman.moremystcraft.tileentity.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 
@@ -134,31 +131,16 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				CapabilityJourneyCloth cap = tileEntity.getCapability(ProviderJourneyCloth.JOURNEY_CLOTH, facing);
+				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, facing);
 				UUID uuid = ((TileEntityJourneyCloth) tileEntity).getUUID();
-				System.out.println(uuid);
-				Set<String> tags = player.getTags();
-				if (!player.isSneaking()) {
-					boolean hasCloth = false;
-					for (String str : tags) {
-						if (str.equals("JCUUID:" + uuid.toString())) {
-							hasCloth = true;
-							break;
-						}
-					}
-					if (hasCloth == false) {
-						player.addTag("JCUUID:" + uuid.toString());
-					}
-
-				} else {
-					List<String> removeStrings = new ArrayList<String>();
-					for (String str : tags) {
-						if (str.equals("JCUUID:" + uuid.toString())) {
-							removeStrings.add(str);
-						}
-					}
-					for (String str : removeStrings) {
-						player.removeTag(str);
+				if (uuid != null) {
+					System.out.println(uuid);
+					CapabilityPlayerJourneyClothsCollected capPlayer = player
+							.getCapability(ProviderPlayerJourneyClothsCollectedCapability.JOURNEY_CLOTH, facing);
+					if (!player.isSneaking()) {
+						capPlayer.addCloth(uuid);
+					} else {
+						capPlayer.removeCloth(uuid);
 					}
 				}
 			}
@@ -208,16 +190,16 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				NBTTagCompound nbt = stack.getTagCompound();
-				if (nbt != null) {
-					UUID uuid = nbt.getUniqueId("uuid");
-					if (uuid != null) {
-						((TileEntityJourneyCloth) tileEntity).setUUID(uuid);
-					} else {
-						((TileEntityJourneyCloth) tileEntity).setUUID(UUID.randomUUID());
-					}
+				TileEntityJourneyCloth teCloth = (TileEntityJourneyCloth) tileEntity;
+				CapabilityUUID capStack = stack.getCapability(ProviderUUIDCapability.UUID, null);
+				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, null);
+				UUID uuid = teCloth.getUUID();
+				if (uuid != null) {
+					teCloth.setUUID(uuid);
+					tileEntity.markDirty();
 				} else {
-					((TileEntityJourneyCloth) tileEntity).setUUID(UUID.randomUUID());
+					teCloth.setUUID(UUID.randomUUID());
+					tileEntity.markDirty();
 				}
 			}
 		}
@@ -231,11 +213,11 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
 				ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
-				NBTTagCompound nbt = new NBTTagCompound();
-				UUID uuid = ((TileEntityJourneyCloth) tileEntity).getUUID();
+				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, null);
+				UUID uuid = capTE.getUUID();
 				if (uuid != null) {
-					nbt.setUniqueId("uuid", uuid);
-					drop.setTagCompound(nbt);
+					CapabilityUUID capStack = drop.getCapability(ProviderUUIDCapability.UUID, null);
+					capStack.setUUID(uuid);
 				}
 				this.spawnAsEntity(world, pos, drop);
 			}

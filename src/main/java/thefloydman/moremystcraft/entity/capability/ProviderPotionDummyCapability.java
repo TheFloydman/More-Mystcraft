@@ -6,31 +6,31 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ProviderJourneyCloth implements ICapabilitySerializable<NBTBase> {
+public class ProviderPotionDummyCapability implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(IJourneyClothCapability.class)
-	public static final Capability<CapabilityJourneyCloth> JOURNEY_CLOTH = null;
+	@CapabilityInject(IPotionDummyCapability.class)
+	public static final Capability<IPotionDummyCapability> POTION_DUMMY = null;
 
-	private CapabilityJourneyCloth instance = JOURNEY_CLOTH.getDefaultInstance();
+	private IPotionDummyCapability instance = POTION_DUMMY.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability.equals(JOURNEY_CLOTH);
+		return capability.equals(POTION_DUMMY);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability.equals(JOURNEY_CLOTH) ? JOURNEY_CLOTH.<T>cast(this.instance) : null;
+		return capability.equals(POTION_DUMMY) ? POTION_DUMMY.<T>cast(this.instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
-		return JOURNEY_CLOTH.getStorage().writeNBT(JOURNEY_CLOTH, this.instance, null);
+		return POTION_DUMMY.getStorage().writeNBT(POTION_DUMMY, this.instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		JOURNEY_CLOTH.getStorage().readNBT(JOURNEY_CLOTH, this.instance, null, nbt);
+		POTION_DUMMY.getStorage().readNBT(POTION_DUMMY, this.instance, null, nbt);
 	}
 
 }

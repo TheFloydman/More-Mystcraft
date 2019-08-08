@@ -78,7 +78,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 136 + i * 18));
 			}
 		}
-		
+
 		System.out.println(this.tileEntity.getWorld().isRemote);
 		System.out.println(this.tileEntity.getBookList().size());
 
@@ -196,7 +196,10 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		if (ItemAgebook.isNewAgebook(getBook())) {
 			return true;
 		}
-		return this.tileEntity.getWorld().provider.getDimension() != linkInfo.getDimensionUID();
+		if (linkInfo.getDimensionUID() != null) {
+			return this.tileEntity.getWorld().provider.getDimension() != linkInfo.getDimensionUID();
+		}
+		return false;
 	}
 
 	@Override

@@ -27,11 +27,13 @@ import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.item.ItemJourneyCloth;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
 public class MoreMystcraftBlocks {
+
 	public static final Block LOCKED_LECTERN = (Block) new BlockLockedLectern();
 	public static final Block LOCKED_BOOKSTAND = (Block) new BlockLockedBookstand();
 	public static final Block TRAFFIC_CONE = (Block) new BlockTrafficCone();
@@ -39,6 +41,9 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
 	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.HAND);
+
+	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
+			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -84,8 +89,7 @@ public class MoreMystcraftBlocks {
 			event.getRegistry()
 					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 		}
-		event.getRegistry()
-		.register(new ItemBlock(JOURNEY_CLOTH_HAND).setRegistryName(JOURNEY_CLOTH_HAND.getRegistryName()));
+		event.getRegistry().register(JOURNEY_CLOTH_HAND_ITEM);
 	}
 
 	@SubscribeEvent
