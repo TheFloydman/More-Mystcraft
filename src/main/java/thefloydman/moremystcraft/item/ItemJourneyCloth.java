@@ -26,4 +26,5 @@ public class ItemJourneyCloth extends ItemBlock {
 
 		return new ProviderUUIDCapability();
 	}
+	
 }

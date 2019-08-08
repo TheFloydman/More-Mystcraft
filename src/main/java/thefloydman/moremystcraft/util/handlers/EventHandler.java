@@ -131,15 +131,6 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public static void attachTileEntityCapabilities(AttachCapabilitiesEvent<TileEntity> event) {
-		TileEntity tileEntity = event.getObject();
-		if (tileEntity instanceof TileEntityJourneyCloth) {
-			event.addCapability(Reference.forMoreMystcraft("uuid"),
-					new ProviderUUIDCapability());
-		}
-	}
-
-	@SubscribeEvent
 	public static void attachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
 		Entity entity = event.getObject();
 		if (entity instanceof EntityPlayer) {

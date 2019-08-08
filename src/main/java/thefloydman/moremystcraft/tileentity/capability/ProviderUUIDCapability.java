@@ -10,7 +10,9 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 public class ProviderUUIDCapability implements ICapabilitySerializable<NBTBase> {
 
 	@CapabilityInject(IUUIDCapability.class)
-	public static final Capability<CapabilityUUID> UUID = null;
+	public static final Capability<IUUIDCapability> UUID = null;
+	
+	private IUUIDCapability instance = UUID.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
@@ -20,17 +22,17 @@ public class ProviderUUIDCapability implements ICapabilitySerializable<NBTBase> 
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability.equals(UUID) ? UUID.<T>cast(UUID.getDefaultInstance()) : null;
+		return capability.equals(UUID) ? UUID.<T>cast(instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
-		return UUID.getStorage().writeNBT(UUID, UUID.getDefaultInstance(), null);
+		return UUID.getStorage().writeNBT(UUID, instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		UUID.getStorage().readNBT(UUID, UUID.getDefaultInstance(), null, nbt);
+		UUID.getStorage().readNBT(UUID, instance, null, nbt);
 	}
 
 }

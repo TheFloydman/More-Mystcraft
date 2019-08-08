@@ -20,7 +20,6 @@ public class StorageUUIDCapability implements IStorage<IUUIDCapability> {
 				return nbt;
 			}
 		}
-		nbt.setTag("uuid", NBTUtil.createUUIDTag(UUID.randomUUID()));
 		return nbt;
 	}
 
@@ -33,7 +32,6 @@ public class StorageUUIDCapability implements IStorage<IUUIDCapability> {
 					instance.setUUID(NBTUtil.getUUIDFromTag(((NBTTagCompound) nbt).getCompoundTag("uuid")));
 				}
 			}
-			instance.setUUID(UUID.randomUUID());
 		}
 	}
 

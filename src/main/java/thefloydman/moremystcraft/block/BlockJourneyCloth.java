@@ -15,6 +15,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.entity.capability.CapabilityJourneyClothsCollected;
 import thefloydman.moremystcraft.entity.capability.ProviderJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
-import thefloydman.moremystcraft.tileentity.capability.CapabilityUUID;
+import thefloydman.moremystcraft.tileentity.capability.IUUIDCapability;
 import thefloydman.moremystcraft.tileentity.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
@@ -130,13 +132,20 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				CapabilityUUID capStack = ((TileEntityJourneyCloth) tileEntity).getCloth()
+				IUUIDCapability capStack = ((TileEntityJourneyCloth) tileEntity).getCloth()
 						.getCapability(ProviderUUIDCapability.UUID, facing);
+				if (capStack.getUUID() == null) {
+					capStack.setUUID(UUID.randomUUID());
+				}
 				UUID uuid = capStack.getUUID();
 				if (uuid != null) {
 					CapabilityJourneyClothsCollected capPlayer = player
 							.getCapability(ProviderJourneyClothsCollectedCapability.JOURNEY_CLOTH, facing);
-					capPlayer.addCloth(uuid);
+					if (player.isSneaking()) {
+						capPlayer.removeCloth(uuid);
+					} else {
+						capPlayer.addCloth(uuid);
+					}
 				}
 			}
 		}
@@ -147,30 +156,28 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (!world.isRemote) {
-			if (world.getBlockState(fromPos).getMaterial().isLiquid()) {
-				this.dropBlockAsItem(world, pos, state, 0);
+		if (world.getBlockState(fromPos).getMaterial().isLiquid()) {
+			this.breakBlock(world, pos, state);
+			world.setBlockToAir(pos);
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.NORTH)) {
+			if (!world.getBlockState(pos.south()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
 				world.setBlockToAir(pos);
-			} else if (state.getProperties().get(FACING).equals(EnumFacing.NORTH)) {
-				if (!world.getBlockState(pos.south()).getMaterial().isSolid()) {
-					this.dropBlockAsItem(world, pos, state, 0);
-					world.setBlockToAir(pos);
-				}
-			} else if (state.getProperties().get(FACING).equals(EnumFacing.EAST)) {
-				if (!world.getBlockState(pos.west()).getMaterial().isSolid()) {
-					this.dropBlockAsItem(world, pos, state, 0);
-					world.setBlockToAir(pos);
-				}
-			} else if (state.getProperties().get(FACING).equals(EnumFacing.SOUTH)) {
-				if (!world.getBlockState(pos.north()).getMaterial().isSolid()) {
-					this.dropBlockAsItem(world, pos, state, 0);
-					world.setBlockToAir(pos);
-				}
-			} else if (state.getProperties().get(FACING).equals(EnumFacing.WEST)) {
-				if (!world.getBlockState(pos.east()).getMaterial().isSolid()) {
-					this.dropBlockAsItem(world, pos, state, 0);
-					world.setBlockToAir(pos);
-				}
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.EAST)) {
+			if (!world.getBlockState(pos.west()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.SOUTH)) {
+			if (!world.getBlockState(pos.north()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.WEST)) {
+			if (!world.getBlockState(pos.east()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
 			}
 		}
 	}
@@ -181,12 +188,10 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				CapabilityUUID capStack = stack.getCapability(ProviderUUIDCapability.UUID, null);
-				if (capStack.getUUID() == null) {
-					capStack.setUUID(UUID.randomUUID());
-				}
+				ItemStack newStack = stack.copy();
+				newStack.setCount(1);
 				TileEntityJourneyCloth clothEntity = (TileEntityJourneyCloth) tileEntity;
-				clothEntity.insertItem(0, stack, false);
+				clothEntity.setCloth(newStack);
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
@@ -194,6 +199,10 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof IInventory) {
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
+		}
 		super.breakBlock(world, pos, state);
 	}
 
