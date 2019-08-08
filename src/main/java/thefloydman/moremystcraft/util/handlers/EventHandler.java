@@ -33,7 +33,7 @@ import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
-import thefloydman.moremystcraft.entity.capability.ProviderPlayerJourneyClothsCollectedCapability;
+import thefloydman.moremystcraft.entity.capability.ProviderJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
@@ -144,7 +144,7 @@ public class EventHandler {
 		Entity entity = event.getObject();
 		if (entity instanceof EntityPlayer) {
 			event.addCapability(Reference.forMoreMystcraft("journey_cloths_activated"),
-					new ProviderPlayerJourneyClothsCollectedCapability());
+					new ProviderJourneyClothsCollectedCapability());
 		}
 	}
 

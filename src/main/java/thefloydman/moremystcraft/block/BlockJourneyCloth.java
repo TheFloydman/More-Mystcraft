@@ -15,7 +15,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -27,8 +26,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.entity.capability.CapabilityPlayerJourneyClothsCollected;
-import thefloydman.moremystcraft.entity.capability.ProviderPlayerJourneyClothsCollectedCapability;
+import thefloydman.moremystcraft.entity.capability.CapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.entity.capability.ProviderJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.tileentity.capability.CapabilityUUID;
 import thefloydman.moremystcraft.tileentity.capability.ProviderUUIDCapability;
@@ -131,20 +130,17 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, facing);
-				UUID uuid = ((TileEntityJourneyCloth) tileEntity).getUUID();
+				CapabilityUUID capStack = ((TileEntityJourneyCloth) tileEntity).getCloth()
+						.getCapability(ProviderUUIDCapability.UUID, facing);
+				UUID uuid = capStack.getUUID();
 				if (uuid != null) {
-					System.out.println(uuid);
-					CapabilityPlayerJourneyClothsCollected capPlayer = player
-							.getCapability(ProviderPlayerJourneyClothsCollectedCapability.JOURNEY_CLOTH, facing);
-					if (!player.isSneaking()) {
-						capPlayer.addCloth(uuid);
-					} else {
-						capPlayer.removeCloth(uuid);
-					}
+					CapabilityJourneyClothsCollected capPlayer = player
+							.getCapability(ProviderJourneyClothsCollectedCapability.JOURNEY_CLOTH, facing);
+					capPlayer.addCloth(uuid);
 				}
 			}
 		}
+
 		return true;
 
 	}
@@ -180,49 +176,25 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntityJourneyCloth) {
-				TileEntityJourneyCloth teCloth = (TileEntityJourneyCloth) tileEntity;
 				CapabilityUUID capStack = stack.getCapability(ProviderUUIDCapability.UUID, null);
-				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, null);
-				UUID uuid = teCloth.getUUID();
-				if (uuid != null) {
-					teCloth.setUUID(uuid);
-					tileEntity.markDirty();
-				} else {
-					teCloth.setUUID(UUID.randomUUID());
-					tileEntity.markDirty();
+				if (capStack.getUUID() == null) {
+					capStack.setUUID(UUID.randomUUID());
 				}
+				TileEntityJourneyCloth clothEntity = (TileEntityJourneyCloth) tileEntity;
+				clothEntity.insertItem(0, stack, false);
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
-
-		if (!world.isRemote && !world.restoringBlockSnapshots) {
-			TileEntity tileEntity = world.getTileEntity(pos);
-			if (tileEntity instanceof TileEntityJourneyCloth) {
-				ItemStack drop = new ItemStack(Item.getItemFromBlock(this));
-				CapabilityUUID capTE = tileEntity.getCapability(ProviderUUIDCapability.UUID, null);
-				UUID uuid = capTE.getUUID();
-				if (uuid != null) {
-					CapabilityUUID capStack = drop.getCapability(ProviderUUIDCapability.UUID, null);
-					capStack.setUUID(uuid);
-				}
-				this.spawnAsEntity(world, pos, drop);
-			}
-		}
-
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

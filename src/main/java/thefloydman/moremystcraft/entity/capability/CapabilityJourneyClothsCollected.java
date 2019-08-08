@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CapabilityPlayerJourneyClothsCollected implements IPlayerJourneyClothsCollectedCapability {
+public class CapabilityJourneyClothsCollected implements IPlayerJourneyClothsCollectedCapability {
 
 	protected List<UUID> clothList = new ArrayList<UUID>();
 

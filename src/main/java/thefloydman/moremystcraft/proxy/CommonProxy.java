@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.entity.capability.CapabilityPlayerJourneyClothsCollected;
+import thefloydman.moremystcraft.entity.capability.CapabilityJourneyClothsCollected;
 import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.entity.capability.IPlayerJourneyClothsCollectedCapability;
 import thefloydman.moremystcraft.entity.capability.IPotionDummyCapability;
@@ -77,7 +77,7 @@ public class CommonProxy {
 		CapabilityManager.INSTANCE.register(IUUIDCapability.class, new StorageUUIDCapability(),
 				CapabilityUUID::new);
 		CapabilityManager.INSTANCE.register(IPlayerJourneyClothsCollectedCapability.class,
-				new StoragePlayerJourneyClothsCollectedCapability(), CapabilityPlayerJourneyClothsCollected::new);
+				new StoragePlayerJourneyClothsCollectedCapability(), CapabilityJourneyClothsCollected::new);
 	}
 
 }

@@ -6,12 +6,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ProviderPlayerJourneyClothsCollectedCapability implements ICapabilitySerializable<NBTBase> {
+public class ProviderJourneyClothsCollectedCapability implements ICapabilitySerializable<NBTBase> {
 
 	@CapabilityInject(IPlayerJourneyClothsCollectedCapability.class)
-	public static final Capability<CapabilityPlayerJourneyClothsCollected> JOURNEY_CLOTH = null;
+	public static final Capability<CapabilityJourneyClothsCollected> JOURNEY_CLOTH = null;
 
-	private CapabilityPlayerJourneyClothsCollected instance = JOURNEY_CLOTH.getDefaultInstance();
+	private CapabilityJourneyClothsCollected instance = JOURNEY_CLOTH.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
