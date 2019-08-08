@@ -41,9 +41,12 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
 	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.HAND);
+	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.SHELL);
 
 	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
 			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).TYPE);
+	public static final Item JOURNEY_CLOTH_SHELL_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_SHELL,
+			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -78,6 +81,7 @@ public class MoreMystcraftBlocks {
 			event.getRegistry().register(NEXUS_CONTROLLER);
 		}
 		event.getRegistry().register(JOURNEY_CLOTH_HAND);
+		event.getRegistry().register(JOURNEY_CLOTH_SHELL);
 	}
 
 	@SubscribeEvent
@@ -90,6 +94,7 @@ public class MoreMystcraftBlocks {
 					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 		}
 		event.getRegistry().register(JOURNEY_CLOTH_HAND_ITEM);
+		event.getRegistry().register(JOURNEY_CLOTH_SHELL_ITEM);
 	}
 
 	@SubscribeEvent
@@ -101,6 +106,7 @@ public class MoreMystcraftBlocks {
 			registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
 		}
 		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
+		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
 	}
 
 	public static void registerRender(Item item) {
