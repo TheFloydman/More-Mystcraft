@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.tileentity.capability;
+package thefloydman.moremystcraft.capability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagList;

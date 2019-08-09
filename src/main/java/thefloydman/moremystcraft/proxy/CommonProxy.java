@@ -16,18 +16,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.entity.capability.CapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.entity.capability.CapabilityPotionDummy;
-import thefloydman.moremystcraft.entity.capability.IPlayerJourneyClothsCollectedCapability;
-import thefloydman.moremystcraft.entity.capability.IPotionDummyCapability;
-import thefloydman.moremystcraft.entity.capability.StoragePlayerJourneyClothsCollectedCapability;
-import thefloydman.moremystcraft.entity.capability.StoragePotionDummyCapability;
+import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.CapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.CapabilityUUID;
+import thefloydman.moremystcraft.capability.ICapabilityPlayerJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ICapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.IUUIDCapability;
+import thefloydman.moremystcraft.capability.StoragePlayerJourneyClothsCollectedCapability;
+import thefloydman.moremystcraft.capability.StoragePotionDummyCapability;
+import thefloydman.moremystcraft.capability.StorageUUIDCapability;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
-import thefloydman.moremystcraft.tileentity.capability.CapabilityUUID;
-import thefloydman.moremystcraft.tileentity.capability.IUUIDCapability;
-import thefloydman.moremystcraft.tileentity.capability.StorageUUIDCapability;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
@@ -72,11 +72,11 @@ public class CommonProxy {
 	}
 
 	public void registerCapabilities() {
-		CapabilityManager.INSTANCE.register(IPotionDummyCapability.class, new StoragePotionDummyCapability(),
+		CapabilityManager.INSTANCE.register(ICapabilityPotionDummy.class, new StoragePotionDummyCapability(),
 				CapabilityPotionDummy::new);
 		CapabilityManager.INSTANCE.register(IUUIDCapability.class, new StorageUUIDCapability(),
 				CapabilityUUID::new);
-		CapabilityManager.INSTANCE.register(IPlayerJourneyClothsCollectedCapability.class,
+		CapabilityManager.INSTANCE.register(ICapabilityPlayerJourneyClothsCollected.class,
 				new StoragePlayerJourneyClothsCollectedCapability(), CapabilityJourneyClothsCollected::new);
 	}
 

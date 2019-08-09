@@ -1,9 +1,9 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface IPlayerJourneyClothsCollectedCapability {
+public interface ICapabilityPlayerJourneyClothsCollected {
 
 	public boolean addCloth(UUID uuid);
 

@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -8,7 +8,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class ProviderJourneyClothsCollectedCapability implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(IPlayerJourneyClothsCollectedCapability.class)
+	@CapabilityInject(ICapabilityPlayerJourneyClothsCollected.class)
 	public static final Capability<CapabilityJourneyClothsCollected> JOURNEY_CLOTH = null;
 
 	private CapabilityJourneyClothsCollected instance = JOURNEY_CLOTH.getDefaultInstance();

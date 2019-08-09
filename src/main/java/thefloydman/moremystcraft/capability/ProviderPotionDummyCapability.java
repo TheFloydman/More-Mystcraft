@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -8,10 +8,10 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class ProviderPotionDummyCapability implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(IPotionDummyCapability.class)
-	public static final Capability<IPotionDummyCapability> POTION_DUMMY = null;
+	@CapabilityInject(ICapabilityPotionDummy.class)
+	public static final Capability<ICapabilityPotionDummy> POTION_DUMMY = null;
 
-	private IPotionDummyCapability instance = POTION_DUMMY.getDefaultInstance();
+	private ICapabilityPotionDummy instance = POTION_DUMMY.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

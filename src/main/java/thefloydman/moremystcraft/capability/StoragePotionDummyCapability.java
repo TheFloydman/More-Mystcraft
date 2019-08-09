@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import java.util.UUID;
 
@@ -8,15 +8,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class StoragePotionDummyCapability implements IStorage<IPotionDummyCapability> {
+public class StoragePotionDummyCapability implements IStorage<ICapabilityPotionDummy> {
 
 	@Override
-	public NBTBase writeNBT(Capability<IPotionDummyCapability> capability, IPotionDummyCapability instance, EnumFacing side) {
+	public NBTBase writeNBT(Capability<ICapabilityPotionDummy> capability, ICapabilityPotionDummy instance, EnumFacing side) {
 		return new NBTTagString(instance.getParent().toString());
 	}
 
 	@Override
-	public void readNBT(Capability<IPotionDummyCapability> capability, IPotionDummyCapability instance, EnumFacing side,
+	public void readNBT(Capability<ICapabilityPotionDummy> capability, ICapabilityPotionDummy instance, EnumFacing side,
 			NBTBase nbt) {
 		instance.setParent(UUID.fromString(((NBTTagString) nbt).getString()));
 	}

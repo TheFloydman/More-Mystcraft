@@ -28,11 +28,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.entity.capability.CapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.entity.capability.ProviderJourneyClothsCollectedCapability;
+import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.IUUIDCapability;
+import thefloydman.moremystcraft.capability.ProviderJourneyClothsCollectedCapability;
+import thefloydman.moremystcraft.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
-import thefloydman.moremystcraft.tileentity.capability.IUUIDCapability;
-import thefloydman.moremystcraft.tileentity.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 

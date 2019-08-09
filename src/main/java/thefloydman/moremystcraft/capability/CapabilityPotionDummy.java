@@ -1,10 +1,10 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import java.util.UUID;
 
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
 
-public class CapabilityPotionDummy implements IPotionDummyCapability {
+public class CapabilityPotionDummy implements ICapabilityPotionDummy {
 
 	UUID uuid = UUID.randomUUID();
 

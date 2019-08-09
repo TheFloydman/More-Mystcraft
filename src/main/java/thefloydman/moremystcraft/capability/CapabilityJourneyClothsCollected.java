@@ -1,10 +1,10 @@
-package thefloydman.moremystcraft.entity.capability;
+package thefloydman.moremystcraft.capability;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CapabilityJourneyClothsCollected implements IPlayerJourneyClothsCollectedCapability {
+public class CapabilityJourneyClothsCollected implements ICapabilityPlayerJourneyClothsCollected {
 
 	protected List<UUID> clothList = new ArrayList<UUID>();
 

@@ -10,11 +10,11 @@ import thefloydman.moremystcraft.capability.ProviderUUIDCapability;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 
-public class ItemJourneyCloth extends ItemBlock {
+public class ItemJourneyClothHub extends ItemBlock {
 
-	public ItemJourneyCloth(Block block, JourneyClothUtils.ClothType type) {
+	public ItemJourneyClothHub(Block block) {
 		super(block);
-		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_" + type.name().toLowerCase()));
+		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_hub"));
 	}
 
 	@Override

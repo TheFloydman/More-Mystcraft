@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.tileentity.capability;
+package thefloydman.moremystcraft.capability;
 
 import java.util.UUID;
 
