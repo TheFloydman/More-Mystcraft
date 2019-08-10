@@ -14,11 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 
 public class BlockLockedBookstand extends BlockBookstand {
 	
 	public BlockLockedBookstand() {
 		this.setUnlocalizedName("moremystcraft.locked_bookstand");
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 	}
 
 	@Override

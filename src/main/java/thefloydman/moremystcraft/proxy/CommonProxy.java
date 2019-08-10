@@ -16,18 +16,21 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
+import thefloydman.moremystcraft.capability.CapabilityHub;
 import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
 import thefloydman.moremystcraft.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.capability.CapabilityUUID;
+import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ICapabilityPlayerJourneyClothsCollected;
 import thefloydman.moremystcraft.capability.ICapabilityPotionDummy;
-import thefloydman.moremystcraft.capability.IUUIDCapability;
-import thefloydman.moremystcraft.capability.StoragePlayerJourneyClothsCollectedCapability;
-import thefloydman.moremystcraft.capability.StoragePotionDummyCapability;
-import thefloydman.moremystcraft.capability.StorageUUIDCapability;
+import thefloydman.moremystcraft.capability.ICapabilityUUID;
+import thefloydman.moremystcraft.capability.StorageCapabilityHub;
+import thefloydman.moremystcraft.capability.StorageCapabilityPlayerJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.StorageCapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.StorageCapabilityUUID;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
-import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.Reference;
 import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
@@ -43,7 +46,8 @@ public class CommonProxy {
 		registerCapabilities();
 		GameRegistry.registerTileEntity(TileEntityNexusController.class,
 				Reference.forMoreMystcraft("nexus_controller"));
-		GameRegistry.registerTileEntity(TileEntityJourneyCloth.class, Reference.forMoreMystcraft("journey_cloth"));
+		GameRegistry.registerTileEntity(TileEntitySingleItem.class,
+				Reference.forMoreMystcraft("single_item_inventory"));
 	}
 
 	public void init(FMLInitializationEvent event) {
@@ -72,12 +76,12 @@ public class CommonProxy {
 	}
 
 	public void registerCapabilities() {
-		CapabilityManager.INSTANCE.register(ICapabilityPotionDummy.class, new StoragePotionDummyCapability(),
+		CapabilityManager.INSTANCE.register(ICapabilityPotionDummy.class, new StorageCapabilityPotionDummy(),
 				CapabilityPotionDummy::new);
-		CapabilityManager.INSTANCE.register(IUUIDCapability.class, new StorageUUIDCapability(),
-				CapabilityUUID::new);
+		CapabilityManager.INSTANCE.register(ICapabilityUUID.class, new StorageCapabilityUUID(), CapabilityUUID::new);
 		CapabilityManager.INSTANCE.register(ICapabilityPlayerJourneyClothsCollected.class,
-				new StoragePlayerJourneyClothsCollectedCapability(), CapabilityJourneyClothsCollected::new);
+				new StorageCapabilityPlayerJourneyClothsCollected(), CapabilityJourneyClothsCollected::new);
+		CapabilityManager.INSTANCE.register(ICapabilityHub.class, new StorageCapabilityHub(), CapabilityHub::new);
 	}
 
 }

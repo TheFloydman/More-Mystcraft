@@ -45,6 +45,7 @@ import com.xcompwiz.mystcraft.tileentity.IOInventory;
 
 import thefloydman.moremystcraft.portal.MoreMystcraftPortalUtils;
 import thefloydman.moremystcraft.tileentity.TileEntityUnstableBookReceptacle;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 
 public class BlockUnstableBookReceptacle extends BlockContainer {
 	public static final PropertyEnum<EnumFacing> ROTATION;
@@ -56,7 +57,7 @@ public class BlockUnstableBookReceptacle extends BlockContainer {
 		this.setHardness(1.0f);
 		this.setSoundType(SoundType.GLASS);
 		this.setUnlocalizedName("moremystcraft.unstable_receptacle");
-		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 	}
 
 	public IBlockState getStateFromMeta(final int meta) {

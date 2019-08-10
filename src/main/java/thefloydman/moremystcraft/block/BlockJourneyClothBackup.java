@@ -22,8 +22,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerDimension;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
 public class BlockJourneyClothBackup extends BlockHorizontal {
@@ -33,9 +34,9 @@ public class BlockJourneyClothBackup extends BlockHorizontal {
 	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
 	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_EAST = new AxisAlignedBB(1.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-	public final JourneyClothUtils.ClothType TYPE;
+	public final JourneyClothUtils.Type TYPE;
 
-	public BlockJourneyClothBackup(JourneyClothUtils.ClothType type) {
+	public BlockJourneyClothBackup(JourneyClothUtils.Type type) {
 
 		super(Material.CLOTH);
 		this.TYPE = type;
@@ -43,7 +44,7 @@ public class BlockJourneyClothBackup extends BlockHorizontal {
 		this.setSoundType(SoundType.CLOTH);
 		this.setUnlocalizedName(Reference.MOD_ID + ".journey_cloth_" + type.name().toLowerCase());
 		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_" + type.name().toLowerCase()));
-		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 
 	}

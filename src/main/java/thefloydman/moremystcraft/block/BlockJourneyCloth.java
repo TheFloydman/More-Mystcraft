@@ -2,8 +2,6 @@ package thefloydman.moremystcraft.block;
 
 import java.util.UUID;
 
-import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
@@ -12,7 +10,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -29,23 +26,28 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.capability.IUUIDCapability;
-import thefloydman.moremystcraft.capability.ProviderJourneyClothsCollectedCapability;
-import thefloydman.moremystcraft.capability.ProviderUUIDCapability;
-import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
+import thefloydman.moremystcraft.capability.ICapabilityHub;
+import thefloydman.moremystcraft.capability.ICapabilityUUID;
+import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
+import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ProviderCapabilityUUID;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
+import thefloydman.moremystcraft.item.ItemJourneyHub;
+import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
 public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityProvider {
 
-	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
-	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
-	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
-	public static final AxisAlignedBB JOURNEY_CLOTH_AABB_EAST = new AxisAlignedBB(1.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
+	public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
+	public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
+	public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(1.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-	public final JourneyClothUtils.ClothType TYPE;
+	public final JourneyClothUtils.Type TYPE;
 
-	public BlockJourneyCloth(JourneyClothUtils.ClothType type) {
+	public BlockJourneyCloth(JourneyClothUtils.Type type) {
 
 		super(Material.CLOTH);
 		this.TYPE = type;
@@ -53,7 +55,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		this.setSoundType(SoundType.CLOTH);
 		this.setUnlocalizedName(Reference.MOD_ID + ".journey_cloth_" + type.name().toLowerCase());
 		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_" + type.name().toLowerCase()));
-		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 
 	}
@@ -88,15 +90,15 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		switch (((EnumFacing) state.getProperties().get(FACING)).getHorizontalIndex()) {
 		case 0:
-			return JOURNEY_CLOTH_AABB_NORTH;
+			return AABB_NORTH;
 		case 1:
-			return JOURNEY_CLOTH_AABB_EAST;
+			return AABB_EAST;
 		case 2:
-			return JOURNEY_CLOTH_AABB_SOUTH;
+			return AABB_SOUTH;
 		case 3:
-			return JOURNEY_CLOTH_AABB_WEST;
+			return AABB_WEST;
 		}
-		return JOURNEY_CLOTH_AABB_NORTH;
+		return AABB_NORTH;
 	}
 
 	@Override
@@ -131,20 +133,30 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 			final float hitZ) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
-			if (tileEntity instanceof TileEntityJourneyCloth) {
-				IUUIDCapability capStack = ((TileEntityJourneyCloth) tileEntity).getCloth()
-						.getCapability(ProviderUUIDCapability.UUID, facing);
+			if (tileEntity instanceof TileEntitySingleItem) {
+				ICapabilityUUID capStack = ((TileEntitySingleItem) tileEntity).getItem()
+						.getCapability(ProviderCapabilityUUID.UUID, facing);
 				if (capStack.getUUID() == null) {
 					capStack.setUUID(UUID.randomUUID());
 				}
 				UUID uuid = capStack.getUUID();
 				if (uuid != null) {
-					CapabilityJourneyClothsCollected capPlayer = player
-							.getCapability(ProviderJourneyClothsCollectedCapability.JOURNEY_CLOTH, facing);
-					if (player.isSneaking()) {
-						capPlayer.removeCloth(uuid);
+					if (player.getHeldItem(hand).getItem() instanceof ItemJourneyHub) {
+						ICapabilityHub capHub = player.getHeldItem(hand).getCapability(ProviderCapabilityHub.UUID_LIST,
+								facing);
+						capHub.addUUID(uuid);
 					} else {
-						capPlayer.addCloth(uuid);
+						CapabilityJourneyClothsCollected capPlayer = player
+								.getCapability(ProviderCapabilityJourneyClothsCollected.JOURNEY_CLOTH, facing);
+						MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(world);
+						if (player.isSneaking()) {
+							capPlayer.removeCloth(uuid);
+							data.addJourneyCloth(uuid);
+							data.deactivateJourneyCloth(uuid, player.getUniqueID());
+						} else {
+							capPlayer.addCloth(uuid);
+							data.activateJourneyCloth(uuid, player.getUniqueID());
+						}
 					}
 				}
 			}
@@ -187,11 +199,11 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 			ItemStack stack) {
 		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
-			if (tileEntity instanceof TileEntityJourneyCloth) {
+			if (tileEntity instanceof TileEntitySingleItem) {
 				ItemStack newStack = stack.copy();
 				newStack.setCount(1);
-				TileEntityJourneyCloth clothEntity = (TileEntityJourneyCloth) tileEntity;
-				clothEntity.setCloth(newStack);
+				TileEntitySingleItem clothEntity = (TileEntitySingleItem) tileEntity;
+				clothEntity.setItem(newStack);
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
@@ -208,6 +220,6 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityJourneyCloth();
+		return new TileEntitySingleItem();
 	}
 }

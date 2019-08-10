@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
 public class BlockTrafficCone extends Block {
@@ -38,7 +39,7 @@ public class BlockTrafficCone extends Block {
 		this.setSoundType(SoundType.WOOD);
 		this.setUnlocalizedName(Reference.MOD_ID + ".traffic_cone");
 		this.setRegistryName(Reference.forMoreMystcraft("traffic_cone"));
-		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 		this.setDefaultState(blockState.getBaseState().withProperty(ROTATION, 0));
 
 	}

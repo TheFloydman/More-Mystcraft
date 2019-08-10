@@ -3,14 +3,14 @@
  * https://github.com/jabelar/ExampleMod-1.12/blob/master/src/main/java/com/blogspot/jabelarminecraft/examplemod/WorldData.java
  */
 
-package thefloydman.moremystcraft.data;
+package thefloydman.moremystcraft.data.worldsaveddata;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-import thefloydman.moremystcraft.util.JourneyClothUtils.ClothType;
+import thefloydman.moremystcraft.util.JourneyClothUtils.Type;
 import thefloydman.moremystcraft.util.Reference;
 
 public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
@@ -33,7 +33,7 @@ public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
 	}
 
 	protected void setupClothCompounds() {
-		for (ClothType type : ClothType.values()) {
+		for (Type type : Type.values()) {
 			journeyClothInfo.setTag(type.name().toLowerCase(), new NBTTagList());
 		}
 	}

@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import thefloydman.moremystcraft.block.BlockJourneyCloth;
+import thefloydman.moremystcraft.block.BlockJourneyHub;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
@@ -28,6 +29,7 @@ import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.item.ItemJourneyCloth;
+import thefloydman.moremystcraft.item.ItemJourneyHub;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.Reference;
 
@@ -40,13 +42,16 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
-	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.HAND);
-	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyClothUtils.ClothType.SHELL);
+	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.HAND);
+	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyClothUtils.Type.HAND);
+	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.SHELL);
 
 	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
 			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).TYPE);
 	public static final Item JOURNEY_CLOTH_SHELL_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_SHELL,
 			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).TYPE);
+	public static final Item JOURNEY_HUB_HAND_ITEM = new ItemJourneyHub(JOURNEY_HUB_HAND,
+			((BlockJourneyHub) JOURNEY_HUB_HAND).TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -82,6 +87,7 @@ public class MoreMystcraftBlocks {
 		}
 		event.getRegistry().register(JOURNEY_CLOTH_HAND);
 		event.getRegistry().register(JOURNEY_CLOTH_SHELL);
+		event.getRegistry().register(JOURNEY_HUB_HAND);
 	}
 
 	@SubscribeEvent
@@ -95,6 +101,7 @@ public class MoreMystcraftBlocks {
 		}
 		event.getRegistry().register(JOURNEY_CLOTH_HAND_ITEM);
 		event.getRegistry().register(JOURNEY_CLOTH_SHELL_ITEM);
+		event.getRegistry().register(JOURNEY_HUB_HAND_ITEM);
 	}
 
 	@SubscribeEvent
@@ -107,6 +114,7 @@ public class MoreMystcraftBlocks {
 		}
 		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
 		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
+		registerRender(Item.getItemFromBlock(JOURNEY_HUB_HAND));
 	}
 
 	public static void registerRender(Item item) {

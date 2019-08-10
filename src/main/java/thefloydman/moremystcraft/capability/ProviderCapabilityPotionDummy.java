@@ -1,38 +1,36 @@
 package thefloydman.moremystcraft.capability;
 
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class ProviderUUIDCapability implements ICapabilitySerializable<NBTBase> {
+public class ProviderCapabilityPotionDummy implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(IUUIDCapability.class)
-	public static final Capability<IUUIDCapability> UUID = null;
-	
-	private IUUIDCapability instance = UUID.getDefaultInstance();
+	@CapabilityInject(ICapabilityPotionDummy.class)
+	public static final Capability<ICapabilityPotionDummy> POTION_DUMMY = null;
+
+	private ICapabilityPotionDummy instance = POTION_DUMMY.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability.equals(UUID);
-
+		return capability.equals(POTION_DUMMY);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability.equals(UUID) ? UUID.<T>cast(instance) : null;
+		return capability.equals(POTION_DUMMY) ? POTION_DUMMY.<T>cast(this.instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
-		return UUID.getStorage().writeNBT(UUID, instance, null);
+		return POTION_DUMMY.getStorage().writeNBT(POTION_DUMMY, this.instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		UUID.getStorage().readNBT(UUID, instance, null, nbt);
+		POTION_DUMMY.getStorage().readNBT(POTION_DUMMY, this.instance, null, nbt);
 	}
 
 }

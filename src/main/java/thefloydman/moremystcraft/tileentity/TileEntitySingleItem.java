@@ -2,42 +2,45 @@ package thefloydman.moremystcraft.tileentity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import thefloydman.moremystcraft.item.ItemJourneyCloth;
-import thefloydman.moremystcraft.item.ItemJourneyClothHub;
 
-public class TileEntityJourneyClothHub extends TileEntity implements IInventory {
+public class TileEntitySingleItem extends TileEntity implements IInventory {
 
-	protected ItemStack hub = ItemStack.EMPTY;
+	protected ItemStack item = ItemStack.EMPTY;
 
-	public void setHub(ItemStack stack) {
-		this.hub = stack;
+	public void setItem(ItemStack stack) {
+		this.item = stack;
 		this.markDirty();
 	}
 
-	public ItemStack getHub() {
-		return this.hub;
-	}
-
-	public void clearHub() {
-		this.setHub(ItemStack.EMPTY);
+	public ItemStack getItem() {
+		return this.item;
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
+		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
+		ItemStackHelper.loadAllItems(nbt, list);
+		this.item = list.get(0);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
+		list.set(0, this.getItem());
+		ItemStackHelper.saveAllItems(nbt, list);
 		return super.writeToNBT(nbt);
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return this.getHub();
+		return this.getItem();
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class TileEntityJourneyClothHub extends TileEntity implements IInventory 
 
 	@Override
 	public boolean isEmpty() {
-		return !this.hub.equals(ItemStack.EMPTY);
+		return !this.item.equals(ItemStack.EMPTY);
 	}
 
 	@Override
@@ -67,14 +70,14 @@ public class TileEntityJourneyClothHub extends TileEntity implements IInventory 
 
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		ItemStack stack = this.getHub();
-		this.setHub(ItemStack.EMPTY);
+		ItemStack stack = this.getItem();
+		this.setItem(ItemStack.EMPTY);
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		this.hub = stack;
+		this.item = stack;
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class TileEntityJourneyClothHub extends TileEntity implements IInventory 
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		if (stack.getItem() instanceof ItemJourneyClothHub) {
+		if (stack.getItem() instanceof ItemJourneyCloth) {
 			return true;
 		}
 		return false;
@@ -119,7 +122,7 @@ public class TileEntityJourneyClothHub extends TileEntity implements IInventory 
 
 	@Override
 	public void clear() {
-		this.hub = ItemStack.EMPTY;
+		this.item = ItemStack.EMPTY;
 	}
 
 }

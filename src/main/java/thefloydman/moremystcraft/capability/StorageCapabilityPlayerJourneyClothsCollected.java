@@ -11,7 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class StoragePlayerJourneyClothsCollectedCapability implements IStorage<ICapabilityPlayerJourneyClothsCollected> {
+public class StorageCapabilityPlayerJourneyClothsCollected implements IStorage<ICapabilityPlayerJourneyClothsCollected> {
 
 	@Override
 	public NBTBase writeNBT(Capability<ICapabilityPlayerJourneyClothsCollected> capability,

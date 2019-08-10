@@ -25,7 +25,7 @@ import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerDimension;
 import thefloydman.moremystcraft.entity.EntityPotionDummy;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.util.Reference;

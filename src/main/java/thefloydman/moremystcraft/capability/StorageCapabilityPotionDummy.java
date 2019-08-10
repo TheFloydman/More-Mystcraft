@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class StoragePotionDummyCapability implements IStorage<ICapabilityPotionDummy> {
+public class StorageCapabilityPotionDummy implements IStorage<ICapabilityPotionDummy> {
 
 	@Override
 	public NBTBase writeNBT(Capability<ICapabilityPotionDummy> capability, ICapabilityPotionDummy instance, EnumFacing side) {

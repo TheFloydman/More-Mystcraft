@@ -32,11 +32,13 @@ import com.xcompwiz.mystcraft.tileentity.TileEntityLectern;
 
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 
 public class BlockLockedLectern extends BlockLectern {
 
 	public BlockLockedLectern() {
 		this.setUnlocalizedName("moremystcraft.locked_lectern");
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 	}
 
 	@Override

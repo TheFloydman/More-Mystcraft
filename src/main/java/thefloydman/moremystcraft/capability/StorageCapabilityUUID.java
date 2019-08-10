@@ -9,10 +9,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class StorageUUIDCapability implements IStorage<IUUIDCapability> {
+public class StorageCapabilityUUID implements IStorage<ICapabilityUUID> {
 
 	@Override
-	public NBTBase writeNBT(Capability<IUUIDCapability> capability, IUUIDCapability instance, EnumFacing side) {
+	public NBTBase writeNBT(Capability<ICapabilityUUID> capability, ICapabilityUUID instance, EnumFacing side) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		if (instance != null) {
 			if (instance.getUUID() != null) {
@@ -24,7 +24,7 @@ public class StorageUUIDCapability implements IStorage<IUUIDCapability> {
 	}
 
 	@Override
-	public void readNBT(Capability<IUUIDCapability> capability, IUUIDCapability instance, EnumFacing side,
+	public void readNBT(Capability<ICapabilityUUID> capability, ICapabilityUUID instance, EnumFacing side,
 			NBTBase nbt) {
 		if (instance != null) {
 			if (nbt != null) {

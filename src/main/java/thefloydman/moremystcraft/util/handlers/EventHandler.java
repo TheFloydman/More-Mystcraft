@@ -8,9 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -28,8 +26,7 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.capability.ProviderJourneyClothsCollectedCapability;
-import thefloydman.moremystcraft.capability.ProviderUUIDCapability;
+import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -40,7 +37,6 @@ import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
-import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -135,7 +131,7 @@ public class EventHandler {
 		Entity entity = event.getObject();
 		if (entity instanceof EntityPlayer) {
 			event.addCapability(Reference.forMoreMystcraft("journey_cloths_activated"),
-					new ProviderJourneyClothsCollectedCapability());
+					new ProviderCapabilityJourneyClothsCollected());
 		}
 	}
 

@@ -8,12 +8,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerDimension;
-import thefloydman.moremystcraft.data.MoreMystcraftSavedDataPerSave;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerDimension;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
 
 public class JourneyClothUtils {
 
-	public static enum ClothType {
+	public static enum Type {
 		HAND, SHELL, SPIRAL;
 	}
 
@@ -25,7 +25,7 @@ public class JourneyClothUtils {
 		instance.setJourneyClothInfo(nbt);
 	}
 
-	public static void addJourneyCloth(MoreMystcraftSavedDataPerDimension instance, ClothType type, BlockPos pos) {
+	public static void addJourneyCloth(MoreMystcraftSavedDataPerDimension instance, Type type, BlockPos pos) {
 		NBTTagCompound main = getJourneyClothInfo(instance);
 		if (!main.hasKey(type.name().toLowerCase())) {
 			main.setTag(type.name().toLowerCase(), new NBTTagList());
@@ -45,7 +45,7 @@ public class JourneyClothUtils {
 		setJourneyClothInfo(instance, main);
 	}
 
-	public static void removeJourneyCloth(MoreMystcraftSavedDataPerDimension instance, ClothType type, BlockPos pos) {
+	public static void removeJourneyCloth(MoreMystcraftSavedDataPerDimension instance, Type type, BlockPos pos) {
 		NBTTagCompound main = getJourneyClothInfo(instance);
 		if (!main.hasKey(type.name().toLowerCase())) {
 			main.setTag(type.name().toLowerCase(), new NBTTagList());
@@ -61,7 +61,7 @@ public class JourneyClothUtils {
 		setJourneyClothInfo(instance, main);
 	}
 
-	public static void registerPlayerWithJourneyCloth(MoreMystcraftSavedDataPerDimension instance, ClothType type,
+	public static void registerPlayerWithJourneyCloth(MoreMystcraftSavedDataPerDimension instance, Type type,
 			BlockPos pos, EntityPlayer player) {
 		NBTTagCompound main = getJourneyClothInfo(instance);
 		NBTTagList list = main.getTagList(type.name().toLowerCase(), 10);
@@ -82,7 +82,7 @@ public class JourneyClothUtils {
 		setJourneyClothInfo(instance, main);
 	}
 
-	public static void unregisterPlayerWithJourneyCloth(MoreMystcraftSavedDataPerDimension instance, ClothType type,
+	public static void unregisterPlayerWithJourneyCloth(MoreMystcraftSavedDataPerDimension instance, Type type,
 			BlockPos pos, EntityPlayer player) {
 		NBTTagCompound main = getJourneyClothInfo(instance);
 		NBTTagList list = main.getTagList(type.name().toLowerCase(), 10);

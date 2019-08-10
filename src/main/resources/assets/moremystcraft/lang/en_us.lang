@@ -28,6 +28,7 @@ tile.moremystcraft.nexus_controller.name=Nexus Controller
 tile.moremystcraft.nexus_storage.name=Nexus Storage
 tile.moremystcraft.journey_cloth_hand.name=Journey Cloth
 tile.moremystcraft.journey_cloth_shell.name=Journey Cloth
+tile.moremystcraft.journey_hub_hand.name=Journey Hub
 
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit
@@ -41,10 +42,13 @@ container.moremystcraft.nexus_controller.name=Nexus Controller
 // Messages
 message.moremystcraft.nexus_place_error.desc="Error: Cannot connect two Nexus Controllers."
 
-//Grammar names (for compatibility with mystcraft-info)
+// Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size
 grammar.moremystcraft.size_uncommon.name=Size
 grammar.moremystcraft.size_rare.name=Size
 grammar.moremystcraft.tilt_common.name=Tilt
 grammar.moremystcraft.tilt_uncommon.name=Tilt
 grammar.moremystcraft.tilt_rare.name=Tilt
+
+// Creative tab names
+itemGroup.moremystcraft="More Mystcraft"

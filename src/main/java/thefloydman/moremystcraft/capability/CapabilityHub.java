@@ -10,7 +10,9 @@ public class CapabilityHub implements ICapabilityHub {
 
 	@Override
 	public void addUUID(UUID uuid) {
-		idList.add(uuid);
+		if (!idList.contains(uuid)) {
+			idList.add(uuid);
+		}
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
 public class BlockNexusController extends BlockContainer implements ITileEntityProvider {
@@ -36,7 +37,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		this.setSoundType(SoundType.METAL);
 		this.setUnlocalizedName(Reference.MOD_ID + ".nexus_controller");
 		this.setRegistryName(Reference.MOD_ID, "nexus_controller");
-		this.setCreativeTab((CreativeTabs) MystcraftCommonProxy.tabMystCommon);
+		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 		this.setLightLevel(0.5f);
 	}
 
