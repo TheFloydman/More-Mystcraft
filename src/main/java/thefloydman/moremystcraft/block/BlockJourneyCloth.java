@@ -116,7 +116,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		boolean mod = world.isAirBlock(pos);
+		boolean mod = world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().equals(Material.SNOW);
 		boolean vanilla = super.canPlaceBlockAt(world, pos);
 		return mod && vanilla;
 	}

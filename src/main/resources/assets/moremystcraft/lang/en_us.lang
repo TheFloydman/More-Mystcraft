@@ -51,4 +51,4 @@ grammar.moremystcraft.tilt_uncommon.name=Tilt
 grammar.moremystcraft.tilt_rare.name=Tilt
 
 // Creative tab names
-itemGroup.moremystcraft="More Mystcraft"
+itemGroup.moremystcraft=More Mystcraft

@@ -1,18 +1,17 @@
 package thefloydman.moremystcraft.block;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
-
-import com.xcompwiz.mystcraft.core.MystcraftCommonProxy;
 
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -39,6 +38,8 @@ import thefloydman.moremystcraft.util.Reference;
 
 public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvider {
 
+	public static final PropertyBool POWERED = PropertyBool.create("powered");
+
 	public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
 	public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
 	public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
@@ -55,6 +56,8 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		this.setUnlocalizedName(Reference.MOD_ID + ".journey_hub_" + type.name().toLowerCase());
 		this.setRegistryName(Reference.forMoreMystcraft("journey_hub_" + type.name().toLowerCase()));
 		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
+		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED,
+				Boolean.valueOf(false)));
 
 	}
 
@@ -123,7 +126,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, new IProperty[] { FACING, POWERED });
 	}
 
 	@Override
@@ -135,7 +138,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return this.getDefaultState().withProperty(FACING, facing);
+		return this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.valueOf(false));
 	}
 
 	@Override
@@ -150,7 +153,6 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 				hubEntity.setItem(newStack);
 			}
 		}
-		world.notifyNeighborsOfStateChange(pos, state.getBlock(), true);
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
@@ -168,19 +170,44 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 			final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY,
 			final float hitZ) {
 		if (!world.isRemote) {
-			TileEntity tileEntity = world.getTileEntity(pos);
-			if (tileEntity instanceof TileEntitySingleItem) {
-				ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
-						.getCapability(ProviderCapabilityHub.UUID_LIST, facing);
-				List<UUID> uuids = capStack.getUUIDs();
-				for (UUID id : uuids) {
-					System.out.println(id);
+			if (!this.isPowered(state)) {
+				world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
+				world.notifyNeighborsOfStateChange(pos, this, false);
+				world.scheduleBlockUpdate(pos, this, this.tickRate(world), 0);
+				TileEntity tileEntity = world.getTileEntity(pos);
+				if (tileEntity instanceof TileEntitySingleItem) {
+					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
+							.getCapability(ProviderCapabilityHub.UUID_LIST, facing);
+					List<UUID> uuids = capStack.getUUIDs();
+					for (UUID id : uuids) {
+						System.out.println(id);
+					}
 				}
 			}
 		}
 
 		return true;
 
+	}
+
+	public boolean isPowered(IBlockState state) {
+		return state.getProperties().get(POWERED).equals(Boolean.valueOf(true));
+	}
+
+	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+		if (!world.isRemote) {
+			if (((Boolean) state.getValue(POWERED)).booleanValue()) {
+				world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
+				world.notifyNeighborsOfStateChange(pos, this, false);
+				world.markBlockRangeForRenderUpdate(pos, pos);
+			}
+		}
+	}
+
+	@Override
+	public int tickRate(World worldIn) {
+		return 100;
 	}
 
 }

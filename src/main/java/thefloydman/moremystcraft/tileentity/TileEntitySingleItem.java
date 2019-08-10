@@ -1,12 +1,17 @@
 package thefloydman.moremystcraft.tileentity;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import thefloydman.moremystcraft.item.ItemJourneyCloth;
 
 public class TileEntitySingleItem extends TileEntity implements IInventory {
@@ -24,18 +29,38 @@ public class TileEntitySingleItem extends TileEntity implements IInventory {
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
-		super.readFromNBT(nbt);
 		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 		ItemStackHelper.loadAllItems(nbt, list);
 		this.item = list.get(0);
+		super.readFromNBT(nbt);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 		list.set(0, this.getItem());
-		ItemStackHelper.saveAllItems(nbt, list);
+		nbt = ItemStackHelper.saveAllItems(nbt, list);
 		return super.writeToNBT(nbt);
+	}
+
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		SPacketUpdateTileEntity pkt = super.getUpdatePacket();
+		if (pkt == null) {
+			pkt = new SPacketUpdateTileEntity();
+		}
+		NBTTagCompound nbt = pkt.getNbtCompound();
+		if (nbt == null) {
+			nbt = new NBTTagCompound();
+		}
+		nbt = this.writeToNBT(nbt);
+		return new SPacketUpdateTileEntity(this.getPos(), 1, nbt);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override
@@ -124,5 +149,11 @@ public class TileEntitySingleItem extends TileEntity implements IInventory {
 	public void clear() {
 		this.item = ItemStack.EMPTY;
 	}
+	
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        return !oldState.getBlock().equals(newState.getBlock());
+    }
 
 }
