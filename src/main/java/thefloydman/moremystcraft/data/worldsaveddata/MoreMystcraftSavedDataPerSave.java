@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
@@ -70,6 +71,15 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 		return null;
 	}
 
+	public void setSingleClothData(UUID uuid, NBTTagCompound nbt) {
+		NBTTagList main = this.getAllJourneyClothInfo();
+		int index = this.indexOfCloth(uuid);
+		if (index >= 0) {
+			main.set(index, nbt);
+			this.setAllJourneyClothInfo(main);
+		}
+	}
+
 	public int indexOfCloth(UUID uuidIn) {
 		NBTTagList main = this.getAllJourneyClothInfo();
 		for (int i = 0; i < main.tagCount(); i++) {
@@ -85,11 +95,41 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 		if (getSingleJourneyClothData(clothUUID) != null) {
 			return;
 		}
-		NBTTagList main = this.getAllJourneyClothInfo();
 		NBTTagCompound cloth = new NBTTagCompound();
 		cloth.setTag("uuid", NBTUtil.createUUIDTag(clothUUID));
-		main.appendTag(cloth);
-		setAllJourneyClothInfo(main);
+		this.setSingleClothData(clothUUID, cloth);
+	}
+
+	public void setClothPos(UUID uuid, int dimension, BlockPos pos) {
+		NBTTagList main = this.getAllJourneyClothInfo();
+		if (this.getSingleJourneyClothData(uuid) == null) {
+			this.addJourneyCloth(uuid);
+		}
+		NBTTagCompound cloth = this.getSingleJourneyClothData(uuid);
+		if (cloth != null) {
+			cloth.setInteger("dim", dimension);
+			cloth.setTag("pos", NBTUtil.createPosTag(pos));
+			this.setSingleClothData(uuid, cloth);
+		}
+	}
+
+	public int getClothDimension(UUID uuid) {
+		NBTTagCompound cloth = this.getSingleJourneyClothData(uuid);
+		return cloth.getInteger("dim");
+	}
+
+	public void removeClothPos(UUID uuid) {
+		NBTTagCompound cloth = this.getSingleJourneyClothData(uuid);
+		if (cloth.hasKey("dim"))
+			cloth.removeTag("dim");
+		if (cloth.hasKey("pos"))
+			cloth.removeTag("pos");
+		this.setSingleClothData(uuid, cloth);
+	}
+
+	public BlockPos getClothPos(UUID uuid) {
+		NBTTagCompound cloth = this.getSingleJourneyClothData(uuid);
+		return NBTUtil.getPosFromTag(cloth.getCompoundTag("pos"));
 	}
 
 	public void activateJourneyCloth(UUID clothUUID, UUID playerUUID) {
@@ -103,8 +143,10 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 			players.appendTag(NBTUtil.createUUIDTag(playerUUID));
 			cloth.setTag("players", players);
 			int index = indexOfCloth(clothUUID);
-			main.set(index, cloth);
-			setAllJourneyClothInfo(main);
+			if (index >= 0) {
+				main.set(index, cloth);
+				setAllJourneyClothInfo(main);
+			}
 		}
 	}
 
@@ -121,8 +163,10 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 				}
 				cloth.setTag("players", players);
 				int index = indexOfCloth(clothUUID);
-				main.set(index, cloth);
-				setAllJourneyClothInfo(main);
+				if (index >= 0) {
+					main.set(index, cloth);
+					setAllJourneyClothInfo(main);
+				}
 			}
 		}
 	}
