@@ -27,7 +27,7 @@ public class ItemJourneyHub extends ItemBlock {
 	@Override
 	public net.minecraftforge.common.capabilities.ICapabilityProvider initCapabilities(ItemStack stack,
 			@Nullable NBTTagCompound nbt) {
-		if (ProviderCapabilityHub.UUID_LIST == null) {
+		if (ProviderCapabilityHub.HUB == null) {
 			return null;
 		}
 

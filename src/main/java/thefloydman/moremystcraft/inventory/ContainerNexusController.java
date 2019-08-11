@@ -14,10 +14,8 @@ import com.xcompwiz.mystcraft.item.ItemAgebook;
 import com.xcompwiz.mystcraft.item.ItemLinking;
 import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
-import com.xcompwiz.mystcraft.linking.LinkListenerManager;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,8 +24,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
 public class ContainerNexusController extends ContainerBase implements IBookContainer, IGuiMessageHandler {
@@ -78,9 +74,6 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 				this.addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 136 + i * 18));
 			}
 		}
-
-		System.out.println(this.tileEntity.getWorld().isRemote);
-		System.out.println(this.tileEntity.getBookList().size());
 
 	}
 

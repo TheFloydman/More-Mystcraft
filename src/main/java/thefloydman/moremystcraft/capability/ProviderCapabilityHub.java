@@ -9,29 +9,29 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 public class ProviderCapabilityHub implements ICapabilitySerializable<NBTBase> {
 
 	@CapabilityInject(ICapabilityHub.class)
-	public static final Capability<ICapabilityHub> UUID_LIST = null;
+	public static final Capability<ICapabilityHub> HUB = null;
 
-	private ICapabilityHub instance = UUID_LIST.getDefaultInstance();
+	private ICapabilityHub instance = HUB.getDefaultInstance();
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability.equals(UUID_LIST);
+		return capability.equals(HUB);
 
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability.equals(UUID_LIST) ? UUID_LIST.<T>cast(instance) : null;
+		return capability.equals(HUB) ? HUB.<T>cast(instance) : null;
 	}
 
 	@Override
 	public NBTBase serializeNBT() {
-		return UUID_LIST.getStorage().writeNBT(UUID_LIST, instance, null);
+		return HUB.getStorage().writeNBT(HUB, instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(NBTBase nbt) {
-		UUID_LIST.getStorage().readNBT(UUID_LIST, instance, null, nbt);
+		HUB.getStorage().readNBT(HUB, instance, null, nbt);
 	}
 
 }

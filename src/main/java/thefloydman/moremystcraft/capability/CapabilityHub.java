@@ -7,6 +7,9 @@ import java.util.UUID;
 public class CapabilityHub implements ICapabilityHub {
 
 	protected List<UUID> idList = new ArrayList<UUID>();
+	protected int timeLimit = 100;
+	protected boolean perPlayer = false;
+	protected UUID lastActivatedBy = null;
 
 	@Override
 	public void addUUID(UUID uuid) {
@@ -26,6 +29,41 @@ public class CapabilityHub implements ICapabilityHub {
 	@Override
 	public List<UUID> getUUIDs() {
 		return idList;
+	}
+	
+	@Override
+	public void clearUUIDs() {
+		idList = new ArrayList<UUID>();
+	}
+
+	@Override
+	public void setTimeLimit(int ticks) {
+		timeLimit = ticks;
+	}
+
+	@Override
+	public int getTimeLimit() {
+		return timeLimit;
+	}
+
+	@Override
+	public void setPerPlayer(boolean bool) {
+		perPlayer = bool;
+	}
+
+	@Override
+	public boolean getPerPlayer() {
+		return perPlayer;
+	}
+
+	@Override
+	public UUID getLastActivatedBy() {
+		return this.lastActivatedBy;
+	}
+
+	@Override
+	public void setLastActivatedBy(UUID uuid) {
+		this.lastActivatedBy = uuid;
 	}
 
 }

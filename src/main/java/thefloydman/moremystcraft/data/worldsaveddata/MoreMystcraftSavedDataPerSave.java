@@ -143,6 +143,12 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 
 	public boolean journeyClothActivatedByAnyone(UUID clothUUID) {
 		NBTTagCompound cloth = getSingleJourneyClothData(clothUUID);
+		if (cloth == null) {
+			return false;
+		}
+		if (!cloth.hasKey("players")) {
+			return false;
+		}
 		NBTTagList players = cloth.getTagList("players", 10);
 		if (players.hasNoTags()) {
 			return false;

@@ -142,7 +142,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 				UUID uuid = capStack.getUUID();
 				if (uuid != null) {
 					if (player.getHeldItem(hand).getItem() instanceof ItemJourneyHub) {
-						ICapabilityHub capHub = player.getHeldItem(hand).getCapability(ProviderCapabilityHub.UUID_LIST,
+						ICapabilityHub capHub = player.getHeldItem(hand).getCapability(ProviderCapabilityHub.HUB,
 								facing);
 						capHub.addUUID(uuid);
 					} else {
@@ -204,6 +204,11 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 				newStack.setCount(1);
 				TileEntitySingleItem clothEntity = (TileEntitySingleItem) tileEntity;
 				clothEntity.setItem(newStack);
+				ICapabilityUUID cap = clothEntity.getItem()
+						.getCapability(ProviderCapabilityUUID.UUID, null);
+				if (cap.getUUID() == null) {
+					cap.setUUID(UUID.randomUUID());
+				}
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);

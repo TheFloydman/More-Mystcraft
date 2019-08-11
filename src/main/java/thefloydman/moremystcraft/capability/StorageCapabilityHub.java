@@ -14,28 +14,51 @@ public class StorageCapabilityHub implements IStorage<ICapabilityHub> {
 
 	@Override
 	public NBTBase writeNBT(Capability<ICapabilityHub> capability, ICapabilityHub instance, EnumFacing side) {
-		NBTTagList list = new NBTTagList();
+
+		NBTTagCompound main = new NBTTagCompound();
 		if (instance != null) {
+
+			NBTTagList list = new NBTTagList();
 			if (instance.getUUIDs().size() > 0) {
 				for (UUID id : instance.getUUIDs()) {
 					NBTTagCompound nbt = new NBTTagCompound();
 					nbt.setTag("uuid", NBTUtil.createUUIDTag(id));
 					list.appendTag(nbt);
 				}
-				return list;
 			}
+
+			main.setTag("cloths", list);
+			main.setInteger("timeLimit", instance.getTimeLimit());
+			main.setBoolean("perPlayer", instance.getPerPlayer());
+			if (instance.getLastActivatedBy() != null) {
+				main.setTag("lastActivatedBy", NBTUtil.createUUIDTag(instance.getLastActivatedBy()));
+			}
+
 		}
-		return list;
+		return main;
+
 	}
 
 	@Override
 	public void readNBT(Capability<ICapabilityHub> capability, ICapabilityHub instance, EnumFacing side, NBTBase nbt) {
 		if (instance != null) {
 			if (nbt != null) {
-				for (NBTBase tag : (NBTTagList) nbt) {
+
+				NBTTagCompound main = (NBTTagCompound) nbt;
+
+				NBTTagList list = main.getTagList("cloths", 10);
+				instance.clearUUIDs();
+				for (NBTBase tag : list) {
 					if (((NBTTagCompound) tag).hasKey("uuid")) {
 						instance.addUUID(NBTUtil.getUUIDFromTag(((NBTTagCompound) tag).getCompoundTag("uuid")));
 					}
+				}
+
+				instance.setTimeLimit(main.getInteger("timeLimit"));
+				instance.setPerPlayer(main.getBoolean("perPlayer"));
+				if (((NBTTagCompound) nbt).hasKey("lastActivatedBy")) {
+					instance.setLastActivatedBy(
+							NBTUtil.getUUIDFromTag(((NBTTagCompound) nbt).getCompoundTag("lastActivatedBy")));
 				}
 			}
 		}

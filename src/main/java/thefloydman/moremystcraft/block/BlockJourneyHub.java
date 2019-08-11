@@ -28,9 +28,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
+import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
@@ -92,19 +94,27 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	}
 
 	@Override
-	@Deprecated
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		int power = 0;
-		TileEntity tileEntity = blockAccess.getTileEntity(pos);
-		if (tileEntity instanceof TileEntitySingleItem) {
-			ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
-					.getCapability(ProviderCapabilityHub.UUID_LIST, side);
-			MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(tileEntity.getWorld());
-			List<UUID> uuids = capStack.getUUIDs();
-			for (UUID id : uuids) {
-				power += data.journeyClothActivatedByAnyone(id) ? 1 : 0;
+		if (((boolean) blockState.getProperties().get(POWERED)) == true) {
+			if (side.equals(((EnumFacing) blockState.getProperties().get(FACING)))) {
+				TileEntity tileEntity = blockAccess.getTileEntity(pos);
+				if (tileEntity instanceof TileEntitySingleItem) {
+					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
+							.getCapability(ProviderCapabilityHub.HUB, side);
+					MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(tileEntity.getWorld());
+					List<UUID> uuids = capStack.getUUIDs();
+					for (UUID id : uuids) {
+						if (capStack.getPerPlayer()) {
+							power += data.journeyClothActivatedByPlayer(id, capStack.getLastActivatedBy()) ? 1 : 0;
+						} else {
+							power += data.journeyClothActivatedByAnyone(id) ? 1 : 0;
+						}
+					}
+				}
 			}
 		}
+		System.out.println(power);
 		return MathHelper.clamp(power, 0, 15);
 	}
 
@@ -138,6 +148,9 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
 			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		if (facing.equals(EnumFacing.UP) || facing.equals(EnumFacing.DOWN)) {
+			return this.getDefaultState();
+		}
 		return this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.valueOf(false));
 	}
 
@@ -153,6 +166,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 				hubEntity.setItem(newStack);
 			}
 		}
+		this.notifyNeighbors(world, pos, state);
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
@@ -162,7 +176,8 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		if (te instanceof IInventory) {
 			InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
 		}
-		super.breakBlock(world, pos, state);
+		this.notifyNeighbors(world, pos, state);
+		super.breakBlock(world, pos.west(), state);
 	}
 
 	@Override
@@ -170,17 +185,22 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 			final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY,
 			final float hitZ) {
 		if (!world.isRemote) {
-			if (!this.isPowered(state)) {
-				world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
-				world.notifyNeighborsOfStateChange(pos, this, false);
-				world.scheduleBlockUpdate(pos, this, this.tickRate(world), 0);
-				TileEntity tileEntity = world.getTileEntity(pos);
-				if (tileEntity instanceof TileEntitySingleItem) {
-					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
-							.getCapability(ProviderCapabilityHub.UUID_LIST, facing);
-					List<UUID> uuids = capStack.getUUIDs();
-					for (UUID id : uuids) {
-						System.out.println(id);
+			if (player.isSneaking()) {
+				player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.JOURNEY_HUB.ordinal(), world,
+						pos.getX(), pos.getY(), pos.getZ());
+			} else {
+				if (!this.isPowered(state)) {
+					world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
+					this.notifyNeighbors(world, pos, state);
+					world.scheduleBlockUpdate(pos, this, this.tickRate(world), 0);
+					TileEntity tileEntity = world.getTileEntity(pos);
+					if (tileEntity instanceof TileEntitySingleItem) {
+						ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
+								.getCapability(ProviderCapabilityHub.HUB, facing);
+						capStack.setLastActivatedBy(player.getUniqueID());
+						List<UUID> uuids = capStack.getUUIDs();
+						for (UUID id : uuids) {
+						}
 					}
 				}
 			}
@@ -199,7 +219,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		if (!world.isRemote) {
 			if (((Boolean) state.getValue(POWERED)).booleanValue()) {
 				world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
-				world.notifyNeighborsOfStateChange(pos, this, false);
+				this.notifyNeighbors(world, pos, state);
 				world.markBlockRangeForRenderUpdate(pos, pos);
 			}
 		}
@@ -210,4 +230,14 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		return 100;
 	}
 
+	@Override
+	public boolean shouldCheckWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return true;
+	}
+
+	private void notifyNeighbors(World worldIn, BlockPos pos, IBlockState state) {
+		EnumFacing facing = (EnumFacing) state.getProperties().get(FACING);
+		worldIn.notifyNeighborsOfStateChange(pos, this, false);
+		worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
+	}
 }

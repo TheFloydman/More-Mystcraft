@@ -3,15 +3,17 @@ package thefloydman.moremystcraft.gui;
 import com.xcompwiz.mystcraft.tileentity.TileEntityBookRotateable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import thefloydman.moremystcraft.client.gui.GuiBookLocked;
+import thefloydman.moremystcraft.client.gui.GuiJourneyHub;
 import thefloydman.moremystcraft.client.gui.GuiNexusController;
 import thefloydman.moremystcraft.inventory.ContainerBookLocked;
+import thefloydman.moremystcraft.inventory.ContainerJourneyHub;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
+import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -26,6 +28,10 @@ public class GuiHandler implements IGuiHandler {
 			final TileEntityNexusController tileEntity = (TileEntityNexusController) player.world
 					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerNexusController(player.inventory, tileEntity);
+		} else if (id == MoreMystcraftGUIs.JOURNEY_HUB.ordinal()) {
+			final TileEntitySingleItem tileEntity = (TileEntitySingleItem) player.world
+					.getTileEntity(new BlockPos(x, y, z));
+			return new ContainerJourneyHub(tileEntity);
 		}
 		return null;
 	}
@@ -40,6 +46,8 @@ public class GuiHandler implements IGuiHandler {
 		} else if (id == MoreMystcraftGUIs.NEXUS_CONTROLLER.ordinal()) {
 			return new GuiNexusController((ContainerNexusController) getServerGuiElement(id, player, world, x, y, z),
 					player.inventory);
+		} else if (id == MoreMystcraftGUIs.JOURNEY_HUB.ordinal()) {
+			return new GuiJourneyHub((ContainerJourneyHub) getServerGuiElement(id, player, world, x, y, z));
 		}
 		return null;
 	}
