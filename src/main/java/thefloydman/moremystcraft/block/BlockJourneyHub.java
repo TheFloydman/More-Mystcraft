@@ -204,10 +204,13 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 					if (tileEntity instanceof TileEntitySingleItem) {
 						ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
 								.getCapability(ProviderCapabilityHub.HUB, facing);
+						if (capStack != null) {
 						capStack.setLastActivatedBy(player.getUniqueID());
 						world.notifyBlockUpdate(pos, state, state, 3);
 						List<UUID> uuids = capStack.getUUIDs();
 						for (UUID id : uuids) {
+							System.out.println(id);
+						}
 						}
 					}
 				}

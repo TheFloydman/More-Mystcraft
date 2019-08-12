@@ -24,7 +24,7 @@ public class GuiJourneyHub extends GuiContainer {
 	private int guiX = 0;
 	private int guiY = 0;
 	private int boxXLocal = 160;
-	private int boxYLocal = 147;
+	private int boxYLocal = 74;
 	private int boxXGlobal = 0;
 	private int boxYGlobal = 0;
 	private int boxWidth = 7;
@@ -40,7 +40,7 @@ public class GuiJourneyHub extends GuiContainer {
 	public GuiJourneyHub(ContainerJourneyHub container) {
 		super(container);
 		this.xSize = 176;
-		this.ySize = 163;
+		this.ySize = 90;
 		this.container = container;
 		this.tileEntity = container.tileEntity;
 		this.capability = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
@@ -53,8 +53,6 @@ public class GuiJourneyHub extends GuiContainer {
 
 	@Override
 	public void onGuiClosed() {
-		super.onGuiClosed();
-
 	}
 
 	@Override
@@ -69,7 +67,6 @@ public class GuiJourneyHub extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		this.capability = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
 		this.centerX = this.width / 2;
 		this.centerY = this.height / 2;
 		this.guiX = centerX - (this.xSize / 2);
@@ -130,20 +127,18 @@ public class GuiJourneyHub extends GuiContainer {
 				return i;
 			}
 		}
-		return -1;
+		return 100;
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		if (mouseButton == 0) {
 			if (mouseOverBox(mouseX, mouseY)) {
-				this.container.enchantItem(this.mc.player, -1);
 				this.mc.playerController.sendEnchantPacket(container.windowId, -1);
 			}
 			int cloth = mouseOverDeleteCloth(mouseX, mouseY);
 			if (cloth >= 0 && cloth < 15) {
-				this.container.enchantItem(this.mc.player, - cloth - 2);
-				this.mc.playerController.sendEnchantPacket(container.windowId, - cloth - 2);
+				this.mc.playerController.sendEnchantPacket(container.windowId, -(cloth + 2));
 			}
 		}
 		super.mouseClicked(mouseX, mouseY, mouseButton);

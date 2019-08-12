@@ -39,8 +39,8 @@ public class TileEntitySingleItem extends TileEntity implements IInventory {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 		NonNullList<ItemStack> list = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
 		list.set(0, this.getItem());
-		nbt = ItemStackHelper.saveAllItems(nbt, list);
-		return super.writeToNBT(nbt);
+		nbt = ItemStackHelper.saveAllItems(super.writeToNBT(nbt), list);
+		return nbt;
 	}
 
 	@Override
