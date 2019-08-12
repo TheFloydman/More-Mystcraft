@@ -76,8 +76,10 @@ public class MoreMystcraftSavedDataPerSave extends WorldSavedData {
 		int index = this.indexOfCloth(uuid);
 		if (index >= 0) {
 			main.set(index, nbt);
-			this.setAllJourneyClothInfo(main);
+		} else {
+			main.appendTag(nbt);
 		}
+		this.setAllJourneyClothInfo(main);
 	}
 
 	public int indexOfCloth(UUID uuidIn) {

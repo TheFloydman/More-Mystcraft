@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.inventory.ContainerJourneyHub;
@@ -34,6 +35,7 @@ public class GuiJourneyHub extends GuiContainer {
 	private int textureYOverlay = 0;
 	private ContainerJourneyHub container;
 	private TileEntitySingleItem tileEntity;
+	private ICapabilityHub capability;
 
 	public GuiJourneyHub(ContainerJourneyHub container) {
 		super(container);
@@ -41,6 +43,7 @@ public class GuiJourneyHub extends GuiContainer {
 		this.ySize = 163;
 		this.container = container;
 		this.tileEntity = container.tileEntity;
+		this.capability = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
 	}
 
 	@Override
@@ -66,6 +69,7 @@ public class GuiJourneyHub extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		this.capability = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
 		this.centerX = this.width / 2;
 		this.centerY = this.height / 2;
 		this.guiX = centerX - (this.xSize / 2);
@@ -79,21 +83,31 @@ public class GuiJourneyHub extends GuiContainer {
 			this.drawTexturedModalRect(this.boxXGlobal + 1, this.boxYGlobal + 1, this.textureXOverlay,
 					this.textureYOverlay, this.boxWidth, this.boxHeight);
 		}
-		ICapabilityHub cap = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
-		if (cap != null) {
-			if (!cap.getPerPlayer()) {
+		if (this.capability != null) {
+			if (!this.capability.getPerPlayer()) {
 				this.drawTexturedModalRect(this.boxXGlobal + 1, this.boxYGlobal + 1, this.textureXCheck,
 						this.textureYCheck, this.boxWidth, this.boxHeight);
 			}
-		}
-		int difference = 0;
-		for (UUID id : cap.getUUIDs()) {
-			GlStateManager.pushMatrix();
-			float scale = 0.5F;
-			GlStateManager.scale(scale, scale, 1.0F);
-			this.fontRenderer.drawString("Dim: 2  |  Pos: 200, 70, 500", (int) ((this.guiX + 8) / scale), (int) ((this.guiY + 8 + difference) / scale), Color.WHITE.getRGB());
-			GlStateManager.popMatrix();
-			difference += 5;
+
+			int difference = 0;
+			for (UUID id : this.capability.getUUIDs()) {
+				String dim = String.valueOf(this.capability.getClothDimension(id));
+				BlockPos pos = this.capability.getClothPos(id);
+				String x = String.valueOf(pos.getX());
+				String y = String.valueOf(pos.getY());
+				String z = String.valueOf(pos.getZ());
+				float scale = 0.5F;
+				GlStateManager.pushMatrix();
+				GlStateManager.scale(scale, scale, 1.0F);
+				this.fontRenderer.drawString("Dim: " + dim + "  |  Pos: " + x + ", " + y + ", " + z,
+						(int) ((this.guiX + 8) / scale), (int) ((this.guiY + 8 + difference) / scale),
+						Color.WHITE.getRGB());
+				this.mc.renderEngine.bindTexture(TEXTURE);
+				this.drawTexturedModalRect((int) ((this.guiX + 102) / scale),
+						(int) ((this.guiY + 8 + difference) / scale), 176, 7, 7, 7);
+				GlStateManager.popMatrix();
+				difference += 5;
+			}
 		}
 	}
 
@@ -105,12 +119,31 @@ public class GuiJourneyHub extends GuiContainer {
 		return false;
 	}
 
+	protected int mouseOverDeleteCloth(int x, int y) {
+		int difference = 0;
+		int startX = (int) (this.guiX + 102);
+		int endX = (int) (startX + 3.5F);
+		for (int i = 0; i < 15; i++, difference += 5) {
+			int startY = (int) (this.guiY + 8 + difference);
+			int endY = (int) (startY + 3.5F);
+			if (x >= startX && x <= endX && y >= startY && y <= endY) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		if (mouseButton == 0) {
 			if (mouseOverBox(mouseX, mouseY)) {
 				this.container.enchantItem(this.mc.player, -1);
 				this.mc.playerController.sendEnchantPacket(container.windowId, -1);
+			}
+			int cloth = mouseOverDeleteCloth(mouseX, mouseY);
+			if (cloth >= 0 && cloth < 15) {
+				this.container.enchantItem(this.mc.player, - cloth - 2);
+				this.mc.playerController.sendEnchantPacket(container.windowId, - cloth - 2);
 			}
 		}
 		super.mouseClicked(mouseX, mouseY, mouseButton);

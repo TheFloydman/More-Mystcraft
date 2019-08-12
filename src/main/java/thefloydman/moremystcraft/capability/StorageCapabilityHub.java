@@ -21,9 +21,11 @@ public class StorageCapabilityHub implements IStorage<ICapabilityHub> {
 			NBTTagList list = new NBTTagList();
 			if (instance.getUUIDs().size() > 0) {
 				for (UUID id : instance.getUUIDs()) {
-					NBTTagCompound nbt = new NBTTagCompound();
-					nbt.setTag("uuid", NBTUtil.createUUIDTag(id));
-					list.appendTag(nbt);
+					NBTTagCompound cloth = new NBTTagCompound();
+					cloth.setTag("uuid", NBTUtil.createUUIDTag(id));
+					cloth.setInteger("dim", instance.getClothDimension(id));
+					cloth.setTag("pos", NBTUtil.createPosTag(instance.getClothPos(id)));
+					list.appendTag(cloth);
 				}
 			}
 
@@ -49,8 +51,16 @@ public class StorageCapabilityHub implements IStorage<ICapabilityHub> {
 				NBTTagList list = main.getTagList("cloths", 10);
 				instance.clearUUIDs();
 				for (NBTBase tag : list) {
-					if (((NBTTagCompound) tag).hasKey("uuid")) {
-						instance.addUUID(NBTUtil.getUUIDFromTag(((NBTTagCompound) tag).getCompoundTag("uuid")));
+					NBTTagCompound cmp = (NBTTagCompound) tag;
+					if (cmp.hasKey("uuid")) {
+						UUID uuid = NBTUtil.getUUIDFromTag(cmp.getCompoundTag("uuid"));
+						instance.addUUID(uuid);
+						if (cmp.hasKey("dim")) {
+							instance.setClothDimension(uuid, (cmp.getInteger("dim")));
+						}
+						if (cmp.hasKey("pos")) {
+							instance.setClothPos(uuid, NBTUtil.getPosFromTag(cmp.getCompoundTag("pos")));
+						}
 					}
 				}
 

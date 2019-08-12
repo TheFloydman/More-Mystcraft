@@ -61,6 +61,7 @@ public class TileEntitySingleItem extends TileEntity implements IInventory {
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		super.onDataPacket(net, pkt);
 		this.readFromNBT(pkt.getNbtCompound());
+		this.markDirty();
 	}
 
 	@Override

@@ -1,8 +1,18 @@
 package thefloydman.moremystcraft.capability;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
 
 public class CapabilityHub implements ICapabilityHub {
 
@@ -10,6 +20,32 @@ public class CapabilityHub implements ICapabilityHub {
 	protected int timeLimit = 100;
 	protected boolean perPlayer = false;
 	protected UUID lastActivatedBy = null;
+	Map<UUID, Integer> clothDimensions = new HashMap<UUID, Integer>();
+	Map<UUID, BlockPos> clothPositions = new HashMap<UUID, BlockPos>();
+
+	public void addCloth(UUID uuid, int dim, BlockPos pos) {
+		this.addUUID(uuid);
+		this.setClothDimension(uuid, dim);
+		this.setClothPos(uuid, pos);
+	}
+
+	public void removeCloth(UUID uuid) {
+		while (idList.contains(uuid)) {
+			idList.remove(uuid);
+		}
+		while (clothDimensions.containsKey(uuid)) {
+			clothDimensions.remove(uuid);
+		}
+		while (clothPositions.containsKey(uuid)) {
+			clothPositions.remove(uuid);
+		}
+	}
+
+	public void clearAllCloths() {
+		idList = new ArrayList<UUID>();
+		clothDimensions = new HashMap<UUID, Integer>();
+		clothPositions = new HashMap<UUID, BlockPos>();
+	}
 
 	@Override
 	public void addUUID(UUID uuid) {
@@ -30,7 +66,7 @@ public class CapabilityHub implements ICapabilityHub {
 	public List<UUID> getUUIDs() {
 		return idList;
 	}
-	
+
 	@Override
 	public void clearUUIDs() {
 		idList = new ArrayList<UUID>();
@@ -64,6 +100,52 @@ public class CapabilityHub implements ICapabilityHub {
 	@Override
 	public void setLastActivatedBy(UUID uuid) {
 		this.lastActivatedBy = uuid;
+	}
+
+	@Override
+	public int getClothDimension(UUID uuid) {
+		if (this.clothDimensions.containsKey(uuid)) {
+			return this.clothDimensions.get(uuid);
+		}
+		return 0;
+	}
+
+	@Override
+	public void setClothDimension(UUID uuid, int dim) {
+		this.clothDimensions.put(uuid, dim);
+	}
+
+	@Override
+	public BlockPos getClothPos(UUID uuid) {
+		if (this.clothPositions.containsKey(uuid)) {
+			return this.clothPositions.get(uuid);
+		}
+		return new BlockPos(0, 0, 0);
+	}
+
+	@Override
+	public void setClothPos(UUID uuid, BlockPos pos) {
+		this.clothPositions.put(uuid, pos);
+	}
+
+	@Override
+	public void updateClothInfo(World world) {
+		MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(world);
+		NBTTagList clothList = data.getAllJourneyClothInfo();
+		clearAllCloths();
+		for (NBTBase base : clothList) {
+			NBTTagCompound cmp = (NBTTagCompound) base;
+			if (cmp.hasKey("uuid")) {
+				UUID uuid = NBTUtil.getUUIDFromTag(cmp.getCompoundTag("uuid"));
+				addUUID(uuid);
+				if (cmp.hasKey("dim")) {
+					setClothDimension(uuid, cmp.getInteger("dim"));
+				}
+				if (cmp.hasKey("pos")) {
+					setClothPos(uuid, NBTUtil.getPosFromTag(cmp.getCompoundTag("pos")));
+				}
+			}
+		}
 	}
 
 }

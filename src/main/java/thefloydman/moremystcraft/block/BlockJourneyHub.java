@@ -186,6 +186,13 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 			final float hitZ) {
 		if (!world.isRemote) {
 			if (player.isSneaking()) {
+				TileEntity tileEntity = world.getTileEntity(pos);
+				if (tileEntity instanceof TileEntitySingleItem) {
+					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
+							.getCapability(ProviderCapabilityHub.HUB, facing);
+					capStack.updateClothInfo(world);
+				}
+				world.notifyBlockUpdate(pos, state, state, 3);
 				player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.JOURNEY_HUB.ordinal(), world,
 						pos.getX(), pos.getY(), pos.getZ());
 			} else {
@@ -198,6 +205,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 						ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
 								.getCapability(ProviderCapabilityHub.HUB, facing);
 						capStack.setLastActivatedBy(player.getUniqueID());
+						world.notifyBlockUpdate(pos, state, state, 3);
 						List<UUID> uuids = capStack.getUUIDs();
 						for (UUID id : uuids) {
 						}

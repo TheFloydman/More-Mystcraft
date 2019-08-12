@@ -3,6 +3,7 @@ package thefloydman.moremystcraft.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.math.MathHelper;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
@@ -29,9 +30,11 @@ public class ContainerJourneyHub extends Container {
 
 	@Override
 	public boolean enchantItem(EntityPlayer player, int id) {
-		if (id < 0) {
-			ICapabilityHub cap = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
+		ICapabilityHub cap = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
+		if (id == -1) {
 			cap.setPerPlayer(!cap.getPerPlayer());
+		} else if (id < -1) {
+			cap.removeCloth(cap.getUUID(MathHelper.abs(id + 2)));
 		}
 		return true;
 	}

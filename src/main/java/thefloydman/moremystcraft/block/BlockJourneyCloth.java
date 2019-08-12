@@ -131,6 +131,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state,
 			final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY,
 			final float hitZ) {
+		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntitySingleItem) {
 				ICapabilityUUID capStack = ((TileEntitySingleItem) tileEntity).getItem()
@@ -155,6 +156,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 							capPlayer.addCloth(uuid);
 							data.activateJourneyCloth(uuid, player.getUniqueID());
 						}
+					}
 				}
 			}
 		}
@@ -194,6 +196,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
+		if (!world.isRemote) {
 			TileEntity tileEntity = world.getTileEntity(pos);
 			if (tileEntity instanceof TileEntitySingleItem) {
 				ItemStack newStack = stack.copy();
@@ -207,12 +210,14 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 				MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(world);
 				data.addJourneyCloth(cap.getUUID());
 				data.setClothPos(cap.getUUID(), world.provider.getDimension(), pos);
+			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 	}
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		if (!world.isRemote) {
 			TileEntity te = world.getTileEntity(pos);
 			if (te instanceof TileEntitySingleItem) {
 				TileEntitySingleItem clothEntity = (TileEntitySingleItem) te;
@@ -223,6 +228,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 			if (te instanceof IInventory) {
 				InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
 			}
+		}
 		super.breakBlock(world, pos, state);
 	}
 
