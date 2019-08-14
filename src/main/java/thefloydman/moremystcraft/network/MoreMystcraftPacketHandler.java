@@ -1,15 +1,14 @@
 package thefloydman.moremystcraft.network;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import thefloydman.moremystcraft.network.packets.PacketPotion;
+import thefloydman.moremystcraft.network.packets.PacketRenderClothActivation;
 import thefloydman.moremystcraft.network.packets.PacketRequestPotionList;
 import thefloydman.moremystcraft.network.packets.PacketSneakPressed;
 import thefloydman.moremystcraft.network.packets.PacketSpawnMaintainerSuit;
@@ -31,6 +30,7 @@ public class MoreMystcraftPacketHandler {
 				Side.SERVER);
 		CHANNEL.registerMessage(PacketSpawnMaintainerSuit.Handler.class, PacketSpawnMaintainerSuit.class, index++,
 				Side.SERVER);
+		CHANNEL.registerMessage(PacketRenderClothActivation.Handler.class, PacketRenderClothActivation.class, index++, Side.CLIENT);
 	}
 
 	public static void sneakPressed(UUID uuid) {
@@ -47,6 +47,10 @@ public class MoreMystcraftPacketHandler {
 
 	public static void spawnMaintainerSuit(BlockPos pos, float yaw) {
 		CHANNEL.sendToServer(new PacketSpawnMaintainerSuit(pos, yaw));
+	}
+
+	public static void renderClothActivation(EntityPlayerMP player, BlockPos pos) {
+		CHANNEL.sendTo(new PacketRenderClothActivation(pos), player);
 	}
 
 }

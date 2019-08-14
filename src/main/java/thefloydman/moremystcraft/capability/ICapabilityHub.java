@@ -42,5 +42,9 @@ public interface ICapabilityHub {
 	public void updateClothInfo(World world);
 	
 	public void removeCloth(UUID uuid);
+	
+	public void setOwner(UUID uuid);
+	
+	public UUID getOwner();
 
 }

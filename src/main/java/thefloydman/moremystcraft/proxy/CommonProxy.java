@@ -29,6 +29,8 @@ import thefloydman.moremystcraft.capability.StorageCapabilityPlayerJourneyCloths
 import thefloydman.moremystcraft.capability.StorageCapabilityPotionDummy;
 import thefloydman.moremystcraft.capability.StorageCapabilityUUID;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyHub;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.Reference;
@@ -48,6 +50,10 @@ public class CommonProxy {
 				Reference.forMoreMystcraft("nexus_controller"));
 		GameRegistry.registerTileEntity(TileEntitySingleItem.class,
 				Reference.forMoreMystcraft("single_item_inventory"));
+		GameRegistry.registerTileEntity(TileEntityJourneyCloth.class,
+				Reference.forMoreMystcraft("journey_cloth"));
+		GameRegistry.registerTileEntity(TileEntityJourneyHub.class,
+				Reference.forMoreMystcraft("journey_hub"));
 	}
 
 	public void init(FMLInitializationEvent event) {

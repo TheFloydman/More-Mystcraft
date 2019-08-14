@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,6 +35,7 @@ import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyHub;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
@@ -96,7 +99,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		int power = 0;
-		if (((boolean) blockState.getProperties().get(POWERED)) == true) {
+		if (((Boolean) blockState.getValue(POWERED)).booleanValue()) {
 			if (side.equals(((EnumFacing) blockState.getProperties().get(FACING)))) {
 				TileEntity tileEntity = blockAccess.getTileEntity(pos);
 				if (tileEntity instanceof TileEntitySingleItem) {
@@ -114,13 +117,12 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 				}
 			}
 		}
-		System.out.println(power);
 		return MathHelper.clamp(power, 0, 15);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySingleItem();
+		return new TileEntityJourneyHub();
 	}
 
 	@Override
@@ -162,8 +164,13 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 			if (tileEntity instanceof TileEntitySingleItem) {
 				ItemStack newStack = stack.copy();
 				newStack.setCount(1);
+				ICapabilityHub cap = newStack.getCapability(ProviderCapabilityHub.HUB, null);
+				if (cap != null) {
+					cap.setOwner(placer.getUniqueID());
+				}
 				TileEntitySingleItem hubEntity = (TileEntitySingleItem) tileEntity;
 				hubEntity.setItem(newStack);
+				world.notifyBlockUpdate(pos, state, state, 3);
 			}
 		}
 		this.notifyNeighbors(world, pos, state);
@@ -190,27 +197,30 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 				if (tileEntity instanceof TileEntitySingleItem) {
 					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
 							.getCapability(ProviderCapabilityHub.HUB, facing);
-					capStack.updateClothInfo(world);
+					if (capStack != null) {
+						if (!capStack.getOwner().equals(player.getUniqueID())) {
+							return false;
+						}
+						capStack.updateClothInfo(world);
+					}
+					world.notifyBlockUpdate(pos, state, state, 3);
+					player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.JOURNEY_HUB.ordinal(), world,
+							pos.getX(), pos.getY(), pos.getZ());
 				}
-				world.notifyBlockUpdate(pos, state, state, 3);
-				player.openGui((Object) MoreMystcraft.instance, MoreMystcraftGUIs.JOURNEY_HUB.ordinal(), world,
-						pos.getX(), pos.getY(), pos.getZ());
 			} else {
 				if (!this.isPowered(state)) {
 					world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(true)));
 					this.notifyNeighbors(world, pos, state);
-					world.scheduleBlockUpdate(pos, this, this.tickRate(world), 0);
 					TileEntity tileEntity = world.getTileEntity(pos);
 					if (tileEntity instanceof TileEntitySingleItem) {
 						ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
 								.getCapability(ProviderCapabilityHub.HUB, facing);
 						if (capStack != null) {
-						capStack.setLastActivatedBy(player.getUniqueID());
-						world.notifyBlockUpdate(pos, state, state, 3);
-						List<UUID> uuids = capStack.getUUIDs();
-						for (UUID id : uuids) {
-							System.out.println(id);
-						}
+							capStack.setLastActivatedBy(player.getUniqueID());
+							if (capStack.getTimeLimit() != 0) {
+								world.scheduleBlockUpdate(pos, this, capStack.getTimeLimit(), 0);
+							}
+							world.notifyBlockUpdate(pos, state, state, 3);
 						}
 					}
 				}
@@ -250,5 +260,54 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		EnumFacing facing = (EnumFacing) state.getProperties().get(FACING);
 		worldIn.notifyNeighborsOfStateChange(pos, this, false);
 		worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
+		if (world.getBlockState(fromPos).getMaterial().isLiquid()) {
+			this.breakBlock(world, pos, state);
+			world.setBlockToAir(pos);
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.NORTH)) {
+			if (!world.getBlockState(pos.south()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.EAST)) {
+			if (!world.getBlockState(pos.west()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.SOUTH)) {
+			if (!world.getBlockState(pos.north()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		} else if (state.getProperties().get(FACING).equals(EnumFacing.WEST)) {
+			if (!world.getBlockState(pos.east()).getMaterial().isSolid()) {
+				this.breakBlock(world, pos, state);
+				world.setBlockToAir(pos);
+			}
+		}
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
+	@Override
+	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+		boolean mod = world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().equals(Material.SNOW)
+				|| world.getBlockState(pos).getMaterial().equals(Material.GRASS);
+		boolean vanilla = super.canPlaceBlockAt(world, pos);
+		return mod && vanilla;
+	}
+	
+	@Override
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		boolean mod = !world.getBlockState(pos.offset(side.getOpposite())).getBlockFaceShape(world, pos, null)
+				.equals(BlockFaceShape.UNDEFINED);
+		boolean vanilla = super.canPlaceBlockOnSide(world, pos, side);
+		return mod && vanilla;
 	}
 }

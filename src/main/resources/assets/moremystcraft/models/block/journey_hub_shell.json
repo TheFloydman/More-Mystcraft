@@ -1,8 +1,8 @@
 {
 	"textures": {
-	    "front": "moremystcraft:blocks/journey_cloth_hand_front",
-		"back": "moremystcraft:blocks/journey_cloth_hand_back",
-		"particle": "moremystcraft:blocks/journey_cloth_hand_front"
+		"front": "moremystcraft:blocks/journey_hub_shell_front",
+		"back": "moremystcraft:blocks/journey_hub_shell_back",
+		"particle": "moremystcraft:blocks/journey_hub_shell_front"
 	},
 	"elements": [
 		{
@@ -10,7 +10,7 @@
 			"to": [16, 16, 15.99],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#front"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#back"}
+                "south": {"uv": [0, 0, 16, 16], "texture": "#back"}
 			}
 		}
 	],

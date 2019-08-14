@@ -45,6 +45,7 @@ public class MoreMystcraftBlocks {
 	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.HAND);
 	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyClothUtils.Type.HAND);
 	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.SHELL);
+	public static final Block JOURNEY_HUB_SHELL = (Block) new BlockJourneyHub(JourneyClothUtils.Type.SHELL);
 
 	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
 			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).TYPE);
@@ -52,6 +53,8 @@ public class MoreMystcraftBlocks {
 			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).TYPE);
 	public static final Item JOURNEY_HUB_HAND_ITEM = new ItemJourneyHub(JOURNEY_HUB_HAND,
 			((BlockJourneyHub) JOURNEY_HUB_HAND).TYPE);
+	public static final Item JOURNEY_HUB_SHELL_ITEM = new ItemJourneyHub(JOURNEY_HUB_SHELL,
+			((BlockJourneyHub) JOURNEY_HUB_SHELL).TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -88,6 +91,7 @@ public class MoreMystcraftBlocks {
 		event.getRegistry().register(JOURNEY_CLOTH_HAND);
 		event.getRegistry().register(JOURNEY_CLOTH_SHELL);
 		event.getRegistry().register(JOURNEY_HUB_HAND);
+		event.getRegistry().register(JOURNEY_HUB_SHELL);
 	}
 
 	@SubscribeEvent
@@ -102,6 +106,7 @@ public class MoreMystcraftBlocks {
 		event.getRegistry().register(JOURNEY_CLOTH_HAND_ITEM);
 		event.getRegistry().register(JOURNEY_CLOTH_SHELL_ITEM);
 		event.getRegistry().register(JOURNEY_HUB_HAND_ITEM);
+		event.getRegistry().register(JOURNEY_HUB_SHELL_ITEM);
 	}
 
 	@SubscribeEvent
@@ -115,6 +120,7 @@ public class MoreMystcraftBlocks {
 		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
 		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
 		registerRender(Item.getItemFromBlock(JOURNEY_HUB_HAND));
+		registerRender(Item.getItemFromBlock(JOURNEY_HUB_SHELL));
 	}
 
 	public static void registerRender(Item item) {

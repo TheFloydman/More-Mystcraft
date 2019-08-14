@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "moremystcraft:journey_cloth_shell",
+    "model": "moremystcraft:journey_hub_shell",
     "uvlock": true
   },
   "variants": {
@@ -11,7 +11,7 @@
       "south": { "y": 180 },
       "west": { "y": 270 } 
     },
-    "animated": {
+    "powered": {
       "true":  {  },
       "false": {  }
     }

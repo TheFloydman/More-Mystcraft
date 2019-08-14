@@ -8,10 +8,13 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -21,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,12 +37,16 @@ import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsColle
 import thefloydman.moremystcraft.capability.ProviderCapabilityUUID;
 import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
 import thefloydman.moremystcraft.item.ItemJourneyHub;
+import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.JourneyClothUtils;
 import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
 public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityProvider {
+
+	public static final PropertyBool ANIMATED = PropertyBool.create("animated");
 
 	public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
 	public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
@@ -56,7 +64,8 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 		this.setUnlocalizedName(Reference.MOD_ID + ".journey_cloth_" + type.name().toLowerCase());
 		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_" + type.name().toLowerCase()));
 		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
-		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ANIMATED,
+				Boolean.valueOf(false)));
 
 	}
 
@@ -73,7 +82,7 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, new IProperty[] { FACING, ANIMATED });
 	}
 
 	@Override
@@ -109,14 +118,16 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
-		boolean mod = (!side.equals(EnumFacing.UP) && !side.equals(EnumFacing.DOWN));
+		boolean mod = !world.getBlockState(pos.offset(side.getOpposite())).getBlockFaceShape(world, pos, null)
+				.equals(BlockFaceShape.UNDEFINED);
 		boolean vanilla = super.canPlaceBlockOnSide(world, pos, side);
 		return mod && vanilla;
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		boolean mod = world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().equals(Material.SNOW);
+		boolean mod = world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().equals(Material.SNOW)
+				|| world.getBlockState(pos).getMaterial().equals(Material.GRASS) && !world.getBlockState(pos).getBlockFaceShape(world, pos, null).equals(BlockFaceShape.UNDEFINED);
 		boolean vanilla = super.canPlaceBlockAt(world, pos);
 		return mod && vanilla;
 	}
@@ -144,7 +155,18 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 					if (player.getHeldItem(hand).getItem() instanceof ItemJourneyHub) {
 						ICapabilityHub capHub = player.getHeldItem(hand).getCapability(ProviderCapabilityHub.HUB,
 								facing);
-						capHub.addUUID(uuid);
+						if (!player.isSneaking()) {
+							if (capHub.getUUIDs().size() < 15) {
+								capHub.addUUID(uuid);
+								player.sendMessage(new TextComponentString("Cloth added to hub."));
+							} else {
+								player.sendMessage(
+										new TextComponentString("Cannot connect more than 15 cloths to a single hub."));
+							}
+						} else {
+							capHub.removeCloth(uuid);
+							player.sendMessage(new TextComponentString("Cloth removed from hub."));
+						}
 					} else {
 						CapabilityJourneyClothsCollected capPlayer = player
 								.getCapability(ProviderCapabilityJourneyClothsCollected.JOURNEY_CLOTH, facing);
@@ -152,9 +174,14 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 						if (player.isSneaking()) {
 							capPlayer.removeCloth(uuid);
 							data.deactivateJourneyCloth(uuid, player.getUniqueID());
+							player.sendMessage(new TextComponentString("Cloth deactivated."));
 						} else {
-							capPlayer.addCloth(uuid);
-							data.activateJourneyCloth(uuid, player.getUniqueID());
+							if (!capPlayer.getActivatedCloths().contains(uuid)) {
+								capPlayer.addCloth(uuid);
+								data.activateJourneyCloth(uuid, player.getUniqueID());
+								player.sendMessage(new TextComponentString("Cloth activated."));
+								MoreMystcraftPacketHandler.renderClothActivation((EntityPlayerMP) player, pos);
+							}
 						}
 					}
 				}
@@ -234,6 +261,12 @@ public class BlockJourneyCloth extends BlockHorizontal implements ITileEntityPro
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntitySingleItem();
+		return new TileEntityJourneyCloth();
 	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
+
 }

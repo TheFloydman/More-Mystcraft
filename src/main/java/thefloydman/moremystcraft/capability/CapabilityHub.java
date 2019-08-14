@@ -22,6 +22,7 @@ public class CapabilityHub implements ICapabilityHub {
 	protected UUID lastActivatedBy = null;
 	Map<UUID, Integer> clothDimensions = new HashMap<UUID, Integer>();
 	Map<UUID, BlockPos> clothPositions = new HashMap<UUID, BlockPos>();
+	protected UUID owner = UUID.randomUUID();
 
 	public void addCloth(UUID uuid, int dim, BlockPos pos) {
 		this.addUUID(uuid);
@@ -132,20 +133,30 @@ public class CapabilityHub implements ICapabilityHub {
 	public void updateClothInfo(World world) {
 		MoreMystcraftSavedDataPerSave data = MoreMystcraftSavedDataPerSave.get(world);
 		NBTTagList clothList = data.getAllJourneyClothInfo();
-		clearAllCloths();
 		for (NBTBase base : clothList) {
 			NBTTagCompound cmp = (NBTTagCompound) base;
 			if (cmp.hasKey("uuid")) {
 				UUID uuid = NBTUtil.getUUIDFromTag(cmp.getCompoundTag("uuid"));
-				addUUID(uuid);
-				if (cmp.hasKey("dim")) {
-					setClothDimension(uuid, cmp.getInteger("dim"));
-				}
-				if (cmp.hasKey("pos")) {
-					setClothPos(uuid, NBTUtil.getPosFromTag(cmp.getCompoundTag("pos")));
+				if (this.idList.contains(uuid)) {
+					if (cmp.hasKey("dim")) {
+						setClothDimension(uuid, cmp.getInteger("dim"));
+					}
+					if (cmp.hasKey("pos")) {
+						setClothPos(uuid, NBTUtil.getPosFromTag(cmp.getCompoundTag("pos")));
+					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public void setOwner(UUID uuid) {
+		this.owner = uuid;
+	}
+
+	@Override
+	public UUID getOwner() {
+		return this.owner;
 	}
 
 }

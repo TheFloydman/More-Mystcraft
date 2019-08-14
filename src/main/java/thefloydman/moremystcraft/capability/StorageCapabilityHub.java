@@ -35,6 +35,7 @@ public class StorageCapabilityHub implements IStorage<ICapabilityHub> {
 			if (instance.getLastActivatedBy() != null) {
 				main.setTag("lastActivatedBy", NBTUtil.createUUIDTag(instance.getLastActivatedBy()));
 			}
+			main.setTag("owner", NBTUtil.createUUIDTag(instance.getOwner()));
 
 		}
 		return main;
@@ -70,6 +71,7 @@ public class StorageCapabilityHub implements IStorage<ICapabilityHub> {
 					instance.setLastActivatedBy(
 							NBTUtil.getUUIDFromTag(((NBTTagCompound) nbt).getCompoundTag("lastActivatedBy")));
 				}
+				instance.setOwner(NBTUtil.getUUIDFromTag(main.getCompoundTag("owner")));
 			}
 		}
 	}

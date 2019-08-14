@@ -1,0 +1,7 @@
+{
+  "journey_cloth_activate": {
+    "category": "block",
+    "subtitle": "subtitle.moremystcraft.journey_cloth_activate",
+    "sounds": [ "moremystcraft:journey_cloth_activate" ]
+  }
+}

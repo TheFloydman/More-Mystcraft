@@ -29,6 +29,7 @@ tile.moremystcraft.nexus_storage.name=Nexus Storage
 tile.moremystcraft.journey_cloth_hand.name=Journey Cloth
 tile.moremystcraft.journey_cloth_shell.name=Journey Cloth
 tile.moremystcraft.journey_hub_hand.name=Journey Hub
+tile.moremystcraft.journey_hub_shell.name=Journey Hub
 
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit
@@ -52,3 +53,6 @@ grammar.moremystcraft.tilt_rare.name=Tilt
 
 // Creative tab names
 itemGroup.moremystcraft=More Mystcraft
+
+// Subtitles
+subtitle.moremystcraft.journey_cloth_activate=[natural and enchanting sounds]

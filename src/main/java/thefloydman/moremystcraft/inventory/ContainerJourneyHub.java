@@ -34,7 +34,8 @@ public class ContainerJourneyHub extends Container {
 				cap.setPerPlayer(!cap.getPerPlayer());
 			} else if (id < -1 && id > -17) {
 				cap.removeCloth(cap.getUUID(MathHelper.abs(id + 2)));
-				cap.setPerPlayer(!cap.getPerPlayer());
+			} else if (id >= 0) {
+				cap.setTimeLimit(id);
 			}
 			player.getEntityWorld().notifyBlockUpdate(this.tileEntity.getPos(),
 					MoreMystcraftBlocks.JOURNEY_HUB_HAND.getDefaultState(),
