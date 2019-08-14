@@ -38,8 +38,8 @@ public class ContainerJourneyHub extends Container {
 				cap.setTimeLimit(id);
 			}
 			player.getEntityWorld().notifyBlockUpdate(this.tileEntity.getPos(),
-					MoreMystcraftBlocks.JOURNEY_HUB_HAND.getDefaultState(),
-					MoreMystcraftBlocks.JOURNEY_HUB_HAND.getDefaultState(), 3);
+					this.tileEntity.getBlockType().getDefaultState(),
+					this.tileEntity.getBlockType().getDefaultState(), 3);
 			return true;
 		}
 		return false;

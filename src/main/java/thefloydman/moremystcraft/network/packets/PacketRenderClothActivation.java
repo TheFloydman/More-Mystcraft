@@ -8,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.MoreMystcraftSoundEvents;
 
@@ -24,6 +26,7 @@ public class PacketRenderClothActivation implements IMessage {
 
 	public static class Handler implements IMessageHandler<PacketRenderClothActivation, IMessage> {
 
+		@SideOnly(Side.CLIENT)
 		@Override
 		public IMessage onMessage(PacketRenderClothActivation msg, MessageContext ctx) {
 			EntityPlayer player = Minecraft.getMinecraft().player;

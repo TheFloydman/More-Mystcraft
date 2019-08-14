@@ -51,10 +51,12 @@ public class TileEntitySingleItem extends TileEntity implements IInventory, ITic
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		SPacketUpdateTileEntity pkt = super.getUpdatePacket();
+		NBTTagCompound nbt = new NBTTagCompound();
 		if (pkt == null) {
 			pkt = new SPacketUpdateTileEntity();
+		} else {
+			nbt = pkt.getNbtCompound();
 		}
-		NBTTagCompound nbt = pkt.getNbtCompound();
 		if (nbt == null) {
 			nbt = new NBTTagCompound();
 		}

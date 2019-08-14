@@ -23,10 +23,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.client.gui.GuiMaintainerSuit;
+import thefloydman.moremystcraft.client.render.RenderJourneyCloth;
 import thefloydman.moremystcraft.client.render.RenderUnstableBookReceptacle;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.tileentity.TileEntityUnstableBookReceptacle;
 import thefloydman.moremystcraft.util.handlers.PotionListHandler;
 
@@ -36,6 +38,7 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 		MinecraftForge.EVENT_BUS.register(new GuiMaintainerSuit());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityJourneyCloth.class, new RenderJourneyCloth());
 	}
 
 	@Override

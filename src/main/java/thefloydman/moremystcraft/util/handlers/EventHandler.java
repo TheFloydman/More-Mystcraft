@@ -58,7 +58,6 @@ public class EventHandler {
 			RenderingRegistry.registerEntityRenderingHandler(EntityMaintainerSuit.class, RenderMaintainerSuit::new);
 			RenderingRegistry.registerEntityRenderingHandler(EntityPotionDummy.class, RenderPotionDummy::new);
 		}
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityJourneyCloth.class, new RenderJourneyCloth());
 	}
 
 	@SubscribeEvent
