@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import thefloydman.moremystcraft.network.packets.PacketPotion;
 import thefloydman.moremystcraft.network.packets.PacketRenderClothActivation;
 import thefloydman.moremystcraft.network.packets.PacketRequestPotionList;
+import thefloydman.moremystcraft.network.packets.PacketSetHubTimer;
 import thefloydman.moremystcraft.network.packets.PacketSneakPressed;
 import thefloydman.moremystcraft.network.packets.PacketSpawnMaintainerSuit;
 import thefloydman.moremystcraft.util.Reference;
@@ -30,7 +31,9 @@ public class MoreMystcraftPacketHandler {
 				Side.SERVER);
 		CHANNEL.registerMessage(PacketSpawnMaintainerSuit.Handler.class, PacketSpawnMaintainerSuit.class, index++,
 				Side.SERVER);
-		CHANNEL.registerMessage(PacketRenderClothActivation.Handler.class, PacketRenderClothActivation.class, index++, Side.CLIENT);
+		CHANNEL.registerMessage(PacketRenderClothActivation.Handler.class, PacketRenderClothActivation.class, index++,
+				Side.CLIENT);
+		CHANNEL.registerMessage(PacketSetHubTimer.Handler.class, PacketSetHubTimer.class, index++, Side.SERVER);
 	}
 
 	public static void sneakPressed(UUID uuid) {
@@ -51,6 +54,10 @@ public class MoreMystcraftPacketHandler {
 
 	public static void renderClothActivation(EntityPlayerMP player, BlockPos pos) {
 		CHANNEL.sendTo(new PacketRenderClothActivation(pos), player);
+	}
+
+	public static void setHubTimer(BlockPos pos, int time) {
+		CHANNEL.sendToServer(new PacketSetHubTimer(pos, time));
 	}
 
 }

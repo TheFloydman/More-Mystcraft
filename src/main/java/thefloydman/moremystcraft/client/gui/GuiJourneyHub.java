@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.inventory.ContainerJourneyHub;
+import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 import thefloydman.moremystcraft.util.Reference;
 
@@ -135,8 +136,8 @@ public class GuiJourneyHub extends GuiContainer {
 					(int) ((this.guiY + 44) / scale), Color.BLACK.getRGB());
 			this.fontRenderer.drawString("Consider cloths", (int) ((this.guiX + 108) / scale),
 					(int) ((this.guiY + 74) / scale), Color.BLACK.getRGB());
-			this.fontRenderer.drawString("activated by anyone", (int) ((this.guiX + 108) / scale), (int) ((this.guiY + 78) / scale),
-					Color.BLACK.getRGB());
+			this.fontRenderer.drawString("activated by anyone", (int) ((this.guiX + 108) / scale),
+					(int) ((this.guiY + 78) / scale), Color.BLACK.getRGB());
 			GlStateManager.popMatrix();
 		}
 	}
@@ -171,7 +172,7 @@ public class GuiJourneyHub extends GuiContainer {
 			}
 			int cloth = mouseOverDeleteCloth(mouseX, mouseY);
 			if (cloth >= 0 && cloth < 15) {
-				this.mc.playerController.sendEnchantPacket(container.windowId, -(cloth + 2));
+				this.mc.playerController.sendEnchantPacket(container.windowId, cloth);
 			}
 		}
 		this.textField.mouseClicked(mouseX, mouseY, mouseButton);
@@ -185,8 +186,8 @@ public class GuiJourneyHub extends GuiContainer {
 			this.textField.textboxKeyTyped(typedChar, keyCode);
 			String txt = this.textField.getText().trim().isEmpty() ? "0" : this.textField.getText().trim();
 			if (MathHelper.abs(Integer.valueOf(txt)) != this.capability.getTimeLimit()) {
-				this.mc.playerController.sendEnchantPacket(container.windowId,
-						MathHelper.abs(Integer.valueOf(txt)));
+				MoreMystcraftPacketHandler.setHubTimer(this.tileEntity.getPos(), MathHelper.abs(Integer.valueOf(txt)));
+				this.capability.setTimeLimit(MathHelper.abs(Integer.valueOf(txt)));
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,6 +31,7 @@ import thefloydman.moremystcraft.util.Reference;
 public class BlockNexusController extends BlockContainer implements ITileEntityProvider {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool IN_USE = PropertyBool.create("in_use");
 
 	public BlockNexusController() {
 		super(Material.IRON);
@@ -39,6 +41,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 		this.setRegistryName(Reference.MOD_ID, "nexus_controller");
 		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
 		this.setLightLevel(0.5f);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(IN_USE, Boolean.valueOf(false)));
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, IN_USE);
 	}
 
 	@Override
@@ -66,9 +69,10 @@ public class BlockNexusController extends BlockContainer implements ITileEntityP
 	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state,
 			final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY,
 			final float hitZ) {
-		if (world.isRemote) {
-			return true;
+		if (world.isRemote || ((Boolean) state.getValue(IN_USE)).booleanValue()) {
+			return false;
 		}
+		world.setBlockState(pos, state.withProperty(IN_USE, Boolean.valueOf(true)));
 		((TileEntityNexusController) world.getTileEntity(pos)).setQuery("");
 		world.notifyBlockUpdate(pos, MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
 				MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 7);

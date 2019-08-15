@@ -2,10 +2,8 @@ package thefloydman.moremystcraft.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.math.MathHelper;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
-import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 
 public class ContainerJourneyHub extends Container {
@@ -30,16 +28,14 @@ public class ContainerJourneyHub extends Container {
 	public boolean enchantItem(EntityPlayer player, int id) {
 		ICapabilityHub cap = this.tileEntity.getItem().getCapability(ProviderCapabilityHub.HUB, null);
 		if (cap != null) {
-			if (id == -1) {
+			if (id < 0) {
 				cap.setPerPlayer(!cap.getPerPlayer());
-			} else if (id < -1 && id > -17) {
-				cap.removeCloth(cap.getUUID(MathHelper.abs(id + 2)));
-			} else if (id >= 0) {
-				cap.setTimeLimit(id);
+			} else if (id < 16) {
+				cap.removeCloth(cap.getUUID(id));
 			}
 			player.getEntityWorld().notifyBlockUpdate(this.tileEntity.getPos(),
-					this.tileEntity.getBlockType().getDefaultState(),
-					this.tileEntity.getBlockType().getDefaultState(), 3);
+					this.tileEntity.getBlockType().getDefaultState(), this.tileEntity.getBlockType().getDefaultState(),
+					3);
 			return true;
 		}
 		return false;

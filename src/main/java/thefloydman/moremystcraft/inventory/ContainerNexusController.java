@@ -16,6 +16,7 @@ import com.xcompwiz.mystcraft.item.LinkItemUtils;
 import com.xcompwiz.mystcraft.linking.DimensionUtils;
 import com.xcompwiz.mystcraft.network.IGuiMessageHandler;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,6 +25,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import thefloydman.moremystcraft.block.BlockNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
 public class ContainerNexusController extends ContainerBase implements IBookContainer, IGuiMessageHandler {
@@ -255,9 +257,14 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	public void onContainerClosed(EntityPlayer playerIn) {
 		super.onContainerClosed(playerIn);
 
-		if (!this.tileEntity.getWorld().isRemote) {
+		World world = this.tileEntity.getWorld();
+		if (!world.isRemote) {
 			this.clearContainer(playerIn, playerIn.world, this.tileEntity);
+			IBlockState state = world.getBlockState(this.tileEntity.getPos());
+			world.setBlockState(this.tileEntity.getPos(),
+					state.withProperty(BlockNexusController.IN_USE, Boolean.valueOf(false)));
 		}
+
 	}
 
 	@Override
