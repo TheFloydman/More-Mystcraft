@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-import thefloydman.moremystcraft.util.JourneyClothUtils.Type;
+import thefloydman.moremystcraft.util.JourneyUtils.PatternType;
 import thefloydman.moremystcraft.util.Reference;
 
 public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
@@ -33,7 +33,7 @@ public class MoreMystcraftSavedDataPerDimension extends WorldSavedData {
 	}
 
 	protected void setupClothCompounds() {
-		for (Type type : Type.values()) {
+		for (PatternType type : PatternType.values()) {
 			journeyClothInfo.setTag(type.name().toLowerCase(), new NBTTagList());
 		}
 	}

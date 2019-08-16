@@ -7,12 +7,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import thefloydman.moremystcraft.capability.ProviderCapabilityUUID;
-import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.Reference;
 
 public class ItemJourneyCloth extends ItemBlock {
 
-	public ItemJourneyCloth(Block block, JourneyClothUtils.Type type) {
+	public ItemJourneyCloth(Block block, JourneyUtils.PatternType type) {
 		super(block);
 		this.setRegistryName(Reference.forMoreMystcraft("journey_cloth_" + type.name().toLowerCase()));
 	}

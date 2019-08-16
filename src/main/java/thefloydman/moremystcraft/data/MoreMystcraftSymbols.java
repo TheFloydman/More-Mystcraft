@@ -2,12 +2,27 @@ package thefloydman.moremystcraft.data;
 
 import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.mystcraft.world.AgeController;
 
-import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
-import thefloydman.moremystcraft.symbol.modifiers.*;
-import thefloydman.moremystcraft.symbol.symbols.*;
+import thefloydman.moremystcraft.symbol.modifiers.SymbolCloudHeight;
+import thefloydman.moremystcraft.symbol.modifiers.SymbolSize;
+import thefloydman.moremystcraft.symbol.modifiers.SymbolSunColor;
+import thefloydman.moremystcraft.symbol.modifiers.SymbolTilt;
+import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerBoxes;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerHorizontalBands;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerIsland;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerMaze;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerNormal;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerRings;
+import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerVerticalBands;
+import thefloydman.moremystcraft.symbol.symbols.SymbolGiganticTrees;
+import thefloydman.moremystcraft.symbol.symbols.SymbolLackingOres;
+import thefloydman.moremystcraft.symbol.symbols.SymbolNoLibraries;
+import thefloydman.moremystcraft.symbol.symbols.SymbolOceanMonument;
+import thefloydman.moremystcraft.symbol.symbols.SymbolPyramids;
+import thefloydman.moremystcraft.symbol.symbols.SymbolTerrainGenMaze;
+import thefloydman.moremystcraft.symbol.symbols.SymbolTintedSun;
 import thefloydman.moremystcraft.util.Reference;
 
 public class MoreMystcraftSymbols {
@@ -31,9 +46,8 @@ public class MoreMystcraftSymbols {
 				new String[] { "Constraint", "Nature", "Weave", "Island" });
 		registerSymbol(new SymbolBiomeControllerMaze(Reference.forMoreMystcraft("biocon_maze")), 2,
 				new String[] { "Constraint", "Nature", "Weave", "Maze" });
-		registerSymbol(new SymbolSunTinted(Reference.forMoreMystcraft("sun_tinted")), 2,
+		registerSymbol(new SymbolTintedSun(Reference.forMoreMystcraft("sun_tinted")), 2,
 				new String[] { "Celestial", "Image", "Stimulate", "Color" });
-		// Register size modifiers.
 		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_tiny"), 0.25, "Tiny"), 2, "Control", "Growth",
 				"Form", "Tiny");
 		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_small"), 0.5, "Small"), 1, "Control", "Growth",
@@ -44,7 +58,6 @@ public class MoreMystcraftSymbols {
 				"Form", "Large");
 		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_huge"), 3, "Huge"), 2, "Control", "Growth",
 				"Form", "Huge");
-		// Register tilt modifiers.
 		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_zero"), 0.0f, "No"), 0, "Transform", "Motion",
 				"Tilt", "Zero");
 		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_half"), 45.0f, "Half"), 2, "Transform", "Motion",
@@ -53,7 +66,6 @@ public class MoreMystcraftSymbols {
 				"Tilt", "Full");
 		registerSymbol(new SymbolOceanMonument(Reference.forMoreMystcraft("ocean_monument")), 3, "Civilization",
 				"Machine", "Power", "Entropy");
-		// Register cloud height modifiers.
 		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4,
 				"Transform", "Motion", "Tilt", "Zero");
 		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 70.0f, "Half"), 4,
@@ -70,6 +82,8 @@ public class MoreMystcraftSymbols {
 				new String[] { "Civilization", "Contradict", "Inhibit", "Void" });
 		registerSymbol(new SymbolLackingOres(Reference.forMoreMystcraft("lacking_ores")), 3,
 				new String[] { "Nature", "Possibility", "Form", "Void" });
+		registerSymbol(new SymbolSunColor(Reference.forMoreMystcraft("sun_color")), 1,
+				new String[] { "Celestial", "Image", "Color", "Change" });
 	}
 
 	public static void registerSymbol(MoreMystcraftSymbolBase symbol, Integer cardrank, String... poem) {

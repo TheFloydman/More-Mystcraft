@@ -19,7 +19,6 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.client.render.RenderJourneyCloth;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -39,7 +37,6 @@ import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
-import thefloydman.moremystcraft.tileentity.TileEntityJourneyCloth;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber

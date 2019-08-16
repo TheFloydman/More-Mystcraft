@@ -33,6 +33,7 @@ public class SymbolSize extends MoreMystcraftSymbolBase
         controller.setModifier("size", value);
     }
     
+    @Override
     public String generateLocalizedName() {
         return this.DISPLAY + " Size";
     }

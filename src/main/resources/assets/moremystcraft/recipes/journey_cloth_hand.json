@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "moremystcraft:journey_cloth_hand",
+        "count": 1
+    },
+    "pattern": [
+        "sss",
+        "shs",
+        "sss"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "item": "minecraft:string",
+            "data": 0
+        },
+        "h": {
+            "item": "minecraft:rabbit_hide",
+            "data": 0
+        }
+    }
+}

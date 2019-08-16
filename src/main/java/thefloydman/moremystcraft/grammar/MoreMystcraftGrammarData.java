@@ -16,6 +16,7 @@ public class MoreMystcraftGrammarData
     public static final ResourceLocation TILT_COMMON_SEQ;
     public static final ResourceLocation TILT_UNCOMMON_SEQ;
     public static final ResourceLocation TILT_RARE_SEQ;
+    public static final ResourceLocation SUN_COLOR;
     
     static {
         SIZE_SEQ = Reference.forMoreMystcraft("size");
@@ -30,5 +31,7 @@ public class MoreMystcraftGrammarData
         TILT_COMMON_SEQ = Reference.forMoreMystcraft("tilt_common_seq");
         TILT_UNCOMMON_SEQ = Reference.forMoreMystcraft("tilt_uncommon_seq");
         TILT_RARE_SEQ = Reference.forMoreMystcraft("tilt_rare_seq");
+        
+        SUN_COLOR = Reference.forMoreMystcraft("sun_color");
     }
 }

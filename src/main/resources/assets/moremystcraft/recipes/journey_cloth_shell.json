@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "moremystcraft:journey_cloth_shell",
+        "count": 1
+    },
+    "pattern": [
+        "sss",
+        "scs",
+        "sss"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "s": {
+            "item": "minecraft:string",
+            "data": 0
+        },
+        "c": {
+            "item": "minecraft:clay_ball",
+            "data": 0
+        }
+    }
+}

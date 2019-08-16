@@ -30,7 +30,7 @@ import thefloydman.moremystcraft.block.BlockUnstablePortal;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.item.ItemJourneyCloth;
 import thefloydman.moremystcraft.item.ItemJourneyHub;
-import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -42,19 +42,19 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
-	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.HAND);
-	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyClothUtils.Type.HAND);
-	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyClothUtils.Type.SHELL);
-	public static final Block JOURNEY_HUB_SHELL = (Block) new BlockJourneyHub(JourneyClothUtils.Type.SHELL);
+	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.HAND);
+	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyUtils.PatternType.HAND);
+	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.SHELL);
+	public static final Block JOURNEY_HUB_SHELL = (Block) new BlockJourneyHub(JourneyUtils.PatternType.SHELL);
 
 	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
-			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).TYPE);
+			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).PATTERN_TYPE);
 	public static final Item JOURNEY_CLOTH_SHELL_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_SHELL,
-			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).TYPE);
+			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).PATTERN_TYPE);
 	public static final Item JOURNEY_HUB_HAND_ITEM = new ItemJourneyHub(JOURNEY_HUB_HAND,
-			((BlockJourneyHub) JOURNEY_HUB_HAND).TYPE);
+			((BlockJourneyHub) JOURNEY_HUB_HAND).PATTERN_TYPE);
 	public static final Item JOURNEY_HUB_SHELL_ITEM = new ItemJourneyHub(JOURNEY_HUB_SHELL,
-			((BlockJourneyHub) JOURNEY_HUB_SHELL).TYPE);
+			((BlockJourneyHub) JOURNEY_HUB_SHELL).PATTERN_TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -82,45 +82,47 @@ public class MoreMystcraftBlocks {
 
 	@SubscribeEvent
 	public static void registerBlock(RegistryEvent.Register<Block> event) {
-		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
+		if (new MoreMystcraftConfig().getTrafficConeEnabled()) {
 			event.getRegistry().register(TRAFFIC_CONE);
 		}
-		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+		if (new MoreMystcraftConfig().getNexusControllerEnabled()) {
 			event.getRegistry().register(NEXUS_CONTROLLER);
 		}
-		event.getRegistry().register(JOURNEY_CLOTH_HAND);
-		event.getRegistry().register(JOURNEY_CLOTH_SHELL);
-		event.getRegistry().register(JOURNEY_HUB_HAND);
-		event.getRegistry().register(JOURNEY_HUB_SHELL);
+		if (new MoreMystcraftConfig().getJourneysEnabled()) {
+			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND, JOURNEY_CLOTH_SHELL, JOURNEY_HUB_HAND,
+					JOURNEY_HUB_SHELL);
+		}
 	}
 
 	@SubscribeEvent
 	public static void registerItemBlock(RegistryEvent.Register<Item> event) {
-		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
+		if (new MoreMystcraftConfig().getTrafficConeEnabled()) {
 			event.getRegistry().register(new ItemBlock(TRAFFIC_CONE).setRegistryName(TRAFFIC_CONE.getRegistryName()));
 		}
-		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+		if (new MoreMystcraftConfig().getNexusControllerEnabled()) {
 			event.getRegistry()
 					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 		}
-		event.getRegistry().register(JOURNEY_CLOTH_HAND_ITEM);
-		event.getRegistry().register(JOURNEY_CLOTH_SHELL_ITEM);
-		event.getRegistry().register(JOURNEY_HUB_HAND_ITEM);
-		event.getRegistry().register(JOURNEY_HUB_SHELL_ITEM);
+		if (new MoreMystcraftConfig().getJourneysEnabled()) {
+			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND_ITEM, JOURNEY_CLOTH_SHELL_ITEM, JOURNEY_HUB_HAND_ITEM,
+					JOURNEY_HUB_SHELL_ITEM);
+		}
 	}
 
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
-		if (new MoreMystcraftConfig().getTrafficConeEnabled() == true) {
+		if (new MoreMystcraftConfig().getTrafficConeEnabled()) {
 			registerRender(Item.getItemFromBlock(TRAFFIC_CONE));
 		}
-		if (new MoreMystcraftConfig().getNexusControllerEnabled() == true) {
+		if (new MoreMystcraftConfig().getNexusControllerEnabled()) {
 			registerRender(Item.getItemFromBlock(NEXUS_CONTROLLER));
 		}
-		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
-		registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
-		registerRender(Item.getItemFromBlock(JOURNEY_HUB_HAND));
-		registerRender(Item.getItemFromBlock(JOURNEY_HUB_SHELL));
+		if (new MoreMystcraftConfig().getJourneysEnabled()) {
+			registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
+			registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
+			registerRender(Item.getItemFromBlock(JOURNEY_HUB_HAND));
+			registerRender(Item.getItemFromBlock(JOURNEY_HUB_SHELL));
+		}
 	}
 
 	public static void registerRender(Item item) {
@@ -135,11 +137,11 @@ public class MoreMystcraftBlocks {
 	}
 
 	public static void registerMystcraftModels() {
-		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
+		if (new MoreMystcraftConfig().getLockedLecternEnabled()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LOCKED_LECTERN), 0,
 					mrlItemBlockModel("blocklectern"));
 		}
-		if (new MoreMystcraftConfig().getLockedBookstandEnabled() == true) {
+		if (new MoreMystcraftConfig().getLockedBookstandEnabled()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(LOCKED_BOOKSTAND), 0,
 					mrlItemBlockModel("blockbookstand"));
 		}

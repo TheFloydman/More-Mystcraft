@@ -14,6 +14,7 @@ moremystcraft.symbol.terrain_maze.name=Maze World
 moremystcraft.symbol.gigantic_trees.name=Gigantic Trees
 moremystcraft.symbol.no_libraries.name=No Libraries
 moremystcraft.symbol.lacking_ores.name=Lacking Ores
+moremystcraft.symbol.sun_color.name=Sun Color
 
 
 // Block names
@@ -40,8 +41,18 @@ entity.moremystcraft.maintainer_suit.name=Maintainer Suit
 // Container names
 container.moremystcraft.nexus_controller.name=Nexus Controller
 
+// Creative tab names
+itemGroup.moremystcraft=More Mystcraft
+
+// Subtitles
+subtitle.moremystcraft.journey_cloth_activate=[natural and enchanting sounds]
+
 // Messages
-message.moremystcraft.nexus_place_error.desc="Error: Cannot connect two Nexus Controllers."
+message.moremystcraft.journey_cloth_added_to_hub.desc=Cloth added to hub.
+message.moremystcraft.journey_hub_full.desc=Cannot connect more than 15 cloths to a single hub.
+message.moremystcraft.journey_cloth_removed_from_hub.desc=Cloth removed from hub.
+message.moremystcraft.journey_cloth_activated.desc=Cloth activated.
+message.moremystcraft.journey_cloth_deactivated.desc=Cloth deactivated.
 
 // Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size
@@ -50,9 +61,3 @@ grammar.moremystcraft.size_rare.name=Size
 grammar.moremystcraft.tilt_common.name=Tilt
 grammar.moremystcraft.tilt_uncommon.name=Tilt
 grammar.moremystcraft.tilt_rare.name=Tilt
-
-// Creative tab names
-itemGroup.moremystcraft=More Mystcraft
-
-// Subtitles
-subtitle.moremystcraft.journey_cloth_activate=[natural and enchanting sounds]

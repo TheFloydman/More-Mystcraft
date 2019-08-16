@@ -8,8 +8,9 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import thefloydman.moremystcraft.network.packets.PacketPotion;
-import thefloydman.moremystcraft.network.packets.PacketRenderClothActivation;
+import thefloydman.moremystcraft.network.packets.PacketRenderJourneyActivation;
 import thefloydman.moremystcraft.network.packets.PacketRequestPotionList;
+import thefloydman.moremystcraft.network.packets.PacketSendTranslatedMessage;
 import thefloydman.moremystcraft.network.packets.PacketSetHubTimer;
 import thefloydman.moremystcraft.network.packets.PacketSneakPressed;
 import thefloydman.moremystcraft.network.packets.PacketSpawnMaintainerSuit;
@@ -31,9 +32,11 @@ public class MoreMystcraftPacketHandler {
 				Side.SERVER);
 		CHANNEL.registerMessage(PacketSpawnMaintainerSuit.Handler.class, PacketSpawnMaintainerSuit.class, index++,
 				Side.SERVER);
-		CHANNEL.registerMessage(PacketRenderClothActivation.Handler.class, PacketRenderClothActivation.class, index++,
-				Side.CLIENT);
+		CHANNEL.registerMessage(PacketRenderJourneyActivation.Handler.class, PacketRenderJourneyActivation.class,
+				index++, Side.CLIENT);
 		CHANNEL.registerMessage(PacketSetHubTimer.Handler.class, PacketSetHubTimer.class, index++, Side.SERVER);
+		CHANNEL.registerMessage(PacketSendTranslatedMessage.Handler.class, PacketSendTranslatedMessage.class, index++,
+				Side.CLIENT);
 	}
 
 	public static void sneakPressed(UUID uuid) {
@@ -52,12 +55,16 @@ public class MoreMystcraftPacketHandler {
 		CHANNEL.sendToServer(new PacketSpawnMaintainerSuit(pos, yaw));
 	}
 
-	public static void renderClothActivation(EntityPlayerMP player, BlockPos pos) {
-		CHANNEL.sendTo(new PacketRenderClothActivation(pos), player);
+	public static void renderJourneyActivation(EntityPlayerMP player, BlockPos pos) {
+		CHANNEL.sendTo(new PacketRenderJourneyActivation(pos), player);
 	}
 
 	public static void setHubTimer(BlockPos pos, int time) {
 		CHANNEL.sendToServer(new PacketSetHubTimer(pos, time));
+	}
+
+	public static void sendTranslatedMessage(EntityPlayerMP player, String key) {
+		CHANNEL.sendTo(new PacketSendTranslatedMessage(key), player);
 	}
 
 }

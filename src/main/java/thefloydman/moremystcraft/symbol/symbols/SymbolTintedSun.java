@@ -28,8 +28,8 @@ import thefloydman.moremystcraft.symbol.MoreMystcraftSunsetRenderer;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.util.Reference;
 
-public class SymbolSunTinted extends MoreMystcraftSymbolBase {
-	public SymbolSunTinted(final ResourceLocation identifier) {
+public class SymbolTintedSun extends MoreMystcraftSymbolBase {
+	public SymbolTintedSun(final ResourceLocation identifier) {
 		super(identifier);
 	}
 
@@ -39,11 +39,11 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 		final Number angle = controller.popModifier("angle").asNumber();
 		final Number phase = controller.popModifier("phase").asNumber();
 		final ColorGradient sunset = controller.popModifier("sunset").asGradient();
-		final Color color = controller.popModifier("color").asColor();
+		final ColorGradient sunGradient = controller.popModifier("sun_color").asGradient();
 		final Number size = controller.popModifier("size").asNumber();
 		final Number tilt = controller.popModifier("tilt").asNumber();
 		controller.registerInterface(
-				new CelestialObject(controller, seed, period, angle, phase, sunset, color, size, tilt));
+				new CelestialObject(controller, seed, period, angle, phase, sunset, sunGradient, size, tilt));
 	}
 
 	@Override
@@ -56,13 +56,13 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 		private long period;
 		private float angle;
 		private float phase;
-		private Color color;
+		private ColorGradient sunColor;
 		private double size;
 		private float tilt;
 
 		CelestialObject(final AgeDirector controller, final long seed, Number period, Number angle, Number phase,
-				final ColorGradient gradient, Color color, Number size, Number tilt) {
-			super(controller, gradient);
+				final ColorGradient sunsetGradient, ColorGradient sunGradient, Number size, Number tilt) {
+			super(controller, sunsetGradient);
 			this.rand = new Random(seed);
 			if (period == null) {
 				period = 0.4 * this.rand.nextDouble() + 0.8;
@@ -82,10 +82,12 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 				}
 			}
 			this.phase = phase.floatValue() - 0.5f;
-			if (color == null) {
-				color = new Color(255f, 245f, 119f);
+			if (sunGradient == null || sunGradient.getColorCount() < 1) {
+				ColorGradient grad = new ColorGradient();
+				grad.pushColor(new Color(this.rand.nextFloat(), this.rand.nextFloat(), this.rand.nextFloat()));
+				sunGradient = grad;
 			}
-			this.color = color;
+			this.sunColor = sunGradient;
 			if (size != null) {
 				this.size = size.doubleValue();
 			} else {
@@ -115,7 +117,11 @@ public class SymbolSunTinted extends MoreMystcraftSymbolBase {
 					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.pushMatrix();
 			final float f16 = 1.0F - world.getRainStrength(partial);
-			GlStateManager.color(this.color.r, this.color.g, this.color.b, f16);
+			Color color = new Color(255.0F / 255.0F, 245.0F / 255.0F, 119.0F / 255.0F);
+			if (this.sunColor.getColorCount() > 0) {
+				color = this.sunColor.getColor(this.controller.getTime() / 12000.0f);
+			}
+			GlStateManager.color(color.r, color.g, color.b, f16);
 
 			GlStateManager.rotate(this.angle + 90f, 0f, 1f, 0f);
 			GlStateManager.rotate(this.tilt, 1f, 0f, 0f);

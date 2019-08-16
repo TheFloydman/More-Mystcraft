@@ -16,6 +16,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -35,60 +36,28 @@ import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
 import thefloydman.moremystcraft.data.worldsaveddata.MoreMystcraftSavedDataPerSave;
 import thefloydman.moremystcraft.gui.MoreMystcraftGUIs;
+import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.tileentity.TileEntityJourney;
 import thefloydman.moremystcraft.tileentity.TileEntityJourneyHub;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
-import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.MoreMystcraftCreativeTabs;
 import thefloydman.moremystcraft.util.Reference;
 
-public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvider {
+public class BlockJourneyHub extends BlockJourneyBase {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.0D);
-	public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 1.0D, 1.0D);
-	public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0D, 0.0D, 1.0D, 1.0D, 1.0D, 1.0D);
-	public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(1.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+	public BlockJourneyHub(JourneyUtils.PatternType type) {
 
-	public final JourneyClothUtils.Type TYPE;
-
-	public BlockJourneyHub(JourneyClothUtils.Type type) {
-
-		super(Material.IRON);
-		this.TYPE = type;
-		this.setHardness(5.0f);
-		this.setSoundType(SoundType.METAL);
+		super(type, Material.IRON);
 		this.setUnlocalizedName(Reference.MOD_ID + ".journey_hub_" + type.name().toLowerCase());
 		this.setRegistryName(Reference.forMoreMystcraft("journey_hub_" + type.name().toLowerCase()));
-		this.setCreativeTab(MoreMystcraftCreativeTabs.MORE_MYSTCRAFT);
+		this.setHardness(5.0f);
+		this.setSoundType(SoundType.METAL);
 		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED,
 				Boolean.valueOf(false)));
 
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		switch (((EnumFacing) state.getProperties().get(FACING)).getHorizontalIndex()) {
-		case 0:
-			return AABB_NORTH;
-		case 1:
-			return AABB_EAST;
-		case 2:
-			return AABB_SOUTH;
-		case 3:
-			return AABB_WEST;
-		}
-		return AABB_NORTH;
 	}
 
 	@Override
@@ -100,7 +69,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		int power = 0;
 		if (((Boolean) blockState.getValue(POWERED)).booleanValue()) {
-			if (side.equals(((EnumFacing) blockState.getProperties().get(FACING)))) {
+			if (side.equals(((EnumFacing) blockState.getValue(FACING)))) {
 				TileEntity tileEntity = blockAccess.getTileEntity(pos);
 				if (tileEntity instanceof TileEntitySingleItem) {
 					ICapabilityHub capStack = ((TileEntitySingleItem) tileEntity).getItem()
@@ -122,38 +91,12 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityJourneyHub();
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
-
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getHorizontalIndex();
+		return new TileEntityJourney(JourneyUtils.BlockType.HUB);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] { FACING, POWERED });
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getBlockLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		if (facing.equals(EnumFacing.UP) || facing.equals(EnumFacing.DOWN)) {
-			return this.getDefaultState();
-		}
-		return this.getDefaultState().withProperty(FACING, facing).withProperty(POWERED, Boolean.valueOf(false));
 	}
 
 	@Override
@@ -175,16 +118,6 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 		}
 		this.notifyNeighbors(world, pos, state);
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof IInventory) {
-			InventoryHelper.dropInventoryItems(world, pos, (IInventory) te);
-		}
-		this.notifyNeighbors(world, pos, state);
-		super.breakBlock(world, pos.west(), state);
 	}
 
 	@Override
@@ -217,6 +150,7 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 								.getCapability(ProviderCapabilityHub.HUB, facing);
 						if (capStack != null) {
 							capStack.setLastActivatedBy(player.getUniqueID());
+								MoreMystcraftPacketHandler.renderJourneyActivation((EntityPlayerMP) player, pos);
 							if (capStack.getTimeLimit() != 0) {
 								world.scheduleBlockUpdate(pos, this, capStack.getTimeLimit(), 0);
 							}
@@ -232,13 +166,13 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	}
 
 	public boolean isPowered(IBlockState state) {
-		return state.getProperties().get(POWERED).equals(Boolean.valueOf(true));
+		return ((Boolean) state.getValue(POWERED)).booleanValue();
 	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (!world.isRemote) {
-			if (((Boolean) state.getValue(POWERED)).booleanValue()) {
+			if (this.isPowered(state)) {
 				world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(false)));
 				this.notifyNeighbors(world, pos, state);
 				world.markBlockRangeForRenderUpdate(pos, pos);
@@ -247,67 +181,8 @@ public class BlockJourneyHub extends BlockHorizontal implements ITileEntityProvi
 	}
 
 	@Override
-	public int tickRate(World worldIn) {
-		return 100;
-	}
-
-	@Override
 	public boolean shouldCheckWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
 		return true;
 	}
-
-	private void notifyNeighbors(World worldIn, BlockPos pos, IBlockState state) {
-		EnumFacing facing = (EnumFacing) state.getProperties().get(FACING);
-		worldIn.notifyNeighborsOfStateChange(pos, this, false);
-		worldIn.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this, false);
-	}
-
-	@Override
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (world.getBlockState(fromPos).getMaterial().isLiquid()) {
-			this.breakBlock(world, pos, state);
-			world.setBlockToAir(pos);
-		} else if (state.getProperties().get(FACING).equals(EnumFacing.NORTH)) {
-			if (!world.getBlockState(pos.south()).getMaterial().isSolid()) {
-				this.breakBlock(world, pos, state);
-				world.setBlockToAir(pos);
-			}
-		} else if (state.getProperties().get(FACING).equals(EnumFacing.EAST)) {
-			if (!world.getBlockState(pos.west()).getMaterial().isSolid()) {
-				this.breakBlock(world, pos, state);
-				world.setBlockToAir(pos);
-			}
-		} else if (state.getProperties().get(FACING).equals(EnumFacing.SOUTH)) {
-			if (!world.getBlockState(pos.north()).getMaterial().isSolid()) {
-				this.breakBlock(world, pos, state);
-				world.setBlockToAir(pos);
-			}
-		} else if (state.getProperties().get(FACING).equals(EnumFacing.WEST)) {
-			if (!world.getBlockState(pos.east()).getMaterial().isSolid()) {
-				this.breakBlock(world, pos, state);
-				world.setBlockToAir(pos);
-			}
-		}
-	}
-
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		boolean mod = world.isAirBlock(pos) || world.getBlockState(pos).getMaterial().equals(Material.SNOW)
-				|| world.getBlockState(pos).getMaterial().equals(Material.GRASS);
-		boolean vanilla = super.canPlaceBlockAt(world, pos);
-		return mod && vanilla;
-	}
 	
-	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
-		boolean mod = !world.getBlockState(pos.offset(side.getOpposite())).getBlockFaceShape(world, pos, null)
-				.equals(BlockFaceShape.UNDEFINED);
-		boolean vanilla = super.canPlaceBlockOnSide(world, pos, side);
-		return mod && vanilla;
-	}
 }

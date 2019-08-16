@@ -84,7 +84,7 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Traffic cone recipe enabled")
 		public boolean trafficConeRecipeEnabled = true;
-		
+
 		@RequiresMcRestart
 		@Name("Nexus controller enabled")
 		public boolean nexusControllerEnabled = true;
@@ -92,6 +92,14 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Nexus controller recipe enabled")
 		public boolean nexusControllerRecipeEnabled = true;
+
+		@RequiresMcRestart
+		@Name("Journey cloths/hubs enabled")
+		public boolean journeysEnabled = true;
+
+		@RequiresMcRestart
+		@Name("Journey cloths/hubs recipes enabled")
+		public boolean journeyRecipesEnabled = true;
 
 	}
 
@@ -133,11 +141,11 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Mystcraft's book binder recipe enabled")
 		public boolean bookBinderRecipeEnabled = true;
-		
+
 		@RequiresMcRestart
 		@Name("Maintainer suit enabled")
 		public boolean maintainerSuitEnabled = true;
-		
+
 		@RequiresMcRestart
 		@Name("Maintainer suit recipe enabled")
 		public boolean maintainerSuitRecipeEnabled = true;
@@ -179,7 +187,7 @@ public class MoreMystcraftConfig {
 	public static boolean getTrafficConeRecipeEnabled() {
 		return catAddedBlocks.trafficConeRecipeEnabled;
 	}
-	
+
 	public static boolean getNexusControllerEnabled() {
 		return catAddedBlocks.nexusControllerEnabled;
 	}
@@ -227,13 +235,21 @@ public class MoreMystcraftConfig {
 	public static int getGreatLibraryPercentage() {
 		return catLibraries.greatLibrariesPercentage;
 	}
-	
+
 	public static boolean getMaintainerSuitEnabled() {
 		return catOther.maintainerSuitEnabled;
 	}
-	
+
 	public static boolean getMaintainerSuitRecipeEnabled() {
 		return catOther.maintainerSuitRecipeEnabled;
+	}
+
+	public static boolean getJourneysEnabled() {
+		return catAddedBlocks.journeysEnabled;
+	}
+
+	public static boolean getJourneyRecipesEnabled() {
+		return catAddedBlocks.journeyRecipesEnabled;
 	}
 
 	@Mod.EventBusSubscriber

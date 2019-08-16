@@ -14,12 +14,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.block.BlockJourneyCloth;
 import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
-import thefloydman.moremystcraft.util.JourneyClothUtils;
+import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.Reference;
 
 public class ItemJourneyHub extends ItemBlock {
 
-	public ItemJourneyHub(Block block, JourneyClothUtils.Type type) {
+	public ItemJourneyHub(Block block, JourneyUtils.PatternType type) {
 		super(block);
 		this.setRegistryName(Reference.forMoreMystcraft("journey_hub_" + type.name().toLowerCase()));
 	}

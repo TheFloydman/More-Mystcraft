@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "moremystcraft:journey_hub_hand",
+        "count": 1
+    },
+    "pattern": [
+        "rrr",
+        "rcr",
+        "rrr"
+    ],
+    "type": "forge:ore_shaped",
+    "key": {
+        "r": {
+            "item": "minecraft:redstone",
+            "data": 0
+        },
+        "c": {
+            "item": "moremystcraft:journey_cloth_hand",
+            "data": 0
+        }
+    }
+}

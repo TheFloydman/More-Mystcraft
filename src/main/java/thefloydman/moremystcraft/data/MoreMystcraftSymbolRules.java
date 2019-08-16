@@ -2,16 +2,14 @@ package thefloydman.moremystcraft.data;
 
 import java.util.ArrayList;
 
-import net.minecraft.util.ResourceLocation;
-
-import com.xcompwiz.mystcraft.symbol.SymbolManager;
-import com.xcompwiz.util.CollectionUtils;
-import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
-import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.api.grammar.GrammarData;
 import com.xcompwiz.mystcraft.api.symbol.IAgeSymbol;
-import com.xcompwiz.mystcraft.data.GrammarRules;
+import com.xcompwiz.mystcraft.grammar.GrammarGenerator;
+import com.xcompwiz.mystcraft.logging.LoggerUtils;
+import com.xcompwiz.mystcraft.symbol.SymbolManager;
+import com.xcompwiz.util.CollectionUtils;
 
+import net.minecraft.util.ResourceLocation;
 import thefloydman.moremystcraft.grammar.MoreMystcraftGrammarData;
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 import thefloydman.moremystcraft.util.Reference;
@@ -26,10 +24,12 @@ public class MoreMystcraftSymbolRules {
 				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_rings")));
 		addRuleInternal("biocon_boxes", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_boxes")));
-		addRuleInternal("biocon_bands_hor", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
-				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_hor")));
-		addRuleInternal("biocon_bands_ver", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
-				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_ver")));
+		addRuleInternal("biocon_bands_hor",
+				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME,
+						MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_hor")));
+		addRuleInternal("biocon_bands_ver",
+				buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME,
+						MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_bands_ver")));
 		addRuleInternal("biocon_normal",
 				buildRule(1, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST, GrammarData.BIOME, GrammarData.BIOME,
 						MoreMystcraftGrammarData.SIZE_BASIC, Reference.forMoreMystcraft("biocon_normal")));
@@ -38,7 +38,7 @@ public class MoreMystcraftSymbolRules {
 		addRuleInternal("biocon_maze", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME, GrammarData.BIOME,
 				MoreMystcraftGrammarData.SIZE_BASIC, Reference.forMoreMystcraft("biocon_maze")));
 		addRuleInternal("sun_tinted",
-				buildRule(1, GrammarData.SUN, GrammarData.SUNSET, GrammarData.COLOR_SEQ,
+				buildRule(1, GrammarData.SUN, GrammarData.SUNSET, MoreMystcraftGrammarData.SUN_COLOR,
 						MoreMystcraftGrammarRules.SIZE_SUN, GrammarData.PERIOD_SEQ, GrammarData.ANGLE_SEQ,
 						GrammarData.PHASE_SEQ, MoreMystcraftGrammarRules.TILT_SUN_SEQ,
 						Reference.forMoreMystcraft("sun_tinted")));
@@ -66,6 +66,7 @@ public class MoreMystcraftSymbolRules {
 				buildRule(2, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("gigantic_trees")));
 		addRuleInternal("lacking_ores",
 				buildRule(3, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("lacking_ores")));
+		addRuleInternal("sun_color", buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, MoreMystcraftGrammarRules.SUN_COLOR_BASIC, GrammarData.GRADIENT_SEQ, Reference.forMoreMystcraft("sun_color")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

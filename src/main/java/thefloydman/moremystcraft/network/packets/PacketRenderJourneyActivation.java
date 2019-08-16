@@ -10,29 +10,33 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
+import thefloydman.moremystcraft.tileentity.TileEntityJourney;
+import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.MoreMystcraftSoundEvents;
 
-public class PacketRenderClothActivation implements IMessage {
+public class PacketRenderJourneyActivation implements IMessage {
 
 	BlockPos blockPos;
 
-	public PacketRenderClothActivation(BlockPos pos) {
+	public PacketRenderJourneyActivation(BlockPos pos) {
 		this.blockPos = pos;
 	}
 
-	public PacketRenderClothActivation() {
+	public PacketRenderJourneyActivation() {
 	}
 
-	public static class Handler implements IMessageHandler<PacketRenderClothActivation, IMessage> {
+	public static class Handler implements IMessageHandler<PacketRenderJourneyActivation, IMessage> {
 
 		@SideOnly(Side.CLIENT)
 		@Override
-		public IMessage onMessage(PacketRenderClothActivation msg, MessageContext ctx) {
+		public IMessage onMessage(PacketRenderJourneyActivation msg, MessageContext ctx) {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 			World world = player.world;
-			((TileEntitySingleItem) world.getTileEntity(msg.blockPos)).setTimer(0);
-			player.playSound(MoreMystcraftSoundEvents.JOURNEY_CLOTH_ACTIVATE, 1.0F, 1.0F);
+			TileEntityJourney te = (TileEntityJourney) world.getTileEntity(msg.blockPos);
+			te.setTimer(0);
+			if (te.getType().equals(JourneyUtils.BlockType.CLOTH)) {
+				player.playSound(MoreMystcraftSoundEvents.JOURNEY_CLOTH_ACTIVATE, 1.0F, 1.0F);
+			}
 			return null;
 		}
 	}

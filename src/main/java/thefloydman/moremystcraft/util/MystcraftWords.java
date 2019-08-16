@@ -1,26 +1,84 @@
 package thefloydman.moremystcraft.util;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.xcompwiz.mystcraft.api.word.WordData;
 
-public class MystcraftWords {
-	private static List<String> mystcraftBaseWords = Arrays.asList(WordData.Balance, WordData.Believe,
-			WordData.Celestial, WordData.Chain, WordData.Change, WordData.Chaos, WordData.Civilization,
-			WordData.Constraint, WordData.Contradict, WordData.Control, WordData.Convey, WordData.Creativity,
-			WordData.Cycle, WordData.Dependence, WordData.Discover, WordData.Dynamic, WordData.Elevate,
-			WordData.Encourage, WordData.Energy, WordData.Entropy, WordData.Ethereal, WordData.Exist, WordData.Explore,
-			WordData.Flow, WordData.Force, WordData.Form, WordData.Future, WordData.Growth, WordData.Harmony,
-			WordData.Honor, WordData.Image, WordData.Infinite, WordData.Inhibit, WordData.Intelligence, WordData.Love,
-			WordData.Machine, WordData.Merge, WordData.Momentum, WordData.Motion, WordData.Mutual, WordData.Nature,
-			WordData.Nurture, WordData.Order, WordData.Possibility, WordData.Power, WordData.Question, WordData.Rebirth,
-			WordData.Remember, WordData.Resilience, WordData.Resurrect, WordData.Sacrifice, WordData.Society,
-			WordData.Spur, WordData.Static, WordData.Stimulate, WordData.Survival, WordData.Sustain, WordData.System,
-			WordData.Terrain, WordData.Time, WordData.Tradition, WordData.Transform, WordData.Void, WordData.Weave,
-			WordData.Wisdom);
+public enum MystcraftWords {
 
-	public static List<String> getBaseWords() {
-		return mystcraftBaseWords;
+	BALANCE(WordData.Balance),
+	BELIEVE(WordData.Believe),
+	CELESTIAL(WordData.Celestial),
+	CHAIN(WordData.Chain),
+	CHANGE(WordData.Change),
+	CHAOS(WordData.Chaos),
+	CIVILIZATION(WordData.Civilization),
+	CONSTRAINT(WordData.Constraint),
+	CONTRADICT(WordData.Contradict),
+	CONTROL(WordData.Control),
+	CONVEY(WordData.Convey),
+	CREATIVITY(WordData.Creativity),
+	CYCLE(WordData.Cycle),
+	DEPENDENCE(WordData.Dependence),
+	DISCOVER(WordData.Discover),
+	DYNAMIC(WordData.Dynamic),
+	ELEVATE(WordData.Elevate),
+	ENCOURAGE(WordData.Encourage),
+	ENERGY(WordData.Energy),
+	ENTROPY(WordData.Entropy),
+	ETHEREAL(WordData.Ethereal),
+	EXIST(WordData.Exist),
+	EXPLORE(WordData.Explore),
+	FLOW(WordData.Flow),
+	FORCE(WordData.Force),
+	FORM(WordData.Form),
+	FUTURE(WordData.Future),
+	GROWTH(WordData.Growth),
+	HARMONY(WordData.Harmony),
+	HONOR(WordData.Honor),
+	IMAGE(WordData.Image),
+	INFINITE(WordData.Infinite),
+	INHIBIT(WordData.Inhibit),
+	INTELLIGENCE(WordData.Intelligence),
+	LOVE(WordData.Love),
+	MACHINE(WordData.Machine),
+	MERGE(WordData.Merge),
+	MOMENTUM(WordData.Momentum),
+	MOTION(WordData.Motion),
+	MUTUAL(WordData.Mutual),
+	NATURE(WordData.Nature),
+	NURTURE(WordData.Nurture),
+	ORDER(WordData.Order),
+	POSSIBILITY(WordData.Possibility),
+	POWER(WordData.Power),
+	QUESTION(WordData.Question),
+	REBIRTH(WordData.Rebirth),
+	REMEMBER(WordData.Remember),
+	RESILIENCE(WordData.Resilience),
+	RESURRECT(WordData.Resurrect),
+	SACRIFICE(WordData.Sacrifice),
+	SOCIETY(WordData.Society),
+	SPUR(WordData.Spur),
+	STATIC(WordData.Static),
+	STIMULATE(WordData.Stimulate),
+	SURVIVAL(WordData.Survival),
+	SUSTAIN(WordData.Sustain),
+	SYSTEM(WordData.System),
+	TERRAIN(WordData.Terrain),
+	TIME(WordData.Time),
+	TRADITION(WordData.Tradition),
+	TRANSFORM(WordData.Transform),
+	VOID(WordData.Void),
+	WEAVE(WordData.Weave),
+	WISDOM(WordData.Wisdom);
+
+	public String word;
+
+	MystcraftWords(String str) {
+		this.word = str;
 	}
+	
+	@Override
+	public String toString() {
+		return this.word;
+	}
+
 }
