@@ -1,11 +1,11 @@
 {
     "result": {
-        "item": "moremystcraft:journey_cloth_shell",
+        "item": "moremystcraft:journey_cloth_spiral",
         "count": 1
     },
     "pattern": [
         "sss",
-        "sfs",
+        "scs",
         "sss"
     ],
     "type": "forge:ore_shaped",
@@ -14,8 +14,8 @@
             "item": "minecraft:string",
             "data": 0
         },
-        "f": {
-            "item": "minecraft:fish",
+        "c": {
+            "item": "minecraft:clay_ball",
             "data": 0
         }
     }

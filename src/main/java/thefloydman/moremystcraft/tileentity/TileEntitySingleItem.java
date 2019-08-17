@@ -16,6 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntitySingleItem extends TileEntity implements IInventory {
+	
+	public TileEntitySingleItem() {
+	}
 
 	protected ItemStack item = ItemStack.EMPTY;
 

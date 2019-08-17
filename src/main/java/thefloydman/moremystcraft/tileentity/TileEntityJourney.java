@@ -8,9 +8,12 @@ import net.minecraft.util.ITickable;
 import thefloydman.moremystcraft.util.JourneyUtils;
 
 public class TileEntityJourney extends TileEntitySingleItem implements ITickable {
-
-	protected JourneyUtils.BlockType type;
+	
+	protected JourneyUtils.BlockType type = JourneyUtils.BlockType.CLOTH;
 	protected int timer = 120;
+	
+	public TileEntityJourney() {
+	}
 
 	public TileEntityJourney(JourneyUtils.BlockType blockType) {
 		this.type = blockType;
@@ -50,14 +53,15 @@ public class TileEntityJourney extends TileEntitySingleItem implements ITickable
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
-		this.type = JourneyUtils.stringToBlockType(nbt.getString("type"));
 		super.readFromNBT(nbt);
+		this.type = JourneyUtils.stringToBlockType(nbt.getString("type"));
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+		nbt = super.writeToNBT(nbt);
 		nbt.setString("type", JourneyUtils.blockTypeToString(this.type));
-		return super.writeToNBT(nbt);
+		return nbt;
 	}
 	
 	public JourneyUtils.BlockType getType() {

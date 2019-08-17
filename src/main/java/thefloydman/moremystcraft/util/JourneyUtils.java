@@ -11,11 +11,16 @@ public class JourneyUtils {
 	}
 
 	public static String blockTypeToString(BlockType type) {
-		return type.toString();
+		return type.toString().toLowerCase();
 	}
 
 	public static BlockType stringToBlockType(String str) {
-		return BlockType.valueOf(str.toUpperCase());
+		for (BlockType type : BlockType.values()) {
+			if (blockTypeToString(type).equals(str)) {
+				return type;
+			}
+		}
+		return BlockType.CLOTH;
 	}
 
 }

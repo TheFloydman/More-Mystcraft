@@ -12,6 +12,7 @@ import com.xcompwiz.mystcraft.api.util.Color;
 import com.xcompwiz.mystcraft.api.util.ColorGradient;
 import com.xcompwiz.mystcraft.api.world.AgeDirector;
 import com.xcompwiz.mystcraft.api.world.logic.ICelestial;
+import com.xcompwiz.mystcraft.api.world.logic.Modifier;
 
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -39,7 +40,17 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 		final Number angle = controller.popModifier("angle").asNumber();
 		final Number phase = controller.popModifier("phase").asNumber();
 		final ColorGradient sunset = controller.popModifier("sunset").asGradient();
-		final ColorGradient sunGradient = controller.popModifier("sun_color").asGradient();
+		ColorGradient sunGradient = new ColorGradient();
+		Modifier gradientModifier = controller.popModifier("sun_color");
+		if (gradientModifier.asObject() != null) {
+			sunGradient = controller.popModifier("sun_color").asGradient();
+		}
+		if (sunGradient.getColorCount() == 0) {
+			Color color = controller.popModifier("color").asColor();
+			if (color != null) {
+				sunGradient.pushColor(color);
+			}
+		}
 		final Number size = controller.popModifier("size").asNumber();
 		final Number tilt = controller.popModifier("tilt").asNumber();
 		controller.registerInterface(

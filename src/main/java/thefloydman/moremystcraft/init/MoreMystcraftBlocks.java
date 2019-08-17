@@ -43,18 +43,24 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
 	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.HAND);
-	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyUtils.PatternType.HAND);
 	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.SHELL);
+	public static final Block JOURNEY_CLOTH_SPIRAL = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.SPIRAL);
+	public static final Block JOURNEY_HUB_HAND = (Block) new BlockJourneyHub(JourneyUtils.PatternType.HAND);
 	public static final Block JOURNEY_HUB_SHELL = (Block) new BlockJourneyHub(JourneyUtils.PatternType.SHELL);
+	public static final Block JOURNEY_HUB_SPIRAL = (Block) new BlockJourneyHub(JourneyUtils.PatternType.SPIRAL);
 
 	public static final Item JOURNEY_CLOTH_HAND_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_HAND,
 			((BlockJourneyCloth) JOURNEY_CLOTH_HAND).PATTERN_TYPE);
 	public static final Item JOURNEY_CLOTH_SHELL_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_SHELL,
 			((BlockJourneyCloth) JOURNEY_CLOTH_SHELL).PATTERN_TYPE);
+	public static final Item JOURNEY_CLOTH_SPIRAL_ITEM = new ItemJourneyCloth(JOURNEY_CLOTH_SPIRAL,
+			((BlockJourneyCloth) JOURNEY_CLOTH_SPIRAL).PATTERN_TYPE);
 	public static final Item JOURNEY_HUB_HAND_ITEM = new ItemJourneyHub(JOURNEY_HUB_HAND,
 			((BlockJourneyHub) JOURNEY_HUB_HAND).PATTERN_TYPE);
 	public static final Item JOURNEY_HUB_SHELL_ITEM = new ItemJourneyHub(JOURNEY_HUB_SHELL,
 			((BlockJourneyHub) JOURNEY_HUB_SHELL).PATTERN_TYPE);
+	public static final Item JOURNEY_HUB_SPIRAL_ITEM = new ItemJourneyHub(JOURNEY_HUB_SPIRAL,
+			((BlockJourneyHub) JOURNEY_HUB_SPIRAL).PATTERN_TYPE);
 
 	public static void init() {
 		if (new MoreMystcraftConfig().getLockedLecternEnabled() == true) {
@@ -89,8 +95,8 @@ public class MoreMystcraftBlocks {
 			event.getRegistry().register(NEXUS_CONTROLLER);
 		}
 		if (new MoreMystcraftConfig().getJourneysEnabled()) {
-			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND, JOURNEY_CLOTH_SHELL, JOURNEY_HUB_HAND,
-					JOURNEY_HUB_SHELL);
+			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND, JOURNEY_CLOTH_SHELL, JOURNEY_CLOTH_SPIRAL,
+					JOURNEY_HUB_HAND, JOURNEY_HUB_SHELL, JOURNEY_HUB_SPIRAL);
 		}
 	}
 
@@ -104,8 +110,8 @@ public class MoreMystcraftBlocks {
 					.register(new ItemBlock(NEXUS_CONTROLLER).setRegistryName(NEXUS_CONTROLLER.getRegistryName()));
 		}
 		if (new MoreMystcraftConfig().getJourneysEnabled()) {
-			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND_ITEM, JOURNEY_CLOTH_SHELL_ITEM, JOURNEY_HUB_HAND_ITEM,
-					JOURNEY_HUB_SHELL_ITEM);
+			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND_ITEM, JOURNEY_CLOTH_SHELL_ITEM,
+					JOURNEY_CLOTH_SPIRAL_ITEM, JOURNEY_HUB_HAND_ITEM, JOURNEY_HUB_SHELL_ITEM, JOURNEY_HUB_SPIRAL_ITEM);
 		}
 	}
 
@@ -120,8 +126,10 @@ public class MoreMystcraftBlocks {
 		if (new MoreMystcraftConfig().getJourneysEnabled()) {
 			registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_HAND));
 			registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SHELL));
+			registerRender(Item.getItemFromBlock(JOURNEY_CLOTH_SPIRAL));
 			registerRender(Item.getItemFromBlock(JOURNEY_HUB_HAND));
 			registerRender(Item.getItemFromBlock(JOURNEY_HUB_SHELL));
+			registerRender(Item.getItemFromBlock(JOURNEY_HUB_SPIRAL));
 		}
 	}
 
