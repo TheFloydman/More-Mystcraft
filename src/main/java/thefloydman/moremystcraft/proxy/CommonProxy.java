@@ -19,15 +19,19 @@ import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.capability.CapabilityHub;
 import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
 import thefloydman.moremystcraft.capability.CapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.CapabilityPreviousGameMode;
 import thefloydman.moremystcraft.capability.CapabilityUUID;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ICapabilityPlayerJourneyClothsCollected;
 import thefloydman.moremystcraft.capability.ICapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.ICapabilityPreviousGameMode;
 import thefloydman.moremystcraft.capability.ICapabilityUUID;
 import thefloydman.moremystcraft.capability.StorageCapabilityHub;
 import thefloydman.moremystcraft.capability.StorageCapabilityPlayerJourneyClothsCollected;
 import thefloydman.moremystcraft.capability.StorageCapabilityPotionDummy;
+import thefloydman.moremystcraft.capability.StorageCapabilityPreviousGameMode;
 import thefloydman.moremystcraft.capability.StorageCapabilityUUID;
+import thefloydman.moremystcraft.data.MoreMystcraftInkEffects;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
 import thefloydman.moremystcraft.tileentity.TileEntityJourney;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
@@ -49,8 +53,8 @@ public class CommonProxy {
 				Reference.forMoreMystcraft("nexus_controller"));
 		GameRegistry.registerTileEntity(TileEntitySingleItem.class,
 				Reference.forMoreMystcraft("single_item_inventory"));
-		GameRegistry.registerTileEntity(TileEntityJourney.class,
-				Reference.forMoreMystcraft("journey"));
+		GameRegistry.registerTileEntity(TileEntityJourney.class, Reference.forMoreMystcraft("journey"));
+		MoreMystcraftInkEffects.init();
 	}
 
 	public void init(FMLInitializationEvent event) {
@@ -85,6 +89,8 @@ public class CommonProxy {
 		CapabilityManager.INSTANCE.register(ICapabilityPlayerJourneyClothsCollected.class,
 				new StorageCapabilityPlayerJourneyClothsCollected(), CapabilityJourneyClothsCollected::new);
 		CapabilityManager.INSTANCE.register(ICapabilityHub.class, new StorageCapabilityHub(), CapabilityHub::new);
+		CapabilityManager.INSTANCE.register(ICapabilityPreviousGameMode.class, new StorageCapabilityPreviousGameMode(),
+				CapabilityPreviousGameMode::new);
 	}
 
 }

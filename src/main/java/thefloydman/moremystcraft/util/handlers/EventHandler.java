@@ -2,6 +2,8 @@ package thefloydman.moremystcraft.util.handlers;
 
 import java.util.List;
 
+import com.xcompwiz.mystcraft.api.event.LinkEvent;
+import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
 import net.minecraft.entity.Entity;
@@ -9,9 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -19,6 +24,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,7 +32,9 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thefloydman.moremystcraft.capability.ICapabilityPreviousGameMode;
 import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ProviderCapabilityPreviousGameMode;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -132,6 +140,52 @@ public class EventHandler {
 		if (entity instanceof EntityPlayer) {
 			event.addCapability(Reference.forMoreMystcraft("journey_cloths_activated"),
 					new ProviderCapabilityJourneyClothsCollected());
+			event.addCapability(Reference.forMoreMystcraft("previous_gamemode"),
+					new ProviderCapabilityPreviousGameMode());
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLinkEnd(LinkEvent.LinkEventEnd event) {
+		if (event.entity instanceof EntityPlayer) {
+			if (event.info.getFlag("Adventure")) {
+				((EntityPlayer) event.entity).setGameType(GameType.ADVENTURE);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLinkAllow(LinkEvent.LinkEventAllow event) {
+		if (event.entity instanceof EntityPlayer) {
+			ICapabilityPreviousGameMode cap = event.entity
+					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
+			((EntityPlayer) event.entity).setGameType(cap.getGameMode());
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLinkStart(LinkEvent.LinkEventStart event) {
+		if (event.entity instanceof EntityPlayer) {
+			ICapabilityPreviousGameMode cap = event.entity
+					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
+			cap.setGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
+		}
+	}
+
+	@SubscribeEvent
+	public static void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem event) {
+		if (!event.getWorld().isRemote) {
+			if (((EntityPlayerMP) event.getEntityPlayer()).interactionManager.getGameType()
+					.equals(GameType.ADVENTURE)) {
+				if (event.getItemStack().getItem() instanceof ItemLinkbookUnlinked
+						&& MoreMystcraftConfig.getUnlinkedBooksDisabledInAdventureMode()) {
+					event.getEntityPlayer().sendStatusMessage(
+							new TextComponentTranslation(Reference.Messages.USE_UNLINKED_BOOK_IN_ADVENTURE_MODE.key),
+							true);
+					event.setCancellationResult(EnumActionResult.FAIL);
+					event.setCanceled(true);
+				}
+			}
 		}
 	}
 

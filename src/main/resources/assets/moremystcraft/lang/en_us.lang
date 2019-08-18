@@ -55,6 +55,7 @@ message.moremystcraft.journey_hub_full.desc=Cannot connect more than 15 cloths t
 message.moremystcraft.journey_cloth_removed_from_hub.desc=Cloth removed from hub.
 message.moremystcraft.journey_cloth_activated.desc=Cloth activated.
 message.moremystcraft.journey_cloth_deactivated.desc=Cloth deactivated.
+message.moremystcraft.use_unlinked_book_in_adventure_mode.desc=You cannot write a Linking Book in Adventure Mode.
 
 // Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size

@@ -149,6 +149,9 @@ public class MoreMystcraftConfig {
 		@RequiresMcRestart
 		@Name("Maintainer suit recipe enabled")
 		public boolean maintainerSuitRecipeEnabled = true;
+		
+		@Name("Adventure Mode players cannot use Unlinked Books")
+		public boolean unlinkedBooksDisabledInAdventureMode = true;
 
 	}
 
@@ -250,6 +253,10 @@ public class MoreMystcraftConfig {
 
 	public static boolean getJourneyRecipesEnabled() {
 		return catAddedBlocks.journeyRecipesEnabled;
+	}
+	
+	public static boolean getUnlinkedBooksDisabledInAdventureMode() {
+		return catOther.unlinkedBooksDisabledInAdventureMode;
 	}
 
 	@Mod.EventBusSubscriber

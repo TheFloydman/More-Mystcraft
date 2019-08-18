@@ -21,7 +21,8 @@ public class Reference {
 		HUB_FULL("journey_hub_full"),
 		CLOTH_REMOVED_FROM_HUB("journey_cloth_removed_from_hub"),
 		CLOTH_ACTIVATED("journey_cloth_activated"),
-		CLOTH_DEACTIVATED("journey_cloth_deactivated");
+		CLOTH_DEACTIVATED("journey_cloth_deactivated"),
+		USE_UNLINKED_BOOK_IN_ADVENTURE_MODE("use_unlinked_book_in_adventure_mode");
 
 		public String key;
 
