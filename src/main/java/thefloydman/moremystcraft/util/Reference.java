@@ -22,7 +22,9 @@ public class Reference {
 		CLOTH_REMOVED_FROM_HUB("journey_cloth_removed_from_hub"),
 		CLOTH_ACTIVATED("journey_cloth_activated"),
 		CLOTH_DEACTIVATED("journey_cloth_deactivated"),
-		USE_UNLINKED_BOOK_IN_ADVENTURE_MODE("use_unlinked_book_in_adventure_mode");
+		USE_UNLINKED_BOOK_IN_ADVENTURE_MODE("use_unlinked_book_in_adventure_mode"),
+		CHANGE_TO_ADVENTURE_MODE("change_to_adventure_mode"),
+		RETURN_TO_PREVIOUS_MODE("return_to_previous_mode");
 
 		public String key;
 

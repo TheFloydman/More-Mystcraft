@@ -24,6 +24,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -148,8 +150,15 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void onLinkEnd(LinkEvent.LinkEventEnd event) {
 		if (event.entity instanceof EntityPlayer) {
+			ICapabilityPreviousGameMode cap = event.entity
+					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
 			if (event.info.getFlag("Adventure")) {
 				((EntityPlayer) event.entity).setGameType(GameType.ADVENTURE);
+				((EntityPlayer) event.entity).sendStatusMessage(
+						new TextComponentTranslation(Reference.Messages.CHANGE_TO_ADVENTURE_MODE.key), true);
+				cap.setLinkedToAdventure(true);
+			} else {
+				cap.setLinkedToAdventure(false);
 			}
 		}
 	}
@@ -159,7 +168,9 @@ public class EventHandler {
 		if (event.entity instanceof EntityPlayer) {
 			ICapabilityPreviousGameMode cap = event.entity
 					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
-			((EntityPlayer) event.entity).setGameType(cap.getGameMode());
+			if (cap.getPreviousGameMode() != null) {
+				((EntityPlayer) event.entity).setGameType(cap.getPreviousGameMode());
+			}
 		}
 	}
 
@@ -168,7 +179,7 @@ public class EventHandler {
 		if (event.entity instanceof EntityPlayer) {
 			ICapabilityPreviousGameMode cap = event.entity
 					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
-			cap.setGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
+			cap.setPreviousGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
 		}
 	}
 
@@ -184,6 +195,39 @@ public class EventHandler {
 							true);
 					event.setCancellationResult(EnumActionResult.FAIL);
 					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingDeath(LivingDeathEvent event) {
+		Entity entity = event.getEntity();
+		World world = entity.getEntityWorld();
+		if (entity instanceof EntityPlayer && !world.isRemote) {
+			EntityPlayerMP player = (EntityPlayerMP) entity;
+			ICapabilityPreviousGameMode cap = player.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE,
+					null);
+			if (cap.getLinkedToAdventure() && player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
+				if (cap.getDeathDimension() != world.provider.getDimension()) {
+					
+				}
+			}
+			cap.setDeathDimension(event.getEntityLiving().getEntityWorld().provider.getDimension());
+		}
+	}
+	
+	@SubscribeEvent
+	public static void onLivingSpawn(LivingSpawnEvent event) {
+		Entity entity = event.getEntity();
+		World world = entity.getEntityWorld();
+		if (entity instanceof EntityPlayer && !world.isRemote) {
+			EntityPlayerMP player = (EntityPlayerMP) entity;
+			ICapabilityPreviousGameMode cap = player.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE,
+					null);
+			if (cap.getLinkedToAdventure() && player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
+				if (cap.getDeathDimension() != world.provider.getDimension()) {
+					player.setGameType(GameType.SURVIVAL);
 				}
 			}
 		}

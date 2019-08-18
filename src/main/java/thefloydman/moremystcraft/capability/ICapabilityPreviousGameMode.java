@@ -7,8 +7,16 @@ import net.minecraft.world.GameType;
 
 public interface ICapabilityPreviousGameMode {
 
-	public void setGameMode(GameType type);
+	public void setPreviousGameMode(GameType type);
 
-	public GameType getGameMode();
+	public GameType getPreviousGameMode();
+	
+	public void setLinkedToAdventure(boolean bool);
+	
+	public boolean getLinkedToAdventure();
+	
+	public void setDeathDimension(int dim);
+	
+	public int getDeathDimension();
 
 }

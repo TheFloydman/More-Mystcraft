@@ -14,9 +14,10 @@ public class StorageCapabilityPreviousGameMode implements IStorage<ICapabilityPr
 			EnumFacing side) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		if (instance != null) {
-			if (instance.getGameMode() != null) {
-				nbt.setInteger("previous_gamemode", instance.getGameMode().getID());
-				return nbt;
+			if (instance.getPreviousGameMode() != null) {
+				nbt.setInteger("previous_gamemode", instance.getPreviousGameMode().getID());
+				nbt.setBoolean("linked_to_adventure", instance.getLinkedToAdventure());
+				nbt.setInteger("death_dimension", instance.getDeathDimension());
 			}
 		}
 		return nbt;
@@ -28,7 +29,12 @@ public class StorageCapabilityPreviousGameMode implements IStorage<ICapabilityPr
 		if (instance != null) {
 			if (nbt != null) {
 				if (((NBTTagCompound) nbt).hasKey("previous_gamemode")) {
-					instance.setGameMode(GameType.getByID(((NBTTagCompound) nbt).getInteger("uuprevious_gamemodeid")));
+					instance.setPreviousGameMode(
+							GameType.getByID(((NBTTagCompound) nbt).getInteger("uuprevious_gamemodeid")));
+				} else if (((NBTTagCompound) nbt).hasKey("linked_to_adventure")) {
+					instance.setLinkedToAdventure(((NBTTagCompound) nbt).getBoolean("linked_to_adventure"));
+				} else if (((NBTTagCompound) nbt).hasKey("death_dimension")) {
+					instance.setDeathDimension(((NBTTagCompound) nbt).getInteger("death_dimension"));
 				}
 			}
 		}
