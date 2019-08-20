@@ -7,10 +7,10 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class StorageCapabilityPreviousGameMode implements IStorage<ICapabilityPreviousGameMode> {
+public class StorageCapabilityAdventurePanel implements IStorage<ICapabilityAdventurePanel> {
 
 	@Override
-	public NBTBase writeNBT(Capability<ICapabilityPreviousGameMode> capability, ICapabilityPreviousGameMode instance,
+	public NBTBase writeNBT(Capability<ICapabilityAdventurePanel> capability, ICapabilityAdventurePanel instance,
 			EnumFacing side) {
 		NBTTagCompound nbt = new NBTTagCompound();
 		if (instance != null) {
@@ -24,7 +24,7 @@ public class StorageCapabilityPreviousGameMode implements IStorage<ICapabilityPr
 	}
 
 	@Override
-	public void readNBT(Capability<ICapabilityPreviousGameMode> capability, ICapabilityPreviousGameMode instance,
+	public void readNBT(Capability<ICapabilityAdventurePanel> capability, ICapabilityAdventurePanel instance,
 			EnumFacing side, NBTBase nbt) {
 		if (instance != null) {
 			if (nbt != null) {

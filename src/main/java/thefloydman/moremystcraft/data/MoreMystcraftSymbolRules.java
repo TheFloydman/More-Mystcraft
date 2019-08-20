@@ -66,7 +66,7 @@ public class MoreMystcraftSymbolRules {
 				buildRule(2, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("gigantic_trees")));
 		addRuleInternal("lacking_ores",
 				buildRule(3, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("lacking_ores")));
-		addRuleInternal("sun_color", buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, MoreMystcraftGrammarRules.SUN_COLOR_BASIC, GrammarData.GRADIENT_SEQ, Reference.forMoreMystcraft("sun_color")));
+		addRuleInternal("sun_color", buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, GrammarData.GRADIENT_SEQ, Reference.forMoreMystcraft("sun_color")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

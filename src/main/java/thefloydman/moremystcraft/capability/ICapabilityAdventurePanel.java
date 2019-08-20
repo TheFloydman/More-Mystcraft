@@ -5,7 +5,7 @@ import java.util.UUID;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 
-public interface ICapabilityPreviousGameMode {
+public interface ICapabilityAdventurePanel {
 
 	public void setPreviousGameMode(GameType type);
 

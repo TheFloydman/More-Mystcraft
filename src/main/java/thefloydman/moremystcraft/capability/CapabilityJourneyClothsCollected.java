@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CapabilityJourneyClothsCollected implements ICapabilityPlayerJourneyClothsCollected {
+public class CapabilityJourneyClothsCollected implements ICapabilityJourneyClothsCollected {
 
 	protected List<UUID> clothList = new ArrayList<UUID>();
 
 	@Override
 	public boolean addCloth(UUID uuid) {
 		if (clothIndex(uuid) < 0) {
-			clothList.add(uuid);
+			this.clothList.add(uuid);
 			return true;
 		}
 		return false;
@@ -20,7 +20,7 @@ public class CapabilityJourneyClothsCollected implements ICapabilityPlayerJourne
 	@Override
 	public void removeCloth(UUID uuid) {
 		while (clothIndex(uuid) >= 0) {
-			clothList.remove(clothIndex(uuid));
+			this.clothList.remove(clothIndex(uuid));
 		}
 	}
 
@@ -32,6 +32,11 @@ public class CapabilityJourneyClothsCollected implements ICapabilityPlayerJourne
 	@Override
 	public List<UUID> getActivatedCloths() {
 		return this.clothList;
+	}
+
+	@Override
+	public void setActivatedCloths(List<UUID> list) {
+		this.clothList = list;
 	}
 
 }

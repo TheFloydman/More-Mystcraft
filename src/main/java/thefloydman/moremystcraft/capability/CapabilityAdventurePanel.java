@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 
-public class CapabilityPreviousGameMode implements ICapabilityPreviousGameMode {
+public class CapabilityAdventurePanel implements ICapabilityAdventurePanel {
 	
 	protected GameType gamemode;
 	protected boolean linkedToAdventure = false;

@@ -40,10 +40,9 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 		final Number angle = controller.popModifier("angle").asNumber();
 		final Number phase = controller.popModifier("phase").asNumber();
 		final ColorGradient sunset = controller.popModifier("sunset").asGradient();
-		ColorGradient sunGradient = new ColorGradient();
-		Modifier gradientModifier = controller.popModifier("sun_color");
-		if (gradientModifier.asObject() != null) {
-			sunGradient = controller.popModifier("sun_color").asGradient();
+		ColorGradient sunGradient = controller.popModifier("sun_color").asGradient();
+		if (sunGradient == null) {
+			sunGradient = new ColorGradient();
 		}
 		if (sunGradient.getColorCount() == 0) {
 			Color color = controller.popModifier("color").asColor();
@@ -123,10 +122,10 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 			final Tessellator tes = Tessellator.getInstance();
 			final BufferBuilder vb = tes.getBuffer();
 			final float celestial_period = this.getAltitudeForSunset(world.getWorldTime(), partial);
+			GlStateManager.pushMatrix();
 			GlStateManager.enableTexture2D();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
 					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-			GlStateManager.pushMatrix();
 			final float f16 = 1.0F - world.getRainStrength(partial);
 			Color color = new Color(255.0F / 255.0F, 245.0F / 255.0F, 119.0F / 255.0F);
 			if (this.sunColor.getColorCount() > 0) {

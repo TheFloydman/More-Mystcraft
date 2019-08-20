@@ -8,7 +8,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 public class ProviderCapabilityJourneyClothsCollected implements ICapabilitySerializable<NBTBase> {
 
-	@CapabilityInject(ICapabilityPlayerJourneyClothsCollected.class)
+	@CapabilityInject(ICapabilityJourneyClothsCollected.class)
 	public static final Capability<CapabilityJourneyClothsCollected> JOURNEY_CLOTH = null;
 
 	private CapabilityJourneyClothsCollected instance = JOURNEY_CLOTH.getDefaultInstance();

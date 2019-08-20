@@ -3,7 +3,7 @@ package thefloydman.moremystcraft.capability;
 import java.util.List;
 import java.util.UUID;
 
-public interface ICapabilityPlayerJourneyClothsCollected {
+public interface ICapabilityJourneyClothsCollected {
 
 	public boolean addCloth(UUID uuid);
 
@@ -12,5 +12,7 @@ public interface ICapabilityPlayerJourneyClothsCollected {
 	public int clothIndex(UUID uuid);
 
 	public List<UUID> getActivatedCloths();
+	
+	public void setActivatedCloths(List<UUID> list);
 
 }

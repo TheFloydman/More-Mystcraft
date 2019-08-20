@@ -26,6 +26,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,9 +35,10 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thefloydman.moremystcraft.capability.ICapabilityPreviousGameMode;
+import thefloydman.moremystcraft.capability.ICapabilityAdventurePanel;
+import thefloydman.moremystcraft.capability.ICapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ProviderCapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.capability.ProviderCapabilityPreviousGameMode;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -143,15 +145,15 @@ public class EventHandler {
 			event.addCapability(Reference.forMoreMystcraft("journey_cloths_activated"),
 					new ProviderCapabilityJourneyClothsCollected());
 			event.addCapability(Reference.forMoreMystcraft("previous_gamemode"),
-					new ProviderCapabilityPreviousGameMode());
+					new ProviderCapabilityAdventurePanel());
 		}
 	}
-
+/*
 	@SubscribeEvent
 	public static void onLinkEnd(LinkEvent.LinkEventEnd event) {
 		if (event.entity instanceof EntityPlayer) {
-			ICapabilityPreviousGameMode cap = event.entity
-					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
+			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
+					null);
 			if (event.info.getFlag("Adventure")) {
 				((EntityPlayer) event.entity).setGameType(GameType.ADVENTURE);
 				((EntityPlayer) event.entity).sendStatusMessage(
@@ -166,8 +168,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void onLinkAllow(LinkEvent.LinkEventAllow event) {
 		if (event.entity instanceof EntityPlayer) {
-			ICapabilityPreviousGameMode cap = event.entity
-					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
+			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
+					null);
 			if (cap.getPreviousGameMode() != null) {
 				((EntityPlayer) event.entity).setGameType(cap.getPreviousGameMode());
 			}
@@ -177,8 +179,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void onLinkStart(LinkEvent.LinkEventStart event) {
 		if (event.entity instanceof EntityPlayer) {
-			ICapabilityPreviousGameMode cap = event.entity
-					.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE, null);
+			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
+					null);
 			cap.setPreviousGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
 		}
 	}
@@ -206,24 +208,19 @@ public class EventHandler {
 		World world = entity.getEntityWorld();
 		if (entity instanceof EntityPlayer && !world.isRemote) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-			ICapabilityPreviousGameMode cap = player.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE,
+			ICapabilityAdventurePanel cap = player.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
 					null);
-			if (cap.getLinkedToAdventure() && player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
-				if (cap.getDeathDimension() != world.provider.getDimension()) {
-					
-				}
-			}
 			cap.setDeathDimension(event.getEntityLiving().getEntityWorld().provider.getDimension());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void onLivingSpawn(LivingSpawnEvent event) {
 		Entity entity = event.getEntity();
 		World world = entity.getEntityWorld();
 		if (entity instanceof EntityPlayer && !world.isRemote) {
 			EntityPlayerMP player = (EntityPlayerMP) entity;
-			ICapabilityPreviousGameMode cap = player.getCapability(ProviderCapabilityPreviousGameMode.PREVIOUS_GAMEMODE,
+			ICapabilityAdventurePanel cap = player.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
 					null);
 			if (cap.getLinkedToAdventure() && player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
 				if (cap.getDeathDimension() != world.provider.getDimension()) {
@@ -231,6 +228,32 @@ public class EventHandler {
 				}
 			}
 		}
+	}
+*/
+	@SubscribeEvent
+	public static void clonePlayer(PlayerEvent.Clone event) {
+
+		if (event.isWasDeath()) {
+
+			EntityPlayer entityOld = event.getOriginal();
+			EntityPlayer entityNew = event.getEntityPlayer();
+
+			ICapabilityAdventurePanel capModeOld = entityOld
+					.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL, null);
+			ICapabilityAdventurePanel capModeNew = entityNew
+					.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL, null);
+			capModeNew.setDeathDimension(capModeOld.getDeathDimension());
+			capModeNew.setLinkedToAdventure(capModeOld.getLinkedToAdventure());
+			capModeNew.setPreviousGameMode(capModeOld.getPreviousGameMode());
+
+			ICapabilityJourneyClothsCollected capJourneyOld = entityOld
+					.getCapability(ProviderCapabilityJourneyClothsCollected.JOURNEY_CLOTH, null);
+			ICapabilityJourneyClothsCollected capJourneyNew = entityNew
+					.getCapability(ProviderCapabilityJourneyClothsCollected.JOURNEY_CLOTH, null);
+			capJourneyNew.setActivatedCloths(capJourneyOld.getActivatedCloths());
+
+		}
+
 	}
 
 }

@@ -27,7 +27,7 @@ public class SymbolSunColor extends MoreMystcraftSymbolBase {
 		}
 		ColorGradient gradient = ModifierUtils.popGradient(controller);
 		sunColor.appendGradient(gradient);
-		controller.setModifier("sun_color", new Modifier(sunColor, 0));
+		controller.setModifier("sun_color", sunColor);
 	}
 
 }
