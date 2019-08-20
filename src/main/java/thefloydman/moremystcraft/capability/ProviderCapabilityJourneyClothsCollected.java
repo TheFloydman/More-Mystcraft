@@ -15,11 +15,17 @@ public class ProviderCapabilityJourneyClothsCollected implements ICapabilitySeri
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == null || JOURNEY_CLOTH == null) {
+			return false;
+		}
 		return capability.equals(JOURNEY_CLOTH);
 	}
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == null || JOURNEY_CLOTH == null) {
+			return null;
+		}
 		return capability.equals(JOURNEY_CLOTH) ? JOURNEY_CLOTH.<T>cast(this.instance) : null;
 	}
 
