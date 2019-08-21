@@ -24,7 +24,8 @@ public class Reference {
 		CLOTH_DEACTIVATED("journey_cloth_deactivated"),
 		USE_UNLINKED_BOOK_IN_ADVENTURE_MODE("use_unlinked_book_in_adventure_mode"),
 		CHANGE_TO_ADVENTURE_MODE("change_to_adventure_mode"),
-		RETURN_TO_PREVIOUS_MODE("return_to_previous_mode");
+		RETURN_TO_PREVIOUS_MODE("return_to_previous_mode"),
+		PLAYER_LINKING("player_linking");
 
 		public String key;
 

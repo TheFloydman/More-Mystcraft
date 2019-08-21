@@ -29,7 +29,7 @@ public class PacketSendTranslatedMessage implements IMessage {
 		@Override
 		public IMessage onMessage(PacketSendTranslatedMessage msg, MessageContext ctx) {
 			EntityPlayer player = Minecraft.getMinecraft().player;
-			player.sendMessage(new TextComponentTranslation(msg.key));
+			player.sendStatusMessage(new TextComponentTranslation(msg.key), true);
 			return null;
 		}
 	}

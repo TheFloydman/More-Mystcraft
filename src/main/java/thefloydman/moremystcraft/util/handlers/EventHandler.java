@@ -15,6 +15,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
@@ -24,11 +25,10 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -148,6 +148,16 @@ public class EventHandler {
 					new ProviderCapabilityAdventurePanel());
 		}
 	}
+	
+	@SubscribeEvent
+	public static void onLinkStart(LinkEvent.LinkEventStart event) {
+		if (event.entity instanceof EntityPlayer) {
+			if (MoreMystcraftConfig.getServerMessageOnLink()) {
+				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessage(new TextComponentString(event.entity.getDisplayName().getUnformattedText() + " " + new TextComponentTranslation(Reference.Messages.PLAYER_LINKING.key).getUnformattedText()));
+			}
+		}
+	}
+	
 /*
 	@SubscribeEvent
 	public static void onLinkEnd(LinkEvent.LinkEventEnd event) {
@@ -183,7 +193,7 @@ public class EventHandler {
 					null);
 			cap.setPreviousGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
 		}
-	}
+	}*/
 
 	@SubscribeEvent
 	public static void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem event) {
@@ -202,7 +212,7 @@ public class EventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	/*@SubscribeEvent
 	public static void onLivingDeath(LivingDeathEvent event) {
 		Entity entity = event.getEntity();
 		World world = entity.getEntityWorld();
