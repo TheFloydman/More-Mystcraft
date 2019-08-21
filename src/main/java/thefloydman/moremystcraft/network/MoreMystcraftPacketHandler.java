@@ -63,8 +63,8 @@ public class MoreMystcraftPacketHandler {
 		CHANNEL.sendToServer(new PacketSetHubTimer(pos, time));
 	}
 
-	public static void sendTranslatedMessage(EntityPlayerMP player, String key) {
-		CHANNEL.sendTo(new PacketSendTranslatedMessage(key), player);
+	public static void sendTranslatedMessage(EntityPlayerMP player, String key, int type, String username) {
+		CHANNEL.sendTo(new PacketSendTranslatedMessage(key, type, username), player);
 	}
 
 }

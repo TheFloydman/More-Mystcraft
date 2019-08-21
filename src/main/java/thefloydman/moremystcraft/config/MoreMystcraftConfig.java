@@ -153,8 +153,8 @@ public class MoreMystcraftConfig {
 		@Name("Adventure Mode players cannot use Unlinked Books")
 		public boolean unlinkedBooksDisabledInAdventureMode = true;
 		
-		@Name("Warn players about possible lag when someone links.")
-		public boolean serverMessageOnLink = false;
+		@Name("Be warned about possible lag when someone links.")
+		public boolean postMessageOnLink = false;
 	}
 
 	/*
@@ -261,8 +261,8 @@ public class MoreMystcraftConfig {
 		return catOther.unlinkedBooksDisabledInAdventureMode;
 	}
 	
-	public static boolean getServerMessageOnLink() {
-		return catOther.serverMessageOnLink;
+	public static boolean getPostMessageOnLink() {
+		return catOther.postMessageOnLink;
 	}
 
 	@Mod.EventBusSubscriber

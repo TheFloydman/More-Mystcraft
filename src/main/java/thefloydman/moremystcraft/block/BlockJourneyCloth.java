@@ -77,15 +77,15 @@ public class BlockJourneyCloth extends BlockJourneyBase {
 							if (capHub.getUUIDs().size() < 15) {
 								capHub.addUUID(uuid);
 								MoreMystcraftPacketHandler.sendTranslatedMessage((EntityPlayerMP) player,
-										Reference.Messages.CLOTH_ADDED_TO_HUB.key);
+										Reference.Message.CLOTH_ADDED_TO_HUB.key, Reference.MessageType.STATUS.ordinal(), "none");
 							} else {
 								MoreMystcraftPacketHandler.sendTranslatedMessage((EntityPlayerMP) player,
-										Reference.Messages.HUB_FULL.key);
+										Reference.Message.HUB_FULL.key, Reference.MessageType.STATUS.ordinal(), "none");
 							}
 						} else {
 							capHub.removeCloth(uuid);
 							MoreMystcraftPacketHandler.sendTranslatedMessage((EntityPlayerMP) player,
-									Reference.Messages.CLOTH_REMOVED_FROM_HUB.key);
+									Reference.Message.CLOTH_REMOVED_FROM_HUB.key, Reference.MessageType.STATUS.ordinal(), "none");
 						}
 					} else {
 						CapabilityJourneyClothsCollected capPlayer = player
@@ -95,13 +95,13 @@ public class BlockJourneyCloth extends BlockJourneyBase {
 							capPlayer.removeCloth(uuid);
 							data.deactivateJourneyCloth(uuid, player.getUniqueID());
 							MoreMystcraftPacketHandler.sendTranslatedMessage((EntityPlayerMP) player,
-									Reference.Messages.CLOTH_DEACTIVATED.key);
+									Reference.Message.CLOTH_DEACTIVATED.key, Reference.MessageType.STATUS.ordinal(), "none");
 						} else {
 							if (!capPlayer.getActivatedCloths().contains(uuid)) {
 								capPlayer.addCloth(uuid);
 								data.activateJourneyCloth(uuid, player.getUniqueID());
 								MoreMystcraftPacketHandler.sendTranslatedMessage((EntityPlayerMP) player,
-										Reference.Messages.CLOTH_ACTIVATED.key);
+										Reference.Message.CLOTH_ACTIVATED.key, Reference.MessageType.STATUS.ordinal(), "none");
 								MoreMystcraftPacketHandler.renderJourneyActivation((EntityPlayerMP) player, pos);
 							}
 						}

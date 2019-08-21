@@ -11,12 +11,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -152,8 +154,13 @@ public class EventHandler {
 	@SubscribeEvent
 	public static void onLinkStart(LinkEvent.LinkEventStart event) {
 		if (event.entity instanceof EntityPlayer) {
-			if (MoreMystcraftConfig.getServerMessageOnLink()) {
-				FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendMessage(new TextComponentString(event.entity.getDisplayName().getUnformattedText() + " " + new TextComponentTranslation(Reference.Messages.PLAYER_LINKING.key).getUnformattedText()));
+			if (MoreMystcraftConfig.getPostMessageOnLink()) {
+				PlayerList playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
+				String[] names = playerList.getOnlinePlayerNames();
+				for (String name : names) {
+					if (!name.equals(((EntityPlayerMP) event.entity).getDisplayNameString())) {
+					MoreMystcraftPacketHandler.sendTranslatedMessage(playerList.getPlayerByUsername(name), Reference.Message.PLAYER_LINKING.key, Reference.MessageType.LINKING_LAG.ordinal(), ((EntityPlayerMP) event.entity).getDisplayNameString());
+				}}
 			}
 		}
 	}
@@ -203,7 +210,7 @@ public class EventHandler {
 				if (event.getItemStack().getItem() instanceof ItemLinkbookUnlinked
 						&& MoreMystcraftConfig.getUnlinkedBooksDisabledInAdventureMode()) {
 					event.getEntityPlayer().sendStatusMessage(
-							new TextComponentTranslation(Reference.Messages.USE_UNLINKED_BOOK_IN_ADVENTURE_MODE.key),
+							new TextComponentTranslation(Reference.Message.USE_UNLINKED_BOOK_IN_ADVENTURE_MODE.key),
 							true);
 					event.setCancellationResult(EnumActionResult.FAIL);
 					event.setCanceled(true);
