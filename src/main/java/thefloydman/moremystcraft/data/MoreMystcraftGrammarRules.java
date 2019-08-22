@@ -65,7 +65,8 @@ public class MoreMystcraftGrammarRules {
 		registerRule(buildRule(0, MoreMystcraftGrammarData.TILT_RARE_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON, MoreMystcraftGrammarData.TILT_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarData.TILT_RARE_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON, MoreMystcraftGrammarData.TILT_RARE, MoreMystcraftGrammarData.TILT_UNCOMMON_SEQ));
 		
-		registerRule(buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, SUN_COLOR_BASIC));
+		registerRule(buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, new ResourceLocation[0]));
+		registerRule(buildRule(0, SUN_COLOR_BASIC, MoreMystcraftGrammarData.SUN_COLOR));
 
 	}
 

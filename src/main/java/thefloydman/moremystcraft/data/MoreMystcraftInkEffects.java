@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.data.InkEffects;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 public class MoreMystcraftInkEffects {
 
@@ -45,6 +46,11 @@ public class MoreMystcraftInkEffects {
 	public static void init() {
 
 		for (Effect effect : Effect.values()) {
+			if (effect.equals(Effect.ADVENTURE_MODE)) {
+				if (!MoreMystcraftConfig.getAdventureLinkPanelEnabled()) {
+					continue;
+				}
+			}
 			InkEffects.registerProperty(effect.getTitle(), effect.getColor());
 			InkEffects.addPropertyToItem(effect.getItem(), effect.getTitle(), effect.getChance());
 		}

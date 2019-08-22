@@ -150,8 +150,12 @@ public class MoreMystcraftConfig {
 		@Name("Maintainer suit recipe enabled")
 		public boolean maintainerSuitRecipeEnabled = true;
 		
-		@Name("Adventure Mode players cannot use Unlinked Books")
-		public boolean unlinkedBooksDisabledInAdventureMode = true;
+		@RequiresMcRestart
+		@Name("Adventure Mode link panel enabled")
+		public boolean adventureLinkPanelEnabled = false;
+		
+		@Name("Adventure Mode players can use Unlinked Books")
+		public boolean unlinkedBooksEnabledInAdventureMode = true;
 		
 		@Name("Be warned about possible lag when someone links.")
 		public boolean postMessageOnLink = false;
@@ -257,12 +261,16 @@ public class MoreMystcraftConfig {
 		return catAddedBlocks.journeyRecipesEnabled;
 	}
 	
-	public static boolean getUnlinkedBooksDisabledInAdventureMode() {
-		return catOther.unlinkedBooksDisabledInAdventureMode;
+	public static boolean getUnlinkedBooksEnabledInAdventureMode() {
+		return catOther.unlinkedBooksEnabledInAdventureMode;
 	}
 	
 	public static boolean getPostMessageOnLink() {
 		return catOther.postMessageOnLink;
+	}
+	
+	public static boolean getAdventureLinkPanelEnabled() {
+		return catOther.adventureLinkPanelEnabled;
 	}
 
 	@Mod.EventBusSubscriber

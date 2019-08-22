@@ -37,6 +37,9 @@ tile.moremystcraft.journey_hub_spiral.name=Journey Hub
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit
 
+// Link Effect Names
+linkeffect.adventure.name=Adventure
+
 // Entity names
 entity.moremystcraft.maintainer_suit.name=Maintainer Suit
 

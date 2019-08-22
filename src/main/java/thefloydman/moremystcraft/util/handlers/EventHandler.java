@@ -16,9 +16,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -27,6 +24,8 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -150,76 +149,57 @@ public class EventHandler {
 					new ProviderCapabilityAdventurePanel());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void onLinkStart(LinkEvent.LinkEventStart event) {
+
 		if (event.entity instanceof EntityPlayer) {
+
+			EntityPlayerMP player = (EntityPlayerMP) event.entity;
+
+			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
+					null);
+			GameType type = cap.getPreviousGameMode();
+			if (type != null) {
+				player.setGameType(type);
+			}
+			cap.setPreviousGameMode(player.interactionManager.getGameType());
+
 			if (MoreMystcraftConfig.getPostMessageOnLink()) {
 				PlayerList playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
 				String[] names = playerList.getOnlinePlayerNames();
 				for (String name : names) {
-					if (!name.equals(((EntityPlayerMP) event.entity).getDisplayNameString())) {
-					MoreMystcraftPacketHandler.sendTranslatedMessage(playerList.getPlayerByUsername(name), Reference.Message.PLAYER_LINKING.key, Reference.MessageType.LINKING_LAG.ordinal(), ((EntityPlayerMP) event.entity).getDisplayNameString());
-				}}
+					if (!name.equals(player.getDisplayNameString())) {
+						MoreMystcraftPacketHandler.sendTranslatedMessage(playerList.getPlayerByUsername(name),
+								Reference.Message.PLAYER_LINKING.key, Reference.MessageType.LINKING_LAG.ordinal(),
+								player.getDisplayNameString());
+					}
+				}
 			}
+
 		}
+
 	}
-	
-/*
+
 	@SubscribeEvent
 	public static void onLinkEnd(LinkEvent.LinkEventEnd event) {
 		if (event.entity instanceof EntityPlayer) {
+			EntityPlayerMP player = (EntityPlayerMP) event.entity;
 			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
 					null);
 			if (event.info.getFlag("Adventure")) {
-				((EntityPlayer) event.entity).setGameType(GameType.ADVENTURE);
-				((EntityPlayer) event.entity).sendStatusMessage(
-						new TextComponentTranslation(Reference.Messages.CHANGE_TO_ADVENTURE_MODE.key), true);
+				player.setGameType(GameType.ADVENTURE);
+				MoreMystcraftPacketHandler.sendTranslatedMessage(player, Reference.Message.CHANGE_TO_ADVENTURE_MODE.key,
+						Reference.MessageType.STATUS.ordinal(), "none");
 				cap.setLinkedToAdventure(true);
 			} else {
+				player.setGameType(cap.getPreviousGameMode());
 				cap.setLinkedToAdventure(false);
 			}
 		}
 	}
 
 	@SubscribeEvent
-	public static void onLinkAllow(LinkEvent.LinkEventAllow event) {
-		if (event.entity instanceof EntityPlayer) {
-			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
-					null);
-			if (cap.getPreviousGameMode() != null) {
-				((EntityPlayer) event.entity).setGameType(cap.getPreviousGameMode());
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onLinkStart(LinkEvent.LinkEventStart event) {
-		if (event.entity instanceof EntityPlayer) {
-			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
-					null);
-			cap.setPreviousGameMode(((EntityPlayerMP) event.entity).interactionManager.getGameType());
-		}
-	}*/
-
-	@SubscribeEvent
-	public static void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem event) {
-		if (!event.getWorld().isRemote) {
-			if (((EntityPlayerMP) event.getEntityPlayer()).interactionManager.getGameType()
-					.equals(GameType.ADVENTURE)) {
-				if (event.getItemStack().getItem() instanceof ItemLinkbookUnlinked
-						&& MoreMystcraftConfig.getUnlinkedBooksDisabledInAdventureMode()) {
-					event.getEntityPlayer().sendStatusMessage(
-							new TextComponentTranslation(Reference.Message.USE_UNLINKED_BOOK_IN_ADVENTURE_MODE.key),
-							true);
-					event.setCancellationResult(EnumActionResult.FAIL);
-					event.setCanceled(true);
-				}
-			}
-		}
-	}
-
-	/*@SubscribeEvent
 	public static void onLivingDeath(LivingDeathEvent event) {
 		Entity entity = event.getEntity();
 		World world = entity.getEntityWorld();
@@ -241,12 +221,30 @@ public class EventHandler {
 					null);
 			if (cap.getLinkedToAdventure() && player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
 				if (cap.getDeathDimension() != world.provider.getDimension()) {
-					player.setGameType(GameType.SURVIVAL);
+					player.setGameType(cap.getPreviousGameMode());
+					cap.setLinkedToAdventure(false);
 				}
 			}
 		}
 	}
-*/
+
+	@SubscribeEvent
+	public static void playerInteractRightClickItem(PlayerInteractEvent.RightClickItem event) {
+		if (!event.getWorld().isRemote) {
+			EntityPlayerMP player = (EntityPlayerMP) event.getEntityPlayer();
+			if (player.interactionManager.getGameType().equals(GameType.ADVENTURE)) {
+				if (event.getItemStack().getItem() instanceof ItemLinkbookUnlinked
+						&& !MoreMystcraftConfig.getUnlinkedBooksEnabledInAdventureMode()) {
+					MoreMystcraftPacketHandler.sendTranslatedMessage(player,
+							Reference.Message.USE_UNLINKED_BOOK_IN_ADVENTURE_MODE.key,
+							Reference.MessageType.STATUS.ordinal(), "none");
+					event.setCancellationResult(EnumActionResult.FAIL);
+					event.setCanceled(true);
+				}
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void clonePlayer(PlayerEvent.Clone event) {
 
