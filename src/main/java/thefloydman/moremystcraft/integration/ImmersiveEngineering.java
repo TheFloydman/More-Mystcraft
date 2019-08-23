@@ -14,7 +14,6 @@ public class ImmersiveEngineering {
 
 		BottlingMachineRecipe.addRecipe(new ItemStack(ModItems.inkvial), Items.GLASS_BOTTLE,
 				new FluidStack(ModFluids.black_ink, 250));
-
 	}
 
 }

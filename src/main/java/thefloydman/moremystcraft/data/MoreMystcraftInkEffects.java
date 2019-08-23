@@ -6,6 +6,8 @@ import com.xcompwiz.mystcraft.data.InkEffects;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.client.event.GuiScreenEvent.PotionShiftEvent;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 public class MoreMystcraftInkEffects {
