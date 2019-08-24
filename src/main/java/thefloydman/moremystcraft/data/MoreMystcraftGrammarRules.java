@@ -19,6 +19,7 @@ public class MoreMystcraftGrammarRules {
 	public static final ResourceLocation SIZE_ISLAND_BIOCON = Reference.forMoreMystcraft("size_island_biocon");
 	public static final ResourceLocation TILT_SUN_SEQ = Reference.forMoreMystcraft("tilt_sun");
 	public static final ResourceLocation SUN_COLOR_BASIC = Reference.forMoreMystcraft("sun_color_basic");
+	public static final ResourceLocation MULTIPLE_BLOCKS = Reference.forMoreMystcraft("multiple_blocks");
 
 	public static void initialize() {
 		registerRule(buildRule(null, SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_BASIC));
@@ -67,6 +68,9 @@ public class MoreMystcraftGrammarRules {
 		
 		registerRule(buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, new ResourceLocation[0]));
 		registerRule(buildRule(0, SUN_COLOR_BASIC, MoreMystcraftGrammarData.SUN_COLOR));
+		
+		registerRule(buildRule(2, MULTIPLE_BLOCKS, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(0, MULTIPLE_BLOCKS, GrammarData.BLOCK_STRUCTURE, MULTIPLE_BLOCKS));
 
 	}
 

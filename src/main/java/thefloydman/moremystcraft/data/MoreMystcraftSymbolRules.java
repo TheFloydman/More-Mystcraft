@@ -18,7 +18,7 @@ public class MoreMystcraftSymbolRules {
 	public static void initialize() {
 		addRuleInternal("abandoned_study",
 				buildRule(null, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
-		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, GrammarData.BLOCK_STRUCTURE,
+		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, MoreMystcraftGrammarRules.MULTIPLE_BLOCKS,
 				Reference.forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_rings")));

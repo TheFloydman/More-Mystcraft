@@ -1,7 +1,10 @@
 package thefloydman.moremystcraft.symbol.symbols;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -25,20 +28,24 @@ public class SymbolPyramids extends MoreMystcraftSymbolBase {
 
 	@Override
 	public void registerLogic(final AgeDirector controller, final long seed) {
-		final BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
-		WorldGeneratorAdv generator;
-		if (block != null) {
-			generator = new WorldGenPyramids(block.blockstate);
-		} else {
-			generator = new WorldGenPyramids(Blocks.SANDSTONE);
+		
+		List<IBlockState> blocks = new ArrayList<IBlockState>();
+		BlockDescriptor block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
+		int count = 0;
+		while (block != null) {
+			blocks.add(block.blockstate);
+			block = ModifierUtils.popBlockMatching(controller, BlockCategory.STRUCTURE);
+			count++;
 		}
+		if (count == 0) {
+			blocks.add(Blocks.SANDSTONE.getDefaultState());
+		}
+		
+		WorldGeneratorAdv generator = new WorldGenPyramids(blocks);;
 		controller.registerInterface(new Populator(generator));
 	}
 	
 	public int instabilityModifier(int count) {
-		if (count > 2) {
-			return 500;
-		}
 		return 0;
 	}
 

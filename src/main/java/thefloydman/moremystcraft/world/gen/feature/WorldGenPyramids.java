@@ -1,26 +1,21 @@
 package thefloydman.moremystcraft.world.gen.feature;
 
+import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
+import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import thefloydman.moremystcraft.config.MoreMystcraftConfig;
-
-import com.xcompwiz.mystcraft.world.gen.feature.WorldGeneratorAdv;
 
 public class WorldGenPyramids extends WorldGeneratorAdv {
-	private IBlockState state;
+	private List<IBlockState> blocks;
 
-	public WorldGenPyramids(final Block block) {
-		this(block.getDefaultState());
-	}
-
-	public WorldGenPyramids(final IBlockState state) {
-		this.state = state;
+	public WorldGenPyramids(List<IBlockState> blockList) {
+		this.blocks = blockList;
 	}
 
 	@Override
@@ -36,25 +31,26 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 		}
 		int height = rand.nextInt(7) + 2;
 		for (int curY = base.getY(), width = height; curY <= base.getY() + height; curY++, width--) {
-			fillSquareLayer(new BlockPos(base.getX(), curY, base.getZ()), width, world);
-			cleanupPyramidLayer(new BlockPos(base.getX(), curY, base.getZ()), width, width, world);
+			fillSquareLayer(new BlockPos(base.getX(), curY, base.getZ()), width, world, rand);
+			cleanupPyramidLayer(new BlockPos(base.getX(), curY, base.getZ()), width, width, world, rand);
 		}
 		return true;
 	}
 
-	private void fillRecLayer(BlockPos center, int widthX, int widthZ, World world) {
+	private void fillRecLayer(BlockPos center, int widthX, int widthZ, World world, Random rand) {
 		for (int curX = center.getX() - widthX; curX <= center.getX() + widthX; curX++) {
 			for (int curZ = center.getZ() - widthZ; curZ <= center.getZ() + widthZ; curZ++) {
-					this.placeBlock(world, new BlockPos(curX, center.getY(), curZ), this.state, 2);
+				this.placeBlock(world, new BlockPos(curX, center.getY(), curZ),
+						this.blocks.get(rand.nextInt(this.blocks.size())), 2);
 			}
 		}
 	}
 
-	private void fillSquareLayer(BlockPos center, int width, World world) {
-		fillRecLayer(center, width, width, world);
+	private void fillSquareLayer(BlockPos center, int width, World world, Random rand) {
+		fillRecLayer(center, width, width, world, rand);
 	}
 
-	private void cleanupPyramidLayer(BlockPos center, int widthX, int widthZ, World world) {
+	private void cleanupPyramidLayer(BlockPos center, int widthX, int widthZ, World world, Random rand) {
 		for (int curX = center.getX() - widthX; curX <= center.getX() + widthX; curX++) {
 			for (int curZ = center.getZ() - widthZ; curZ <= center.getZ() + widthZ; curZ++) {
 				if (!world.getBlockState(new BlockPos(curX, center.getY() - 1, curZ)).getMaterial().isSolid()) {
@@ -62,7 +58,8 @@ public class WorldGenPyramids extends WorldGeneratorAdv {
 					if ((int) (Math.random() * 2) == 0) {
 						int groundY = findGround(world, curX, center.getY(), curZ);
 						if (groundY > 0) {
-							this.placeBlock(world, new BlockPos(curX, groundY + 1, curZ), this.state, 2);
+							this.placeBlock(world, new BlockPos(curX, groundY + 1, curZ),
+									this.blocks.get(rand.nextInt(this.blocks.size())), 2);
 						}
 
 					}

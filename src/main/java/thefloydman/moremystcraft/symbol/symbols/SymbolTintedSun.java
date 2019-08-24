@@ -123,12 +123,10 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 			final Tessellator tes = Tessellator.getInstance();
 			final BufferBuilder vb = tes.getBuffer();
 			final float celestial_period = this.getAltitudeForSunset(world.getWorldTime(), partial);
-			GlStateManager.pushMatrix();
-			GlStateManager.enableBlend();
-			GlStateManager.enableAlpha();
 			GlStateManager.enableTexture2D();
-			//GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
-			//		GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
+					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.pushMatrix();
 			final float f16 = 1.0F - world.getRainStrength(partial);
 			Color color = new Color(255.0F / 255.0F, 245.0F / 255.0F, 119.0F / 255.0F);
 			if (this.sunColor.getColorCount() > 0) {
@@ -158,7 +156,7 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 			} else {
 				size = 30.0;
 			}
-			eng.bindTexture(Reference.forMoreMystcraft("textures/environment/sun_new.png"));
+			eng.bindTexture(Reference.forMoreMystcraft("textures/environment/sun_neutral.png"));
 			vb.begin(7, DefaultVertexFormats.POSITION_TEX);
 			vb.pos(-size, 100d, -size).tex(0.0, 0.0).endVertex();
 			vb.pos(size, 100d, -size).tex(1.0, 0.0).endVertex();
@@ -166,11 +164,7 @@ public class SymbolTintedSun extends MoreMystcraftSymbolBase {
 			vb.pos(-size, 100d, size).tex(0.0, 1.0).endVertex();
 			tes.draw();
 			GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-			//GlStateManager.disableBlend();
-			GlStateManager.disableAlpha();
 			GlStateManager.popMatrix();
-			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE,
-					GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			this.renderHorizon(eng, world, celestial_period,
 					getHorizonAngle(world.getWorldTime(), (double) this.tilt, (double) this.period), partial, 1.0f);
 		}
