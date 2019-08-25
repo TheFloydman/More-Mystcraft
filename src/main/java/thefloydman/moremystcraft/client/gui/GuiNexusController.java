@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Mouse;
 
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
 import com.xcompwiz.mystcraft.client.gui.GuiContainerElements;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElement;
 import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook;
@@ -143,10 +144,11 @@ public class GuiNexusController extends GuiContainerElements {
 				GlStateManager.color(red, green, blue);
 				mc.renderEngine.bindTexture(TEXTURE);
 				drawTexturedModalRect(listX, listY, 0, textureY, listWidth, listHeight);
-				this.fontRenderer.drawString(
-						((ItemLinking) this.tileEntity.getStackInSlot(this.displayedBooks[i]).getItem())
-								.getLinkInfo(this.tileEntity.getStackInSlot(this.displayedBooks[i])).getDisplayName(),
-						listX + 2, listY + 3, Color.BLACK.getRGB());
+				ILinkInfo info = ((ItemLinking) this.tileEntity.getStackInSlot(this.displayedBooks[i]).getItem())
+						.getLinkInfo(this.tileEntity.getStackInSlot(this.displayedBooks[i]));
+				if (info != null) {
+					this.fontRenderer.drawString(info.getDisplayName(), listX + 2, listY + 3, Color.BLACK.getRGB());
+				}
 			}
 		}
 		this.scrollbarEnabled = this.tileEntity.getFilteredBookList().size() > 4;

@@ -112,7 +112,7 @@ public class BlockJourneyBase extends BlockHorizontal implements ITileEntityProv
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
 		boolean mod = !world.getBlockState(pos.offset(side.getOpposite())).getBlockFaceShape(world, pos, null)
-				.equals(BlockFaceShape.UNDEFINED);
+				.equals(BlockFaceShape.UNDEFINED) && !side.equals(EnumFacing.UP) && !side.equals(EnumFacing.DOWN);
 		boolean vanilla = super.canPlaceBlockOnSide(world, pos, side);
 		return mod && vanilla;
 	}
