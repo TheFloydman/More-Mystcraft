@@ -19,8 +19,6 @@ public class MoreMystcraftGrammarRules {
 	public static final ResourceLocation SIZE_ISLAND_BIOCON = Reference.forMoreMystcraft("size_island_biocon");
 	public static final ResourceLocation TILT_SUN_SEQ = Reference.forMoreMystcraft("tilt_sun");
 	public static final ResourceLocation SUN_COLOR_BASIC = Reference.forMoreMystcraft("sun_color_basic");
-	public static final ResourceLocation STRUCTURE_BLOCK_GEN = Reference.forMoreMystcraft("block_gen");
-	public static final ResourceLocation STRUCTURE_BLOCK_EXT = Reference.forMoreMystcraft("block_ext");
 
 	public static void initialize() {
 		registerRule(buildRule(null, SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_BASIC));
@@ -70,13 +68,14 @@ public class MoreMystcraftGrammarRules {
 		registerRule(buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, new ResourceLocation[0]));
 		registerRule(buildRule(0, SUN_COLOR_BASIC, MoreMystcraftGrammarData.SUN_COLOR));
 		
-		registerRule(buildRule(1, MoreMystcraftGrammarData.STRUCTURE_BLOCK_LIST, STRUCTURE_BLOCK_GEN));
-        registerRule(buildRule(2, STRUCTURE_BLOCK_GEN, STRUCTURE_BLOCK_GEN, GrammarData.BLOCK_STRUCTURE));
-        registerRule(buildRule(3, STRUCTURE_BLOCK_GEN, GrammarData.BLOCK_STRUCTURE));
-        registerRule(buildRule(null, MoreMystcraftGrammarData.STRUCTURE_BLOCK_LIST, STRUCTURE_BLOCK_EXT, GrammarData.BLOCK_STRUCTURE));
-        registerRule(buildRule(null, STRUCTURE_BLOCK_EXT, STRUCTURE_BLOCK_EXT, MoreMystcraftGrammarData.STRUCTURE_BLOCK_LIST));
-        registerRule(buildRule(1, STRUCTURE_BLOCK_EXT, new ResourceLocation[0]));
-
+		registerRule(buildRule(0, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, new ResourceLocation[0]));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
+		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE, GrammarData.BLOCK_STRUCTURE));
 	}
 
 	private static void registerRule(final GrammarGenerator.Rule rule) {

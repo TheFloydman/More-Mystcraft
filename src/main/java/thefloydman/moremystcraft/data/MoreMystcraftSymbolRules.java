@@ -18,9 +18,8 @@ public class MoreMystcraftSymbolRules {
 	public static void initialize() {
 		addRuleInternal("abandoned_study",
 				buildRule(null, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
-		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM, MoreMystcraftGrammarData.STRUCTURE_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE
-				,
-				Reference.forMoreMystcraft("pyramids")));
+		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM,
+				MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, Reference.forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_rings")));
 		addRuleInternal("biocon_boxes", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
@@ -67,7 +66,9 @@ public class MoreMystcraftSymbolRules {
 				buildRule(2, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("gigantic_trees")));
 		addRuleInternal("lacking_ores",
 				buildRule(3, GrammarData.FEATURE_LARGE, Reference.forMoreMystcraft("lacking_ores")));
-		addRuleInternal("sun_color", buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, MoreMystcraftGrammarRules.SUN_COLOR_BASIC, GrammarData.GRADIENT_SEQ, Reference.forMoreMystcraft("sun_color")));
+		addRuleInternal("sun_color",
+				buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, MoreMystcraftGrammarRules.SUN_COLOR_BASIC,
+						GrammarData.GRADIENT_SEQ, Reference.forMoreMystcraft("sun_color")));
 	}
 
 	private static void addRuleInternal(final String key, final GrammarGenerator.Rule rule) {

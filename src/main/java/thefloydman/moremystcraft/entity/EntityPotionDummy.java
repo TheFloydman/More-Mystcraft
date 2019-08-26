@@ -51,7 +51,7 @@ public class EntityPotionDummy extends EntityLiving {
 
 	@Override
 	public boolean canDespawn() {
-		return true;
+		return false;
 	}
 
 	@Override

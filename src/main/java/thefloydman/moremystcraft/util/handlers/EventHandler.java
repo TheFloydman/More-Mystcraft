@@ -160,7 +160,7 @@ public class EventHandler {
 			ICapabilityAdventurePanel cap = event.entity.getCapability(ProviderCapabilityAdventurePanel.ADVENTURE_PANEL,
 					null);
 			GameType type = cap.getPreviousGameMode();
-			if (type != null) {
+			if (type != null && cap.getLinkedToAdventure()) {
 				player.setGameType(type);
 			}
 			cap.setPreviousGameMode(player.interactionManager.getGameType());
