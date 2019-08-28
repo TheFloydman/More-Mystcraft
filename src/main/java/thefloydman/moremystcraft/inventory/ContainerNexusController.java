@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.block.BlockNexusController;
+import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 
 public class ContainerNexusController extends ContainerBase implements IBookContainer, IGuiMessageHandler {
@@ -299,6 +300,9 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 		if (data.hasKey("query")) {
 			this.query = data.getString("query");
 			this.tileEntity.setQuery(this.query);
+			this.tileEntity.getWorld().notifyBlockUpdate(this.tileEntity.getPos(),
+					MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(),
+					MoreMystcraftBlocks.NEXUS_CONTROLLER.getDefaultState(), 3);
 		}
 	}
 

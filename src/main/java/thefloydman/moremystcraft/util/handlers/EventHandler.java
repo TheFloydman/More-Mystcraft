@@ -38,8 +38,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thefloydman.moremystcraft.capability.ICapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.ICapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ICapabilityMystcraftResearch;
 import thefloydman.moremystcraft.capability.ProviderCapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.ProviderCapabilityJourneyClothsCollected;
+import thefloydman.moremystcraft.capability.ProviderCapabilityMystcraftResearch;
 import thefloydman.moremystcraft.client.render.RenderMaintainerSuit;
 import thefloydman.moremystcraft.client.render.RenderPotionDummy;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
@@ -147,6 +149,8 @@ public class EventHandler {
 					new ProviderCapabilityJourneyClothsCollected());
 			event.addCapability(Reference.forMoreMystcraft("previous_gamemode"),
 					new ProviderCapabilityAdventurePanel());
+			event.addCapability(Reference.forMoreMystcraft("research"),
+					new ProviderCapabilityMystcraftResearch());
 		}
 	}
 
@@ -266,6 +270,12 @@ public class EventHandler {
 			ICapabilityJourneyClothsCollected capJourneyNew = entityNew
 					.getCapability(ProviderCapabilityJourneyClothsCollected.JOURNEY_CLOTH, null);
 			capJourneyNew.setActivatedCloths(capJourneyOld.getActivatedCloths());
+
+			ICapabilityMystcraftResearch capResearchOld = entityOld
+					.getCapability(ProviderCapabilityMystcraftResearch.MYSTCRAFT_RESEARCH, null);
+			ICapabilityMystcraftResearch capResearchNew = entityNew
+					.getCapability(ProviderCapabilityMystcraftResearch.MYSTCRAFT_RESEARCH, null);
+			capResearchNew.setPlayerKnowledge(capResearchOld.getPlayerKnowledge());
 
 		}
 

@@ -16,6 +16,7 @@ import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
+import thefloydman.moremystcraft.item.ItemJournalOfTheArt;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -45,17 +46,19 @@ import thefloydman.moremystcraft.util.Reference;
 public class MoreMystcraftItems {
 
 	public static final Item MAINTAINER_SUIT = (Item) new ItemMaintainerSuit();
+	public static final Item JOURNAL_OF_THE_ART = (Item) new ItemJournalOfTheArt();
 
 	public static void registerItems(final RegistryEvent.Register<Item> event) {
 
 		IForgeRegistry<Item> itemRegistry = event.getRegistry();
-		itemRegistry.register(MAINTAINER_SUIT);
+		itemRegistry.registerAll(MAINTAINER_SUIT, JOURNAL_OF_THE_ART);
 
 	}
 
 	@SubscribeEvent
 	public static void registerRenders(ModelRegistryEvent event) {
 		registerRender(MAINTAINER_SUIT);
+		registerRender(JOURNAL_OF_THE_ART);
 	}
 
 	private static void registerRender(Item item) {
