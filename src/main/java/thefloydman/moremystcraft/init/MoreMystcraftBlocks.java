@@ -24,7 +24,6 @@ import thefloydman.moremystcraft.block.BlockJourneyHub;
 import thefloydman.moremystcraft.block.BlockLockedBookstand;
 import thefloydman.moremystcraft.block.BlockLockedLectern;
 import thefloydman.moremystcraft.block.BlockNexusController;
-import thefloydman.moremystcraft.block.BlockSymbolRecordingDesk;
 import thefloydman.moremystcraft.block.BlockTrafficCone;
 import thefloydman.moremystcraft.block.BlockUnstableBookReceptacle;
 import thefloydman.moremystcraft.block.BlockUnstablePortal;
@@ -43,7 +42,6 @@ public class MoreMystcraftBlocks {
 	public static final Block UNSTABLE_RECEPTACLE = (Block) new BlockUnstableBookReceptacle();
 	public static final Block UNSTABLE_PORTAL = (Block) new BlockUnstablePortal();
 	public static final Block NEXUS_CONTROLLER = (Block) new BlockNexusController();
-	public static final Block SYMBOL_RECORDING_DESK = (Block) new BlockSymbolRecordingDesk();
 	
 	public static final Block JOURNEY_CLOTH_HAND = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.HAND);
 	public static final Block JOURNEY_CLOTH_SHELL = (Block) new BlockJourneyCloth(JourneyUtils.PatternType.SHELL);
@@ -101,7 +99,6 @@ public class MoreMystcraftBlocks {
 			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND, JOURNEY_CLOTH_SHELL, JOURNEY_CLOTH_SPIRAL,
 					JOURNEY_HUB_HAND, JOURNEY_HUB_SHELL, JOURNEY_HUB_SPIRAL);
 		}
-		event.getRegistry().register(SYMBOL_RECORDING_DESK);
 	}
 
 	@SubscribeEvent
@@ -117,7 +114,6 @@ public class MoreMystcraftBlocks {
 			event.getRegistry().registerAll(JOURNEY_CLOTH_HAND_ITEM, JOURNEY_CLOTH_SHELL_ITEM,
 					JOURNEY_CLOTH_SPIRAL_ITEM, JOURNEY_HUB_HAND_ITEM, JOURNEY_HUB_SHELL_ITEM, JOURNEY_HUB_SPIRAL_ITEM);
 		}
-		event.getRegistry().register(new ItemBlock(SYMBOL_RECORDING_DESK).setRegistryName(SYMBOL_RECORDING_DESK.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -136,7 +132,6 @@ public class MoreMystcraftBlocks {
 			registerRender(Item.getItemFromBlock(JOURNEY_HUB_SHELL));
 			registerRender(Item.getItemFromBlock(JOURNEY_HUB_SPIRAL));
 		}
-		registerRender(Item.getItemFromBlock(SYMBOL_RECORDING_DESK));
 	}
 
 	public static void registerRender(Item item) {

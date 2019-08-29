@@ -9,39 +9,32 @@ import com.xcompwiz.mystcraft.api.hook.PageAPI;
 import com.xcompwiz.mystcraft.api.hook.SymbolAPI;
 import com.xcompwiz.mystcraft.api.hook.WordAPI;
 
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import thefloydman.moremystcraft.MoreMystcraft;
 import thefloydman.moremystcraft.capability.CapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.CapabilityHub;
 import thefloydman.moremystcraft.capability.CapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.capability.CapabilityMystcraftResearch;
 import thefloydman.moremystcraft.capability.CapabilityPotionDummy;
 import thefloydman.moremystcraft.capability.CapabilityUUID;
 import thefloydman.moremystcraft.capability.ICapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.ICapabilityHub;
 import thefloydman.moremystcraft.capability.ICapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.capability.ICapabilityMystcraftResearch;
 import thefloydman.moremystcraft.capability.ICapabilityPotionDummy;
 import thefloydman.moremystcraft.capability.ICapabilityUUID;
 import thefloydman.moremystcraft.capability.StorageCapabilityAdventurePanel;
 import thefloydman.moremystcraft.capability.StorageCapabilityHub;
 import thefloydman.moremystcraft.capability.StorageCapabilityJourneyClothsCollected;
-import thefloydman.moremystcraft.capability.StorageCapabilityMystcraftResearch;
 import thefloydman.moremystcraft.capability.StorageCapabilityPotionDummy;
 import thefloydman.moremystcraft.capability.StorageCapabilityUUID;
 import thefloydman.moremystcraft.data.MoreMystcraftInkEffects;
 import thefloydman.moremystcraft.integration.ImmersiveEngineering;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
-import thefloydman.moremystcraft.research.Knowledge;
-import thefloydman.moremystcraft.research.Research;
 import thefloydman.moremystcraft.tileentity.TileEntityJourney;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
@@ -88,9 +81,6 @@ public class CommonProxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
-		for (Biome biome : ForgeRegistries.BIOMES.getValuesCollection()) {
-			Research.addToKnowledgePool(new Knowledge(biome));
-		}
 	}
 
 	public void serverStop(FMLServerStoppedEvent event) {
@@ -106,8 +96,6 @@ public class CommonProxy {
 		CapabilityManager.INSTANCE.register(ICapabilityHub.class, new StorageCapabilityHub(), CapabilityHub::new);
 		CapabilityManager.INSTANCE.register(ICapabilityAdventurePanel.class, new StorageCapabilityAdventurePanel(),
 				CapabilityAdventurePanel::new);
-		CapabilityManager.INSTANCE.register(ICapabilityMystcraftResearch.class, new StorageCapabilityMystcraftResearch(),
-				CapabilityMystcraftResearch::new);
 	}
 
 }

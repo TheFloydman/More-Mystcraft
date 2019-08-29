@@ -33,11 +33,9 @@ tile.moremystcraft.journey_cloth_spiral.name=Journey Cloth
 tile.moremystcraft.journey_hub_hand.name=Journey Hub
 tile.moremystcraft.journey_hub_shell.name=Journey Hub
 tile.moremystcraft.journey_hub_spiral.name=Journey Hub
-tile.moremystcraft.symbol_recording_desk.name=Symbol Recording Desk
 
 // Item names
 item.moremystcraft.maintainer_suit.name=Maintainer Suit
-item.moremystcraft.journal_of_the_art.name=Journal of the Art
 
 // Link Effect Names
 linkeffect.adventure.name=Adventure
@@ -64,10 +62,6 @@ message.moremystcraft.use_unlinked_book_in_adventure_mode.desc=You cannot write 
 message.moremystcraft.change_to_adventure_mode.desc=You are now in Adventure Mode.
 message.moremystcraft.return_to_previous_mode.desc=You have been returned to your previous game mode.
 message.moremystcraft.player_linking.desc=is linking. Expect lag.
-message.moremystcraft.research_learn_biome.desc=You have learned how to write this biome.
-message.moremystcraft.research_known_biome.desc=You already know how to write this biome.
-message.moremystcraft.research_forget_biome.desc=You have forgotten how to write this biome.
-message.moremystcraft.research_forbidden_biome.desc=You cannot learn how to write this biome.
 
 // Grammar names (for compatibility with mystcraft-info)
 grammar.moremystcraft.size_common.name=Size
@@ -76,3 +70,4 @@ grammar.moremystcraft.size_rare.name=Size
 grammar.moremystcraft.tilt_common.name=Tilt
 grammar.moremystcraft.tilt_uncommon.name=Tilt
 grammar.moremystcraft.tilt_rare.name=Tilt
+grammar.moremystcraft.sun_color.name=Sun Color
