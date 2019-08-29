@@ -1,6 +1,7 @@
 package thefloydman.moremystcraft.item;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -28,7 +29,7 @@ public class ItemJournalOfTheArt extends Item {
 			Biome biome = world.getBiome(player.getPosition());
 			ICapabilityMystcraftResearch cap = player
 					.getCapability(ProviderCapabilityMystcraftResearch.MYSTCRAFT_RESEARCH, null);
-			cap.learnKnowledge(new Knowledge(biome));
+			cap.learnKnowledge(new Knowledge(biome), (EntityPlayerMP) player);
 		}
 		return super.onItemRightClick(world, player, hand);
 	}

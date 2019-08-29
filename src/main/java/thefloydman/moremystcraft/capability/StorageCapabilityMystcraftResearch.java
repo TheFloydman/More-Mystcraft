@@ -45,7 +45,7 @@ public class StorageCapabilityMystcraftResearch implements IStorage<ICapabilityM
 					for (NBTBase base : biomes) {
 						ResourceLocation loc = new ResourceLocation(((NBTTagString) base).getString());
 						if (ForgeRegistries.BIOMES.getValue(loc) != null) {
-							instance.learnKnowledge(new Knowledge(ForgeRegistries.BIOMES.getValue(loc)));
+							instance.learnKnowledge(new Knowledge(ForgeRegistries.BIOMES.getValue(loc)), null);
 						}
 					}
 				} else if (compound.hasKey("blockstates")) {

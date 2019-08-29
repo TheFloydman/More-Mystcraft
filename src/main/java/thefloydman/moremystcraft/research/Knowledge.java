@@ -44,5 +44,13 @@ public class Knowledge {
 		}
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		if (this.knowledge != null) {
+			return this.knowledge.toString();
+		}
+		return "";
+	}
 
 }

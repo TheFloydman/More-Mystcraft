@@ -9,11 +9,14 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import thefloydman.moremystcraft.client.gui.GuiBookLocked;
 import thefloydman.moremystcraft.client.gui.GuiJourneyHub;
 import thefloydman.moremystcraft.client.gui.GuiNexusController;
+import thefloydman.moremystcraft.client.gui.GuiSymbolRecordingDesk;
 import thefloydman.moremystcraft.inventory.ContainerBookLocked;
 import thefloydman.moremystcraft.inventory.ContainerJourneyHub;
 import thefloydman.moremystcraft.inventory.ContainerNexusController;
+import thefloydman.moremystcraft.inventory.ContainerSymbolRecordingDesk;
 import thefloydman.moremystcraft.tileentity.TileEntityNexusController;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
+import thefloydman.moremystcraft.tileentity.TileEntitySymbolRecordingDesk;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -32,6 +35,10 @@ public class GuiHandler implements IGuiHandler {
 			final TileEntitySingleItem tileEntity = (TileEntitySingleItem) player.world
 					.getTileEntity(new BlockPos(x, y, z));
 			return new ContainerJourneyHub(tileEntity);
+		} else if (id == MoreMystcraftGUIs.SYMBOL_RECORDING_DESK.ordinal()) {
+			final TileEntitySymbolRecordingDesk tileEntity = (TileEntitySymbolRecordingDesk) player.world
+					.getTileEntity(new BlockPos(x, y, z));
+			return new ContainerSymbolRecordingDesk(player.inventory, tileEntity);
 		}
 		return null;
 	}
@@ -48,6 +55,9 @@ public class GuiHandler implements IGuiHandler {
 					player.inventory);
 		} else if (id == MoreMystcraftGUIs.JOURNEY_HUB.ordinal()) {
 			return new GuiJourneyHub((ContainerJourneyHub) getServerGuiElement(id, player, world, x, y, z));
+		} else if (id == MoreMystcraftGUIs.SYMBOL_RECORDING_DESK.ordinal()) {
+			return new GuiSymbolRecordingDesk(
+					(ContainerSymbolRecordingDesk) getServerGuiElement(id, player, world, x, y, z));
 		}
 		return null;
 	}

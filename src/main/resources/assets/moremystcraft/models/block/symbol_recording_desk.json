@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "moremystcraft:blocks/symbol_recording_desk"
+    }
+}

@@ -50,10 +50,10 @@ import thefloydman.moremystcraft.util.handlers.MaintainerSuitEventHandler;
 
 public class CommonProxy {
 
-	public DimensionAPI dimensionApi;
-	public PageAPI pageApi;
-	public SymbolAPI symbolApi;
-	public WordAPI wordApi;
+	public static DimensionAPI dimensionApi;
+	public static PageAPI pageApi;
+	public static SymbolAPI symbolApi;
+	public static WordAPI wordApi;
 
 	public void preInit(FMLPreInitializationEvent event) {
 		MoreMystcraftPacketHandler.register();

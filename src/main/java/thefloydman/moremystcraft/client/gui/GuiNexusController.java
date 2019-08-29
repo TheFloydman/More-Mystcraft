@@ -3,6 +3,7 @@ package thefloydman.moremystcraft.client.gui;
 import java.awt.Color;
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
@@ -76,6 +77,7 @@ public class GuiNexusController extends GuiContainerElements {
 	@Override
 	public void validate() {
 		super.validate();
+		Keyboard.enableRepeatEvents(true);
 		TextBoxHandler handler = new TextBoxHandler();
 		this.searchBar = new GuiElementTextField(handler, handler, "query", 7, 65, 162, 12);
 		this.searchBar.setMaxLength(32);
@@ -95,7 +97,7 @@ public class GuiNexusController extends GuiContainerElements {
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override

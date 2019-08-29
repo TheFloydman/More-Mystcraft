@@ -71,6 +71,7 @@ public class GuiJourneyHub extends GuiContainer {
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
+		Keyboard.enableRepeatEvents(false);
 	}
 
 	@Override
