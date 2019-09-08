@@ -232,6 +232,12 @@ public class BlockUnstablePortal extends BlockBreakable {
 		if (worldIn.isRemote) {
 			return;
 		}
+
+		// Allow non-player entities to walk through the portal without linking.
+		if (!(entityIn instanceof EntityPlayer)) {
+			return;
+		}
+
 		final TileEntity tileEntity = MoreMystcraftPortalUtils.getTileEntity((IBlockAccess) worldIn, pos);
 		if (tileEntity == null || !(tileEntity instanceof TileEntityUnstableBookReceptacle)) {
 			worldIn.setBlockToAir(pos);
