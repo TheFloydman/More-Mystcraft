@@ -13,6 +13,12 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
+import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
+import com.xcompwiz.mystcraft.data.ModBlocks;
+import com.xcompwiz.mystcraft.data.ModItems;
+import com.xcompwiz.mystcraft.item.ItemAgebook;
+import com.xcompwiz.mystcraft.item.ItemLinkbook;
+import com.xcompwiz.mystcraft.linking.LinkOptions;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
@@ -23,37 +29,18 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.xcompwiz.mystcraft.item.ItemLinking;
-import com.xcompwiz.mystcraft.linking.LinkOptions;
-import com.xcompwiz.mystcraft.world.WorldProviderMyst;
-import com.xcompwiz.mystcraft.world.agedata.AgeData;
-import com.xcompwiz.mystcraft.api.linking.ILinkInfo;
-import com.xcompwiz.mystcraft.client.gui.element.GuiElementBook.IGuiOnLinkHandler;
-import com.xcompwiz.mystcraft.data.ModBlocks;
-import com.xcompwiz.mystcraft.data.ModItems;
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-import com.xcompwiz.mystcraft.item.ItemLinkbook;
-
 import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 import thefloydman.moremystcraft.init.MoreMystcraftBlocks;
 import thefloydman.moremystcraft.portal.MoreMystcraftPortalUtils;
@@ -240,7 +227,7 @@ public class BlockUnstablePortal extends BlockBreakable {
 		final TileEntityUnstableBookReceptacle container = (TileEntityUnstableBookReceptacle) tileEntity;
 		if (container.getBook().isEmpty()) {
 			worldIn.setBlockToAir(pos);
-		} else if (container.getBook().getItem().equals(ModItems.agebook)) {
+		} else if (container.getBook().getItem().equals(ModItems.agebook) && entityIn instanceof EntityPlayer) {
 			final ItemStack bookStack = container.getBook().copy();
 			ItemAgebook bookItem = (ItemAgebook) bookStack.getItem();
 			ItemAgebook.create(bookStack, (EntityPlayer) entityIn,
@@ -279,9 +266,10 @@ public class BlockUnstablePortal extends BlockBreakable {
 		while (y > 0) {
 			pos = new BlockPos(x, y, z);
 			Material matCur = world.getBlockState(pos).getMaterial();
-			if (matCur.equals(Material.AIR) || matCur.equals(Material.CACTUS) || matCur.equals(Material.FIRE)
-					|| matCur.isLiquid()) {
+			if (matCur.equals(Material.AIR) || matCur.equals(Material.CACTUS) || matCur.equals(Material.FIRE)) {
 				y--;
+			} else if (matCur.isLiquid()) {
+				return null;
 			} else {
 				pos = pos.up();
 				return pos;
