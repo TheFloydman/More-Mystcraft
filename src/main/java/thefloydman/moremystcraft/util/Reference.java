@@ -10,7 +10,7 @@ public class Reference {
 	public static final String ACCEPTED_VERSIONS = "[1.12.2]";
 	public static final String CLIENT_PROXY_CLASS = "thefloydman.moremystcraft.proxy.ClientProxy";
 	public static final String COMMON_PROXY_CLASS = "thefloydman.moremystcraft.proxy.CommonProxy";
-	public static final String DEPENDENCIES = "required-after:mystcraft";
+	public static final String DEPENDENCIES = "required-after:mystcraft@[0.13.7.03,)";
 
 	public static ResourceLocation forMoreMystcraft(final String path) {
 		return new ResourceLocation("moremystcraft", path);
@@ -25,9 +25,7 @@ public class Reference {
 		USE_UNLINKED_BOOK_IN_ADVENTURE_MODE("use_unlinked_book_in_adventure_mode"),
 		CHANGE_TO_ADVENTURE_MODE("change_to_adventure_mode"),
 		RETURN_TO_PREVIOUS_MODE("return_to_previous_mode"),
-		PLAYER_LINKING("player_linking"),
-		LEARN_BIOME("research_learn_biome"),
-		KNOWN_BIOME("research_known_biome");
+		PLAYER_LINKING("player_linking");
 
 		public String key;
 

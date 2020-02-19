@@ -5,12 +5,13 @@
   "description": "Miscellaneous additions to Mystcraft.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://www.curseforge.com/minecraft/mc-mods/more-mystcraft",
   "updateUrl": "",
   "authorList": ["TheFloydman"],
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "requiredMods": ["mystcraft"],
+  "dependencies": ["mystcraft", "immersiveengineering"]
 }
 ]

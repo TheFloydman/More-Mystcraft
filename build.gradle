@@ -11,12 +11,10 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-def mystcraft_version = "0.13.7.03"
-
 repositories {
     maven {
-        name "xcompwiz"
-        url "http://maven.xcompwiz.com"
+        name = "curseforge"
+        url = "https://minecraft.curseforge.com/api/maven/"
     }
 }
 
@@ -43,6 +41,9 @@ minecraft {
 }
 
 dependencies {
+
+    deobfCompile "mystcraft:mystcraft-1.12.2:0.13.7.04:dev"
+    deobfProvided "immersive-engineering:ImmersiveEngineering:0.12:64"
     
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
