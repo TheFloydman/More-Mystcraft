@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import thefloydman.moremystcraft.capability.ProviderCapabilityUUID;
+import thefloydman.moremystcraft.capability.uuid.ProviderCapabilityUUID;
 import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.Reference;
 

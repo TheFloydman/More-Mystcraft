@@ -13,7 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import thefloydman.moremystcraft.block.BlockJourneyCloth;
-import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
+import thefloydman.moremystcraft.capability.journeyhub.ProviderCapabilityHub;
 import thefloydman.moremystcraft.util.JourneyUtils;
 import thefloydman.moremystcraft.util.Reference;
 

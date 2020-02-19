@@ -2,8 +2,8 @@ package thefloydman.moremystcraft.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import thefloydman.moremystcraft.capability.ICapabilityHub;
-import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
+import thefloydman.moremystcraft.capability.journeyhub.ICapabilityHub;
+import thefloydman.moremystcraft.capability.journeyhub.ProviderCapabilityHub;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 
 public class ContainerJourneyHub extends Container {

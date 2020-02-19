@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.uuid;
 
 import java.util.UUID;
 

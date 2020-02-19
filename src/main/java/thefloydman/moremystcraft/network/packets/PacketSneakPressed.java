@@ -17,7 +17,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import thefloydman.moremystcraft.entity.EntityMaintainerSuit;
-import thefloydman.moremystcraft.world.MoreMystcraftTeleporter;
 import net.minecraft.world.DimensionType;
 
 public class PacketSneakPressed implements IMessage {

@@ -6,8 +6,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import thefloydman.moremystcraft.capability.ICapabilityHub;
-import thefloydman.moremystcraft.capability.ProviderCapabilityHub;
+import thefloydman.moremystcraft.capability.journeyhub.ICapabilityHub;
+import thefloydman.moremystcraft.capability.journeyhub.ProviderCapabilityHub;
 import thefloydman.moremystcraft.tileentity.TileEntitySingleItem;
 
 public class PacketSetHubTimer implements IMessage {

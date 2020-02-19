@@ -3,6 +3,7 @@ package thefloydman.moremystcraft.world.gen.feature;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -59,7 +60,7 @@ import thefloydman.moremystcraft.config.MoreMystcraftConfig;
 
 public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 
-	static HashMap<Biome, HashMap<String, IBlockState>> biomeMap = new HashMap<>();
+	static Map<Biome, Map<String, IBlockState>> biomeMap = new HashMap<Biome, Map<String, IBlockState>>();
 
 	@Override
 	public void generate(Random rand, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
@@ -113,7 +114,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 					|| world.getBlockState(pos).getMaterial() == Material.WOOD) {
 				return;
 			}
-			HashMap<String, IBlockState> blockMap = biomeMap.get(world.getBiome(pos));
+			Map<String, IBlockState> blockMap = biomeMap.get(world.getBiome(pos));
 			if (blockMap == null) {
 				blockMap = biomeMap.get(Biomes.PLAINS);
 			}
@@ -166,7 +167,7 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 		return false;
 	}
 
-	protected static HashMap<String, IBlockState> assignBlocks(IBlockState log, IBlockState planks, IBlockState slab,
+	protected static Map<String, IBlockState> assignBlocks(IBlockState log, IBlockState planks, IBlockState slab,
 			IBlockState stairs) {
 		IBlockState stairsSouthBottomStraight = stairs.withProperty(BlockHorizontal.FACING, EnumFacing.SOUTH)
 				.withProperty(BlockStairs.HALF, BlockStairs.EnumHalf.BOTTOM)
@@ -226,64 +227,76 @@ public class WorldGenStudy extends WorldGenerator implements IWorldGenerator {
 		map.put("stairs_south_top_inner_right", stairsSouthTopInnerRight);
 		return map;
 	}
+	
+	protected static Map<String, IBlockState> repairMap(Map<String, IBlockState> map) {
+		Map<String, IBlockState> newMap = new HashMap<String, IBlockState>();
+		for (Entry<String, IBlockState> entry : map.entrySet()) {
+			if (entry.getValue() != null) {
+				newMap.put(entry.getKey(), entry.getValue());
+			} else {
+				newMap.put(entry.getKey(), Blocks.STONE.getDefaultState());
+			}
+		}
+		return newMap;
+	}
 
 	static {
 
-		HashMap<String, IBlockState> mapOak = assignBlocks(
+		Map<String, IBlockState> mapOak = repairMap(assignBlocks(
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.LOG_AXIS, BlockOldLog.EnumAxis.Y)
 						.withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK),
-				Blocks.OAK_STAIRS.getDefaultState());
+				Blocks.OAK_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapAcacia = assignBlocks(
+		Map<String, IBlockState> mapAcacia =repairMap(assignBlocks(
 				Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.LOG_AXIS, BlockNewLog.EnumAxis.Y)
 						.withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.ACACIA),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA),
-				Blocks.ACACIA_STAIRS.getDefaultState());
+				Blocks.ACACIA_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapBirch = assignBlocks(
+		Map<String, IBlockState> mapBirch = repairMap(assignBlocks(
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.LOG_AXIS, BlockOldLog.EnumAxis.Y)
 						.withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH),
-				Blocks.BIRCH_STAIRS.getDefaultState());
+				Blocks.BIRCH_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapDarkOak = assignBlocks(
+		Map<String, IBlockState> mapDarkOak = repairMap(assignBlocks(
 				Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.LOG_AXIS, BlockNewLog.EnumAxis.Y)
 						.withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.DARK_OAK),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK),
-				Blocks.DARK_OAK_STAIRS.getDefaultState());
+				Blocks.DARK_OAK_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapJungle = assignBlocks(
+		Map<String, IBlockState> mapJungle = repairMap(assignBlocks(
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.LOG_AXIS, BlockOldLog.EnumAxis.Y)
 						.withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE),
-				Blocks.JUNGLE_STAIRS.getDefaultState());
+				Blocks.JUNGLE_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapSpruce = assignBlocks(
+		Map<String, IBlockState> mapSpruce = repairMap(assignBlocks(
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.LOG_AXIS, BlockOldLog.EnumAxis.Y)
 						.withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE),
 				Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE),
 				Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE),
-				Blocks.SPRUCE_STAIRS.getDefaultState());
+				Blocks.SPRUCE_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapSandstone = assignBlocks(
+		Map<String, IBlockState> mapSandstone = repairMap(assignBlocks(
 				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
 				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.DEFAULT),
 				Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND),
-				Blocks.SANDSTONE_STAIRS.getDefaultState());
+				Blocks.SANDSTONE_STAIRS.getDefaultState()));
 
-		HashMap<String, IBlockState> mapStone = assignBlocks(
+		Map<String, IBlockState> mapStone = repairMap(assignBlocks(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE),
 				Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
 						BlockStoneBrick.EnumType.DEFAULT),
 				Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT,
 						BlockStoneSlab.EnumType.COBBLESTONE),
-				Blocks.STONE_STAIRS.getDefaultState());
+				Blocks.STONE_STAIRS.getDefaultState()));
 
 		biomeMap.put(Biomes.BEACH, mapOak);
 		biomeMap.put(Biomes.BIRCH_FOREST, mapBirch);

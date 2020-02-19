@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.adventurepanel;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

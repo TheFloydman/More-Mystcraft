@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.journeyclothscollected;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.potiondummy;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

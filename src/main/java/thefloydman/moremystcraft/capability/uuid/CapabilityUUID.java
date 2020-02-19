@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.uuid;
 
 import java.util.UUID;
 
@@ -15,8 +15,8 @@ public class CapabilityUUID implements ICapabilityUUID {
 		this.uuid = uuid;
 	}
 
-	@Nullable
 	@Override
+	@Nullable
 	public UUID getUUID() {
 		return this.uuid;
 	}

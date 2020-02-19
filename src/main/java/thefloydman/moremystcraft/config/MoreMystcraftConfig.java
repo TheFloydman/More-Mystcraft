@@ -162,23 +162,16 @@ public class MoreMystcraftConfig {
 	}
 
 	/*
-	 * Getters and setters for config options.
+	 * Getters for config options.
 	 */
 
 	public static boolean getBookBinderRecipeEnabled() {
 		return catOther.bookBinderRecipeEnabled;
 	}
 
-	public static void setBookBinderRecipeEnabled(boolean var) {
-		catOther.bookBinderRecipeEnabled = var;
-	}
 
 	public static int getStudyMinimumY() {
 		return catStudies.studyMinimumY;
-	}
-
-	public static void setStudyMinimumY(int var) {
-		catStudies.studyFrequency = var;
 	}
 
 	public static int getStudyFrequency() {
@@ -225,7 +218,7 @@ public class MoreMystcraftConfig {
 		return catLockedBlocks.lockedBookstandEnabled;
 	}
 
-	public static boolean getLockedLecternRecipeEnabled() {
+	public static boolean getLockedLecternRecipeDisabled() {
 		return catLockedBlocks.lockedLecternRecipeEnabled;
 	}
 

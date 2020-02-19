@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.journeyclothscollected;
 
 import java.util.List;
 import java.util.UUID;

@@ -60,9 +60,9 @@ import thefloydman.moremystcraft.util.Reference;
 
 public class SubWorldGenStudy extends WorldGenerator {
 
-	HashMap<String, IBlockState> blockMap;
+	Map<String, IBlockState> blockMap;
 
-	public SubWorldGenStudy(final HashMap<String, IBlockState> map) {
+	public SubWorldGenStudy(final Map<String, IBlockState> map) {
 		this.blockMap = map;
 	}
 

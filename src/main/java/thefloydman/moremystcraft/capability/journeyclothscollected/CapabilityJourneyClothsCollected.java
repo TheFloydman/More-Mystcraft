@@ -1,4 +1,4 @@
-package thefloydman.moremystcraft.capability;
+package thefloydman.moremystcraft.capability.journeyclothscollected;
 
 import java.util.ArrayList;
 import java.util.List;
