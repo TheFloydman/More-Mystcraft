@@ -1,41 +1,23 @@
 package thefloydman.moremystcraft.world.gen.feature;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
-import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
+import com.google.common.collect.Maps;
 
-import java.util.Map.Entry;
-
+import mystlibrary.book.BookGenerator;
+import mystlibrary.book.BookPage;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockPlanks.EnumType;
-import net.minecraft.block.BlockStairs;
-import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -43,19 +25,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import com.xcompwiz.mystcraft.item.ItemAgebook;
-
-import thefloydman.moremystcraft.MoreMystcraft;
-import thefloydman.moremystcraft.util.BookSpawner;
 import thefloydman.moremystcraft.util.Reference;
 
 public class SubWorldGenStudy extends WorldGenerator {
@@ -115,26 +90,33 @@ public class SubWorldGenStudy extends WorldGenerator {
 					TileEntity entityLecternLeft = world.getTileEntity(blockpos2.add(-4, 1, 1));
 					IItemHandler handlerLecternLeft = entityLecternLeft
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					ItemStack stackDesBook = BookSpawner.generateBlankDescriptiveBook(rand);
+					List<BookPage> pageList = new ArrayList<BookPage>();
+					pageList.add(BookPage.linkPanelPage());
+					pageList.add(BookPage.symbolPage(new ResourceLocation("mystcraft:starfissure")));
+					int randMain = rand.nextInt(100);
+					int randSub = 0;
+					if (randMain <= 50) {
+						randSub = rand.nextInt(10);
+					} else if (randMain >= 51 && randMain <= 80) {
+						randSub = rand.nextInt(20) + 10;
+					} else if (randMain >= 81 && randMain <= 95) {
+						randSub = rand.nextInt(40) + 30;
+					} else {
+						randSub = rand.nextInt(30) + 70;
+					}
+					for (int i = 0; i < randSub; i++) {
+						pageList.add(BookPage.blankPage());
+					}
+					ItemStack stackDesBook = BookGenerator.generateDescriptiveBook(pageList, "Unexplored Age",
+							Arrays.asList("Unknown Author"));
 					handlerLecternLeft.insertItem(0, stackDesBook, false);
 
 					// Add Linking Book.
 					TileEntity entityLecternRight = world.getTileEntity(blockpos2.add(-4, 1, -1));
 					IItemHandler handlerLecternRight = entityLecternRight
 							.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-					ItemStack stackBook = new ItemStack(Item.getByNameOrId("mystcraft:linkbook"));
-					NBTTagCompound compoundBook = new NBTTagCompound();
-					compoundBook.setInteger("SpawnX", blockpos2.getX());
-					compoundBook.setInteger("SpawnY", blockpos2.getY());
-					compoundBook.setInteger("SpawnZ", blockpos2.getZ());
-					compoundBook.setFloat("SpawnYaw", 90);
-					compoundBook.setInteger("Dimension", world.provider.getDimension());
-					compoundBook.setString("DisplayName", "Abandoned Study");
-					compoundBook.setFloat("MaxHealth", 10);
-					compoundBook.setFloat("damage", 0);
-					compoundBook.setString("TargetUUID", "00000000-0000-0000-0000-000000000000");
-					stackBook.setTagCompound(compoundBook);
-					handlerLecternRight.insertItem(0, stackBook, false);
+					handlerLecternRight.insertItem(0, BookGenerator.generateLinkingBook(blockpos2, 90.0F,
+							world.provider.getDimension(), "Abandoned Study", Maps.newHashMap()), false);
 				} else if (entry.getValue().equals("log")) {
 					BlockPos blockpos2 = entry.getKey();
 					world.setBlockState(blockpos2, this.blockMap.get("log"));

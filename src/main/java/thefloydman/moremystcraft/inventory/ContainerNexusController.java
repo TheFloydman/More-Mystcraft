@@ -133,7 +133,7 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	public Collection<String> getBookAuthors() {
 		final ItemStack book = this.getBook();
 		if (book.isEmpty()) {
-			return (Collection<String>) Collections.EMPTY_SET;
+			return Collections.EMPTY_SET;
 		}
 		return ((ItemLinking) book.getItem()).getAuthors(book);
 	}
@@ -282,7 +282,12 @@ public class ContainerNexusController extends ContainerBase implements IBookCont
 	@Override
 	public boolean enchantItem(EntityPlayer playerIn, int id) {
 		this.selectedBook = id;
-		this.getSlotFromInventory(this.tileEntity, 1).putStack(this.tileEntity.getStackInSlot(id));
+		Slot slot = this.getSlotFromInventory(this.tileEntity, 1);
+		if (id == -1) {
+			slot.putStack(ItemStack.EMPTY);
+		} else {
+			slot.putStack(this.tileEntity.getStackInSlot(id));
+		}
 		return true;
 	}
 

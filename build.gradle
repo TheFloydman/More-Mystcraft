@@ -43,6 +43,7 @@ minecraft {
 dependencies {
 
     deobfCompile "mystcraft:mystcraft-1.12.2:0.13.7.04:dev"
+	deobfCompile "mystlibrary:mystlibrary:1.12.2:0.0.2.1"
     deobfProvided "immersive-engineering:ImmersiveEngineering:0.12:64"
     
     // you may put jars on which you depend on in ./libs

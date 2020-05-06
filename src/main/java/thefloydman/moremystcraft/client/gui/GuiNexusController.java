@@ -91,23 +91,13 @@ public class GuiNexusController extends GuiContainerElements {
 
 	@Override
 	public boolean doesGuiPauseGame() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		Keyboard.enableRepeatEvents(false);
-	}
-
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		super.drawScreen(mouseX, mouseY, partialTicks);
-	}
-
-	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
-		super.actionPerformed(button);
 	}
 
 	@Override
@@ -195,7 +185,7 @@ public class GuiNexusController extends GuiContainerElements {
 		this.container.selectedBook = this.displayedBooks[this.selectedCell] < this.tileEntity.getSizeInventory()
 				? this.displayedBooks[this.selectedCell]
 				: -1;
-		if (this.container.selectedBook > 1) {
+		if (this.container.selectedBook > 1 || this.container.selectedBook == -1) {
 			this.container.enchantItem(this.player, this.container.selectedBook);
 			this.mc.playerController.sendEnchantPacket(this.container.windowId, this.container.selectedBook);
 		}
