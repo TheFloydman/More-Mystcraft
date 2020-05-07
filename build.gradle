@@ -16,9 +16,13 @@ repositories {
         name = "curseforge"
         url = "https://minecraft.curseforge.com/api/maven/"
     }
+    maven {
+        name = "blamejared"
+        url = "https://maven.blamejared.com/"
+    }
 }
 
-version = "0.8.6"
+version = "0.8.7"
 group = "thefloydman.moremystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "moremystcraft-1.12.2"
 
@@ -28,7 +32,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2803"
+    version = "1.12.2-14.23.5.2820"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -44,7 +48,7 @@ dependencies {
 
     deobfCompile "mystcraft:mystcraft-1.12.2:0.13.7.04:dev"
 	deobfCompile "mystlibrary:mystlibrary:1.12.2:0.0.2.1"
-    deobfProvided "immersive-engineering:ImmersiveEngineering:0.12:64"
+    deobfProvided "blusunrize:ImmersiveEngineering:0.12-92-559"
     
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
