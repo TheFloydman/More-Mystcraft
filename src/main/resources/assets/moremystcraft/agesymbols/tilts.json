@@ -1,0 +1,80 @@
+[
+    {
+        "symbol_id": "moremystcraft:tilt_zero",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Tilt",
+            "Zero"
+        ],
+        "card_rank": 0,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.tilt.name",
+            "parameters": [
+                "moremystcraft.agesymbol.tilt.zero"
+            ]
+        },
+        "grammar_rules": [
+            {
+                "parent": "moremystcraft:tilt_common",
+                "rank": 0
+            }
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:tilt",
+            "value": 0.0
+        }
+    },
+    {
+        "symbol_id": "moremystcraft:tilt_half",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Tilt",
+            "Half"
+        ],
+        "card_rank": 2,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.tilt.name",
+            "parameters": [
+                "moremystcraft.agesymbol.tilt.half"
+            ]
+        },
+        "grammar_rules": [
+            {
+                "parent": "moremystcraft:tilt_uncommon",
+                "rank": 0
+            }
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:tilt",
+            "value": 45.0
+        }
+    },
+    {
+        "symbol_id": "moremystcraft:tilt_full",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Tilt",
+            "Full"
+        ],
+        "card_rank": 4,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.tilt.name",
+            "parameters": [
+                "moremystcraft.agesymbol.tilt.full"
+            ]
+        },
+        "grammar_rules": [
+            {
+                "parent": "moremystcraft:tilt_rare",
+                "rank": 4
+            }
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:tilt",
+            "value": 90.0
+        }
+    }
+]

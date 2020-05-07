@@ -1,3 +1,8 @@
+//Behavior names
+moremystcraft.agesymbol.tilt.name=%1$s Tilt
+moremystcraft.agesymbol.size.name=%1$s Size
+moremystcraft.agesymbol.cloud_height.name=%1$s Cloud Height
+
 // Symbol names
 moremystcraft.symbol.abandoned_study.name=Abandoned Studies
 moremystcraft.symbol.pyramids.name=Pyramids
@@ -15,6 +20,18 @@ moremystcraft.symbol.gigantic_trees.name=Gigantic Trees
 moremystcraft.symbol.no_libraries.name=No Libraries
 moremystcraft.symbol.lacking_ores.name=Lacking Ores
 moremystcraft.symbol.sun_color.name=Sun Color
+moremystcraft.agesymbol.tilt.zero=Zero
+moremystcraft.agesymbol.tilt.half=Half
+moremystcraft.agesymbol.tilt.full=Full
+moremystcraft.agesymbol.size.tiny=Tiny
+moremystcraft.agesymbol.size.small=Small
+moremystcraft.agesymbol.size.medium=Medium
+moremystcraft.agesymbol.size.large=Large
+moremystcraft.agesymbol.size.huge=Huge
+moremystcraft.agesymbol.cloud_height.zero=Zero
+moremystcraft.agesymbol.cloud_height.half=Half
+moremystcraft.agesymbol.cloud_height.full=Full
+moremystcraft.agesymbol.cloud_height.double=Double
 
 
 // Block names

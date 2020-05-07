@@ -4,10 +4,7 @@ import com.xcompwiz.mystcraft.logging.LoggerUtils;
 import com.xcompwiz.mystcraft.symbol.SymbolManager;
 
 import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
-import thefloydman.moremystcraft.symbol.modifiers.SymbolCloudHeight;
-import thefloydman.moremystcraft.symbol.modifiers.SymbolSize;
 import thefloydman.moremystcraft.symbol.modifiers.SymbolSunColor;
-import thefloydman.moremystcraft.symbol.modifiers.SymbolTilt;
 import thefloydman.moremystcraft.symbol.symbols.SymbolAbandonedStudy;
 import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerBoxes;
 import thefloydman.moremystcraft.symbol.symbols.SymbolBiomeControllerHorizontalBands;
@@ -48,32 +45,8 @@ public class MoreMystcraftSymbols {
 				new String[] { "Constraint", "Nature", "Weave", "Maze" });
 		registerSymbol(new SymbolTintedSun(Reference.forMoreMystcraft("sun_tinted")), 2,
 				new String[] { "Celestial", "Image", "Stimulate", "Color" });
-		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_tiny"), 0.25, "Tiny"), 2, "Control", "Growth",
-				"Form", "Tiny");
-		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_small"), 0.5, "Small"), 1, "Control", "Growth",
-				"Form", "Small");
-		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_medium"), 1, "Medium"), 0, "Control", "Growth",
-				"Form", "Medium");
-		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_large"), 2, "Large"), 1, "Control", "Growth",
-				"Form", "Large");
-		registerSymbol(new SymbolSize(Reference.forMoreMystcraft("size_huge"), 3, "Huge"), 2, "Control", "Growth",
-				"Form", "Huge");
-		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_zero"), 0.0f, "No"), 0, "Transform", "Motion",
-				"Tilt", "Zero");
-		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_half"), 45.0f, "Half"), 2, "Transform", "Motion",
-				"Tilt", "Half");
-		registerSymbol(new SymbolTilt(Reference.forMoreMystcraft("tilt_full"), 90.0f, "Full"), 4, "Transform", "Motion",
-				"Tilt", "Full");
 		registerSymbol(new SymbolOceanMonument(Reference.forMoreMystcraft("ocean_monument")), 3, "Civilization",
 				"Machine", "Power", "Entropy");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_zero"), 0.0f, "Zero"), 4,
-				"Transform", "Motion", "Tilt", "Zero");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_half"), 70.0f, "Half"), 4,
-				"Transform", "Motion", "Tilt", "Half");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("cloud_height_full"), 127.0f, "Full"), 4,
-				"Transform", "Motion", "Tilt", "Full");
-		registerSymbol(new SymbolCloudHeight(Reference.forMoreMystcraft("double"), 255.0f, "Double"), 4, "Transform",
-				"Motion", "Tilt", "Double");
 		registerSymbol(new SymbolTerrainGenMaze(Reference.forMoreMystcraft("terrain_maze")), 4,
 				new String[] { "Terrain", "Form", "Infinite", "Maze" });
 		registerSymbol(new SymbolGiganticTrees(Reference.forMoreMystcraft("gigantic_trees")), 2,

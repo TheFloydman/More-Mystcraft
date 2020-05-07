@@ -6,6 +6,7 @@ import com.xcompwiz.mystcraft.api.event.LinkEvent;
 import com.xcompwiz.mystcraft.item.ItemLinkbookUnlinked;
 import com.xcompwiz.mystcraft.world.WorldProviderMyst;
 
+import mystlibrary.event.BehaviorRegistrationEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -50,6 +51,9 @@ import thefloydman.moremystcraft.init.MoreMystcraftEntityEntries;
 import thefloydman.moremystcraft.init.MoreMystcraftItems;
 import thefloydman.moremystcraft.item.ItemMaintainerSuit;
 import thefloydman.moremystcraft.network.MoreMystcraftPacketHandler;
+import thefloydman.moremystcraft.symbol.behavior.CloudHeightBehavior;
+import thefloydman.moremystcraft.symbol.behavior.SizeBehavior;
+import thefloydman.moremystcraft.symbol.behavior.TiltBehavior;
 import thefloydman.moremystcraft.util.Reference;
 
 @EventBusSubscriber
@@ -123,7 +127,7 @@ public class EventHandler {
 				event.setCanceled(true);
 				Vec3d playerPos = player.getPositionVector();
 				Vec3d playerLook = player.getLookVec();
-				Vec3d playerEyes = playerPos.addVector(0.0D, (double) player.getEyeHeight(), 0.0D);
+				Vec3d playerEyes = playerPos.addVector(0.0D, player.getEyeHeight(), 0.0D);
 				Vec3d playerEnd = playerEyes.add(playerLook).add(playerLook);
 				RayTraceResult result = world.rayTraceBlocks(playerEyes, playerEnd, false, false, true);
 				Vec3d hitVec = playerEnd;
@@ -269,6 +273,13 @@ public class EventHandler {
 
 		}
 
+	}
+
+	@SubscribeEvent
+	public static void registerBehaviors(BehaviorRegistrationEvent event) {
+		event.registerBehavior(TiltBehavior.NAME, TiltBehavior::fromJson);
+		event.registerBehavior(SizeBehavior.NAME, SizeBehavior::fromJson);
+		event.registerBehavior(CloudHeightBehavior.NAME, CloudHeightBehavior::fromJson);
 	}
 
 }

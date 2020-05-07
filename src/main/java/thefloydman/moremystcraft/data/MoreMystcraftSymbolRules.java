@@ -18,8 +18,9 @@ public class MoreMystcraftSymbolRules {
 	public static void initialize() {
 		addRuleInternal("abandoned_study",
 				buildRule(null, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("abandoned_study")));
-		addRuleInternal("pyramids", buildRule(3, GrammarData.FEATURE_MEDIUM,
-				MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE, Reference.forMoreMystcraft("pyramids")));
+		addRuleInternal("pyramids",
+				buildRule(3, GrammarData.FEATURE_MEDIUM, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST,
+						GrammarData.BLOCK_STRUCTURE, Reference.forMoreMystcraft("pyramids")));
 		addRuleInternal("biocon_rings", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
 				GrammarData.BIOME, MoreMystcraftGrammarRules.SIZE_BIOCON, Reference.forMoreMystcraft("biocon_rings")));
 		addRuleInternal("biocon_boxes", buildRule(2, GrammarData.BIOMECONTROLLER, GrammarData.BIOME_LIST,
@@ -42,22 +43,6 @@ public class MoreMystcraftSymbolRules {
 						MoreMystcraftGrammarRules.SIZE_SUN, GrammarData.PERIOD_SEQ, GrammarData.ANGLE_SEQ,
 						GrammarData.PHASE_SEQ, MoreMystcraftGrammarRules.TILT_SUN_SEQ,
 						Reference.forMoreMystcraft("sun_tinted")));
-		addRuleInternal("size_tiny",
-				buildRule(0, MoreMystcraftGrammarData.SIZE_RARE, Reference.forMoreMystcraft("size_tiny")));
-		addRuleInternal("size_small",
-				buildRule(0, MoreMystcraftGrammarData.SIZE_UNCOMMON, Reference.forMoreMystcraft("size_small")));
-		addRuleInternal("size_medium",
-				buildRule(0, MoreMystcraftGrammarData.SIZE_COMMON, Reference.forMoreMystcraft("size_medium")));
-		addRuleInternal("size_large",
-				buildRule(0, MoreMystcraftGrammarData.SIZE_UNCOMMON, Reference.forMoreMystcraft("size_large")));
-		addRuleInternal("size_huge",
-				buildRule(0, MoreMystcraftGrammarData.SIZE_RARE, Reference.forMoreMystcraft("size_huge")));
-		addRuleInternal("tilt_zero",
-				buildRule(0, MoreMystcraftGrammarData.TILT_COMMON, Reference.forMoreMystcraft("tilt_zero")));
-		addRuleInternal("tilt_half",
-				buildRule(0, MoreMystcraftGrammarData.TILT_UNCOMMON, Reference.forMoreMystcraft("tilt_half")));
-		addRuleInternal("tilt_full",
-				buildRule(0, MoreMystcraftGrammarData.TILT_RARE, Reference.forMoreMystcraft("tilt_full")));
 		addRuleInternal("ocean_monument",
 				buildRule(2, GrammarData.FEATURE_MEDIUM, Reference.forMoreMystcraft("ocean_monument")));
 		addRuleInternal("terrain_maze", buildRule(4, GrammarData.TERRAIN, GrammarData.BLOCK_TERRAIN,

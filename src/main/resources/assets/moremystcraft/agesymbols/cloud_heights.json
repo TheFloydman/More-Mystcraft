@@ -1,0 +1,90 @@
+[
+    {
+        "symbol_id": "moremystcraft:cloud_height_zero",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Entropy",
+            "Zero"
+        ],
+        "card_rank": 4,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.cloud_height.name",
+            "parameters": [
+                "moremystcraft.agesymbol.cloud_height.zero"
+            ]
+        },
+        "grammar_rules": [
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:cloud_height",
+            "value": 0.0
+        }
+    },
+    {
+        "symbol_id": "moremystcraft:cloud_height_half",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Entropy",
+            "Half"
+        ],
+        "card_rank": 4,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.cloud_height.name",
+            "parameters": [
+                "moremystcraft.agesymbol.cloud_height.half"
+            ]
+        },
+        "grammar_rules": [
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:cloud_height",
+            "value": 70.0
+        }
+    },
+    {
+        "symbol_id": "moremystcraft:cloud_height_full",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Entropy",
+            "Full"
+        ],
+        "card_rank": 4,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.cloud_height.name",
+            "parameters": [
+                "moremystcraft.agesymbol.cloud_height.full"
+            ]
+        },
+        "grammar_rules": [
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:cloud_height",
+            "value": 127.0
+        }
+    },
+    {
+        "symbol_id": "moremystcraft:cloud_height_double",
+        "poem": [
+            "Transform",
+            "Motion",
+            "Entropy",
+            "Double"
+        ],
+        "card_rank": 4,
+        "localization": {
+            "unlocal_name": "moremystcraft.agesymbol.cloud_height.name",
+            "parameters": [
+                "moremystcraft.agesymbol.cloud_height.double"
+            ]
+        },
+        "grammar_rules": [
+        ],
+        "behavior": {
+            "behavior_id": "moremystcraft:cloud_height",
+            "value": 255.0
+        }
+    }
+]
