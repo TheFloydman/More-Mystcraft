@@ -3,8 +3,8 @@
         "symbol_id": "moremystcraft:size_tiny",
         "poem": [
             "Control",
-            "Growth",
             "Form",
+            "Size",
             "Tiny"
         ],
         "card_rank": 0,
@@ -29,8 +29,8 @@
         "symbol_id": "moremystcraft:size_small",
         "poem": [
             "Control",
-            "Growth",
             "Form",
+            "Size",
             "Small"
         ],
         "card_rank": 0,
@@ -55,8 +55,8 @@
         "symbol_id": "moremystcraft:size_medium",
         "poem": [
             "Control",
-            "Growth",
             "Form",
+            "Size",
             "Medium"
         ],
         "card_rank": 0,
@@ -81,8 +81,8 @@
         "symbol_id": "moremystcraft:size_large",
         "poem": [
             "Control",
-            "Growth",
             "Form",
+            "Size",
             "Large"
         ],
         "card_rank": 0,
@@ -107,8 +107,8 @@
         "symbol_id": "moremystcraft:size_huge",
         "poem": [
             "Control",
-            "Growth",
             "Form",
+            "Size",
             "Huge"
         ],
         "card_rank": 0,

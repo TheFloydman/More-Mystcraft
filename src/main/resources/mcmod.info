@@ -11,7 +11,7 @@
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "requiredMods": ["mystcraft"],
-  "dependencies": ["mystcraft", "immersiveengineering"]
+  "requiredMods": ["mystcraft", "mystlibrary"],
+  "dependencies": ["mystcraft", "mystlibrary", "immersiveengineering"]
 }
 ]

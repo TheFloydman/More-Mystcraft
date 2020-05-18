@@ -6,11 +6,11 @@ public class Reference {
 
 	public static final String MOD_ID = "moremystcraft";
 	public static final String NAME = "More Mystcraft";
-	public static final String VERSION = "0.8.7";
+	public static final String VERSION = "1.0.0";
 	public static final String ACCEPTED_VERSIONS = "[1.12.2]";
 	public static final String CLIENT_PROXY_CLASS = "thefloydman.moremystcraft.proxy.ClientProxy";
 	public static final String COMMON_PROXY_CLASS = "thefloydman.moremystcraft.proxy.CommonProxy";
-	public static final String DEPENDENCIES = "required-after:mystcraft@[0.13.7.03,)";
+	public static final String DEPENDENCIES = "required-after:mystcraft@[0.13.7.03,);required-after:mystlibrary@[0.0.3.0,)";
 
 	public static ResourceLocation forMoreMystcraft(final String path) {
 		return new ResourceLocation("moremystcraft", path);

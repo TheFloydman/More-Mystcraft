@@ -11,6 +11,14 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
+apply plugin: 'eclipse'
+
+eclipse {
+    classpath {
+       downloadSources=true
+    }
+}
+
 repositories {
     maven {
         name = "curseforge"
@@ -22,9 +30,9 @@ repositories {
     }
 }
 
-version = "0.8.7"
+version = "1.12.2-1.0.0"
 group = "thefloydman.moremystcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "moremystcraft-1.12.2"
+archivesBaseName = "moremystcraft"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
@@ -47,8 +55,10 @@ minecraft {
 dependencies {
 
     deobfCompile "mystcraft:mystcraft-1.12.2:0.13.7.04:dev"
-	deobfCompile "mystlibrary:mystlibrary:1.12.2:0.0.2.1"
+	deobfCompile "mystlibrary:mystlibrary:1.12.2:0.0.3.0"
     deobfProvided "blusunrize:ImmersiveEngineering:0.12-92-559"
+    
+    runtime "mystcraft-info:mystcraft_info:1.12.2:1.0.5.0"
     
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
