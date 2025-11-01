@@ -16,6 +16,7 @@ public class MoreMystcraftGrammarData {
 	public static final ResourceLocation TILT_UNCOMMON_SEQ;
 	public static final ResourceLocation TILT_RARE_SEQ;
 	public static final ResourceLocation SUN_COLOR;
+	public static final ResourceLocation SUN_COLOR_UNCOMMON;
 	public static final ResourceLocation PYRAMID_BLOCK_LIST;
 
 	static {
@@ -32,7 +33,8 @@ public class MoreMystcraftGrammarData {
 		TILT_UNCOMMON_SEQ = Reference.forMoreMystcraft("tilt_uncommon_seq");
 		TILT_RARE_SEQ = Reference.forMoreMystcraft("tilt_rare_seq");
 
-		SUN_COLOR = Reference.forMoreMystcraft("sun_color");
+		SUN_COLOR = Reference.forMoreMystcraft("sun_color_normal");
+		SUN_COLOR_UNCOMMON = Reference.forMoreMystcraft("sun_color_uncommon");
 
 		PYRAMID_BLOCK_LIST = Reference.forMoreMystcraft("structure_block_list");
 	}

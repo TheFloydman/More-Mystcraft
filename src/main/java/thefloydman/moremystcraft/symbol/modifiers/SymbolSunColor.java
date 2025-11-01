@@ -10,24 +10,24 @@ import thefloydman.moremystcraft.symbol.MoreMystcraftSymbolBase;
 
 public class SymbolSunColor extends MoreMystcraftSymbolBase {
 
-	public SymbolSunColor(ResourceLocation identifier) {
-		super(identifier);
-	}
+    public SymbolSunColor(ResourceLocation identifier) {
+        super(identifier);
+    }
 
-	@Override
-	public boolean generatesConfigOption() {
-		return true;
-	}
+    @Override
+    public boolean generatesConfigOption() {
+        return true;
+    }
 
-	@Override
-	public void registerLogic(AgeDirector controller, long seed) {
-		ColorGradient sunColor = controller.popModifier("sun_color").asGradient();
-		if (sunColor == null) {
-			sunColor = new ColorGradient();
-		}
-		ColorGradient gradient = ModifierUtils.popGradient(controller);
-		sunColor.appendGradient(gradient);
-		controller.setModifier("sun_color", sunColor);
-	}
+    @Override
+    public void registerLogic(AgeDirector controller, long seed) {
+        ColorGradient sunColor = controller.popModifier("sun_color").asGradient();
+        if (sunColor == null) {
+            sunColor = new ColorGradient();
+        }
+        ColorGradient gradient = ModifierUtils.popGradient(controller);
+        sunColor.appendGradient(gradient);
+        controller.setModifier("sun_color", new Modifier(sunColor, 0));
+    }
 
 }

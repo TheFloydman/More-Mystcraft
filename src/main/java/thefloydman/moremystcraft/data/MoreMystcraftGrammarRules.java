@@ -13,14 +13,14 @@ import thefloydman.moremystcraft.util.Reference;
 public class MoreMystcraftGrammarRules {
 
 	private static final ResourceLocation SIZE_GEN = Reference.forMoreMystcraft("size_adv");
-	public static final ResourceLocation SIZE_EXT = Reference.forMoreMystcraft("size_ext");
 	public static final ResourceLocation SIZE_SUN = Reference.forMoreMystcraft("size_sun");
 	public static final ResourceLocation SIZE_BIOCON = Reference.forMoreMystcraft("size_biocon");
 	public static final ResourceLocation SIZE_ISLAND_BIOCON = Reference.forMoreMystcraft("size_island_biocon");
 	public static final ResourceLocation TILT_SUN_SEQ = Reference.forMoreMystcraft("tilt_sun");
-	public static final ResourceLocation SUN_COLOR_BASIC = Reference.forMoreMystcraft("sun_color_basic");
+	public static final ResourceLocation SUN_COLOR_EXT = Reference.forMoreMystcraft("sun_color_ext");
 
 	public static void initialize() {
+
 		registerRule(buildRule(null, SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_BASIC));
 		registerRule(buildRule(0, SIZE_BIOCON, MoreMystcraftGrammarData.SIZE_SEQ));
 		
@@ -64,9 +64,12 @@ public class MoreMystcraftGrammarRules {
 		registerRule(buildRule(1, MoreMystcraftGrammarData.TILT_RARE_SEQ, MoreMystcraftGrammarData.TILT_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarData.TILT_RARE_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON, MoreMystcraftGrammarData.TILT_RARE));
 		registerRule(buildRule(0, MoreMystcraftGrammarData.TILT_RARE_SEQ, MoreMystcraftGrammarData.TILT_UNCOMMON, MoreMystcraftGrammarData.TILT_RARE, MoreMystcraftGrammarData.TILT_UNCOMMON_SEQ));
-		
-		registerRule(buildRule(0, MoreMystcraftGrammarData.SUN_COLOR, new ResourceLocation[0]));
-		registerRule(buildRule(0, SUN_COLOR_BASIC, MoreMystcraftGrammarData.SUN_COLOR));
+
+		registerRule(buildRule(2, MoreMystcraftGrammarData.SUN_COLOR_UNCOMMON));
+		registerRule(buildRule(3, MoreMystcraftGrammarData.SUN_COLOR_UNCOMMON, MoreMystcraftGrammarData.SUN_COLOR));
+		registerRule(buildRule(1, MoreMystcraftGrammarData.SUN_COLOR));
+		registerRule(buildRule(null, SUN_COLOR_EXT, MoreMystcraftGrammarData.SUN_COLOR));
+		registerRule(buildRule(1, SUN_COLOR_EXT));
 		
 		registerRule(buildRule(0, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, new ResourceLocation[0]));
 		registerRule(buildRule(null, MoreMystcraftGrammarData.PYRAMID_BLOCK_LIST, GrammarData.BLOCK_STRUCTURE));

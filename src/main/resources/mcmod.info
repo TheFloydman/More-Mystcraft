@@ -3,7 +3,7 @@
   "modid": "moremystcraft",
   "name": "More Mystcraft",
   "description": "Miscellaneous additions to Mystcraft.",
-  "version": "${version}",
+  "version": "1.12.2-1.0.1",
   "mcversion": "${mcversion}",
   "url": "https://www.curseforge.com/minecraft/mc-mods/more-mystcraft",
   "updateUrl": "",
